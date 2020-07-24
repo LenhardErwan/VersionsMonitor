@@ -1,17 +1,19 @@
 const path = require('path');
+const polyfill = require("@babel/polyfill");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssets = require('optimize-css-assets-webpack-plugin');
+const webpack = require('webpack');
 
 var config = {
   context: path.resolve(__dirname, 'src'),
   entry: {
-    app: ['./index.js'],
+    app: ['@babel/polyfill', './index.js'],
     styles: './styles/main.scss'
 	},
 	output: {
-    path: path.resolve(__dirname, './public'),
+    path: path.resolve(__dirname, '../server/public'),
     filename: 'assets/js/[name].js',
     library: 'myApp',
     libraryTarget: 'umd'
@@ -27,7 +29,8 @@ var config = {
             presets: [
               ['@babel/preset-env', { 'targets': { 'browsers': '> .5% or last 3 versions' } }],
               ['@babel/preset-react']
-            ]
+						],
+						plugins: ["@babel/plugin-proposal-class-properties"]
           }
         }]
       },
@@ -61,13 +64,23 @@ var config = {
     new HtmlWebpackPlugin({
       template: './index.html',
       filename: './index.html'
-    })
+		})
   ]
 }
 
 module.exports = (env, argv) => {
   if (argv.mode === 'development') {
-    config.devtool = 'eval'
+		config.devtool = 'eval'
+		const envKeys = Object.keys(env).reduce((prev, next) => {
+			prev[`process.env.${next}`] = JSON.stringify(env[next]);
+			return prev;
+		}, {});
+
+		console.log(envKeys)
+
+		config.plugins.push(
+			new webpack.DefinePlugin(envKeys)
+		);
 
     config.module.rules.push({
       test: /\.(sa|sc|c)ss$/,

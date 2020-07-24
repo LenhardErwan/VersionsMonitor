@@ -1,0 +1,245 @@
+:root {
+	--bg-main-light: rgb(220, 220, 220);
+	--bg-main-dark: rgb(50, 50, 50);
+	--bg-main: var(--bg-main-light);
+
+	--bg-second-light: rgb(235, 235, 235);
+	--bg-second-dark: rgb(70, 70, 70);
+	--bg-second: var(--bg-second-light);
+
+	--bg-button-light: rgb(215, 215, 215);
+	--bg-button-dark: rgb(100, 100, 100);
+	--bg-button: var(--bg-button-light);
+
+	--font-color-light: rgb(90, 90, 90);
+	--font-color-dark: rgb(230, 230, 230);
+	--font-color: var(--font-color-light);
+
+	--color-accentuation-light: rgb(180, 180, 180);
+	--color-accentuation-dark: rgb(138, 138, 130);
+	--color-accentuation: var(--color-accentuation-light);
+
+	--color-tertiary: rgb(255, 220, 21);
+}
+
+html[theme="dark"] {
+	--bg-main: var(--bg-main-dark);
+	--bg-second: var(--bg-second-dark);
+	--bg-button: var(--bg-button-dark);
+	--font-color: var(--font-color-dark);
+	--color-accentuation: var(--color-accentuation-dark);
+}
+
+* {
+	transition: 0.3s ease-out;
+	transition-property: color, background-color;
+}
+
+html, body {
+	font-family: 'Segoe UI', Verdana, sans-serif;
+	background-color: var(--bg-main);
+	height: 100%;
+	color: var(--font-color) !important;
+}
+
+article > img {
+	width: 2rem;
+}
+
+span.delete-arg {
+	cursor: pointer;
+}
+
+section.monitor_list {
+	background-color: transparent;
+}
+
+article.monitor {
+	background-color: var(--bg-second);
+	color: var(--font-color);
+	max-width: 30vw;
+	min-width: 20vw;
+	overflow: scroll;
+	margin: 0.5rem;
+}
+
+.icon-button {
+	color: var(--font-color);
+	font-size: 1.75rem;
+	background-color: transparent;
+	padding: 0;
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 1rem;
+	line-height: 1rem;
+}
+
+.args-header {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	justify-content: space-between;
+}
+
+header.menu {
+	display: flex;
+	flex-direction: row;
+	justify-content: start;
+	margin: 0 auto 2rem;
+	padding: 1rem;
+	border-bottom: 1px solid var(--color-accentuation);
+}
+
+.spacer {
+	margin-inline: 0.1rem;
+	font-size: 2rem;
+	height: 2rem;
+	line-height: 2rem;
+}
+
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+	display: inline-block;
+	margin-block: auto;
+	margin-left: auto;
+	margin-right: 0.5rem;
+  width: 2rem;
+  height: 1rem;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(200, 200, 200);
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.5rem;
+  width: 1.5rem;
+  left: -0.25rem;
+  bottom: calc(-0.25rem - 2px);
+	background-color: var(--bg-second);
+	border: 2px solid var(--color-accentuation);
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+input:checked + .slider {
+  background-color: var(--color-tertiary);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(1rem);
+  -ms-transform: translateX(1rem);
+  transform: translateX(1rem);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+} 
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+//UIKit
+@import "../../../node_modules/uikit/dist/css/uikit.min.css";
+
+.uk-modal-header, .uk-modal-body, .uk-modal-footer {
+	background-color: var(--bg-second);
+	color: var(--font-color);
+}
+
+.uk-modal-header {
+	border-bottom: 1px solid var(--color-accentuation);
+}
+
+.uk-modal-footer {
+	border-top: 1px solid var(--color-accentuation);
+}
+
+.uk-h1, .uk-h2, .uk-h3, .uk-h4, .uk-h5, .uk-h6, 
+.uk-heading-2xlarge, .uk-heading-large, .uk-heading-medium, 
+.uk-heading-small, .uk-heading-xlarge, h1, h2, h3, h4, h5, h6,
+.uk-form-label {
+	color: var(--font-color);
+}
+
+.uk-margin-auto-vertical {
+	max-height: 80vh;
+	overflow: scroll;
+}
+
+.uk-modal-body {
+	max-height: 58vh;
+	overflow: scroll;
+}
+
+.uk-button {
+	margin-inline: 0.25rem;
+	transition: 0.2s ease-out;
+	transition-property: color, background-color, border-color, box-shadow;
+}
+
+.uk-button-default {
+	color: var(--font-color);
+	border-color: var(--color-accentuation);
+}
+
+.uk-button-default:hover, .uk-button-default:focus,
+.icon-button:hover, .icon-button:focus {
+	color: var(--font-color);
+	box-shadow: 0 0 10px var(--bg-button);
+	background-color: var(--bg-button);
+}
+
+.uk-form-horizontal .uk-form-label {
+	width: 15%;
+}
+
+.uk-form-horizontal .uk-form-controls {
+	width: 85%;
+	margin-left: 15%;
+}
+
+.uk-search-default .uk-search-input {
+	color: var(--font-color);
+	border: 0;
+	border-bottom: 1px solid var(--color-accentuation);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+//Toasr
+@import url("https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css");
+
+#toast-container > .toast-info > .toast-message {
+	font-size: 0.75rem;
+}
+
+#toast-container > .toast-info > .toast-title > span.app_name {
+	font-style: italic;
+	text-decoration: underline;
+}
