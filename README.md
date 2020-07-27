@@ -17,7 +17,7 @@
 
 ## Build
 
-This project is divided into two parts, a client part and a server part. You must first build the client part before you can start the server. Here is the list of commands to be executed (you can also run the script `auto-install.js` which contains the same commands) :
+This project is divided into two parts, a client part and a server part. You must first build the client part before you can start the server. Here is the list of commands to be executed:
 
 Install dependencies:
 
