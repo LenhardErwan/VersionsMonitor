@@ -67,7 +67,7 @@ When the application detects a new version you will see a popup appear to let yo
 - Open create menu with the "+";
 - Give a name;
 - Copy the URL of the page on which the version number is located;
-- Copy CSS Selector. To do this you have to right click -> 'inspect element' on the version number. Right click on the tag in the development tool, drag the mouse on 'Copy' and click on 'CSS Selector'; <br/>
+- Copy CSS Selector. To do this, on Firefox, you have to right click -> 'inspect element' on the version number. Right click on the tag in the development tool, drag the mouse on 'Copy' and click on 'CSS Selector'. On Chrome: 'inspect', 'Copy' -> 'Copy selector'; <br/>
 <img src="./client/src/images/inspect.png" height="300px" style="margin-right: 2rem"/> <img src="./client/src/images/selector.png" height="300px"/>
 - Can add a regex. This on is very usefull: `([\d\.]+)` (keep only numbers and .)
 - Can add your version number 
