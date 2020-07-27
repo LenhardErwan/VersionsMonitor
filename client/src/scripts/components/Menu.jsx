@@ -58,7 +58,7 @@ export default class Menu extends Component {
 					></input>
 				</div>
 				<span className="spacer">|</span>
-        <button className="uk-button icon-button" uk-toggle={`target: #create-modal`} uk-tooltip="title: Add new monitor"><i className="far fa-plus-square"></i></button>
+        <button className="uk-button icon-button" uk-toggle={`target: #create-modal`} uk-tooltip="title: Add new monitor"><i className="fas fa-plus-square"></i></button>
         <div id={`create-modal`} className="uk-flex-top" uk-modal="true">
           <EditMonitor type="Create" handleClose={this.handleCloseModal} handleEdit={this.createMonitor} />
         </div>
@@ -73,6 +73,7 @@ export default class Menu extends Component {
 					<input type="checkbox" checked={this.props.dark_theme} onChange={() => {}}/>
 					<span className="slider round"></span>
 				</div>
+				<button className="uk-button icon-button" uk-tooltip="title: Go to help" onClick={(event) => {event.preventDefault(); const win = window.open("https://github.com/LenhardErwan/VersionsMonitor#how-to-use-it", '_blank'); win.focus();}}><i className="fas fa-question-circle"></i></button>
       </header>
     );
   }
