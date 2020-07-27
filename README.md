@@ -51,7 +51,7 @@ Once the build (dev or prod) is done you just have to launch the server, for tha
 npm run start OR npm start
 ```
 
-To use the HTTPS server please use the following command (To avoid certificate problems set your own certificates in `server/resources/`):
+To use the HTTPS server please use the following command (To avoid certificate problems set your own certificates in `server/ressources/`):
 
 ```shell
 npm run start-https
