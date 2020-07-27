@@ -114,7 +114,7 @@ export default class Monitor extends Component {
 				<div><span>{this.state.params.name}</span></div>
 				<div>Newest version: <span className="newest_version">{this.state.newest_version ? this.state.newest_version : `loadind...`}</span></div>
 				<div>Your version: <span className="newest_version">{this.state.params.your_version}</span></div>
-				<div><a href={this.state.params.url} uk-tooltip={`title: Open the following link in a new tab: ${this.state.params.url}`} onClick={(event) => {event.preventDefault(); const win = window.open(this.state.params.url, '_blank'); win.focus();}}>Link</a> (open in new tab)</div>
+				<div><a href={this.state.params.url} uk-tooltip={`title: Open the following link in a new tab: ${this.state.params.url}`} onClick={(event) => {event.preventDefault(); const win = window.open(this.state.params.url, '_blank'); win.focus();}}>Link</a></div>
 				<button className="uk-button icon-button" uk-toggle={`target: #edit-modal-${this.state.params.hash}`} uk-tooltip="title: Edit monitor"><i className="far fa-edit"></i></button>
         <div id={`edit-modal-${this.state.params.hash}`} className="uk-flex-top" uk-modal="true">
           <EditMonitor {...this.state.params} type="Edit" handleEdit={this.handleEdit} />
