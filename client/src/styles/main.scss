@@ -57,10 +57,9 @@ section.monitor_list {
 article.monitor {
 	background-color: var(--bg-second);
 	color: var(--font-color);
-	max-width: 30vw;
-	min-width: 20vw;
+	max-width: 25vw;
 	overflow: scroll;
-	margin: 0.5rem;
+	margin: 0.2rem;
 }
 
 .icon-button {
@@ -91,7 +90,8 @@ header.menu {
 }
 
 .spacer {
-	margin-inline: 0.1rem;
+	margin-left: 0.1rem;
+	margin-right: 0.1rem;
 	font-size: 2rem;
 	height: 2rem;
 	line-height: 2rem;
@@ -102,7 +102,8 @@ header.menu {
 .switch {
   position: relative;
 	display: inline-block;
-	margin-block: auto;
+	margin-top: auto;
+	margin-bottom: auto;
 	margin-left: auto;
 	margin-right: 0.5rem;
   width: 2rem;
@@ -198,9 +199,10 @@ input:checked + .slider:before {
 }
 
 .uk-button {
-	margin-inline: 0.25rem;
+	margin-left: 0.25rem;
+	margin-right: 0.25;
 	transition: 0.2s ease-out;
-	transition-property: color, background-color, border-color, box-shadow;
+	transition-property: border-color, box-shadow;
 }
 
 .uk-button-default {
