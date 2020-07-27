@@ -120,7 +120,7 @@ export default class EditMonitor extends Component {
 					<button className="uk-modal-close-default" type="button" uk-close="true"></button>
 				</div>
 				<div className="uk-modal-body">
-					<form id="monitor_form" className="uk-form-stacked" onSubmit={this.handleSubmit}>
+					<form className="uk-form-stacked" onSubmit={this.handleSubmit}>
 						<div className="uk-margin">
 							<label className="uk-form-label" htmlFor="name">Name:<span>*</span></label>
 							<div className="uk-form-controls">
