@@ -4,12 +4,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_ENV=prod node -r esm server/src/index.js --exec babel-node",
-    "dev": "npm run dev-client & npm run dev-server",
+		"start": "cross-env NODE_ENV=prod HTTPS=false PORT=8012 node -r esm server/src/index.js --exec babel-node",
+		"start-https": "cross-env NODE_ENV=prod HTTPS=true PORT=8012 node -r esm server/src/index.js --exec babel-node",
+		"dev": "npm run dev-client & npm run dev-server",
     "build-dev": "webpack --mode development --config client/webpack.config.js --progress",
     "build-prod": "webpack --mode production --config client/webpack.config.js --progress",
     "dev-client": "webpack-dev-server -d --hot --config client/webpack.config.js --watch --env.ENDPOINT=http://localhost:8012",
-    "dev-server": "cross-env NODE_ENV=debug nodemon server/src/index.js --ignore 'server/ressources/*' --ignore 'client/*' --exec babel-node"
+    "dev-server": "cross-env NODE_ENV=debug PORT=8012 nodemon server/src/index.js --ignore 'server/ressources/*' --ignore 'client/*' --exec babel-node"
   },
   "keywords": [],
   "author": {

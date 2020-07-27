@@ -45,10 +45,16 @@ There are other scripts in the `package.json` file to help you with development.
 
 ## Run
 
-Once the build (dev or prod) is done you just have to launch the server, for that you just have to type the following commands:
+Once the build (dev or prod) is done you just have to launch the server, for that you just have to type the following commands (Run only HTTP server):
 
 ```shell
 npm run start OR npm start
+```
+
+To use the HTTPS server please use the following command (To avoid certificate problems set your own certificates in `server/resources/`):
+
+```shell
+npm run start-https
 ```
 
 ## How It Works

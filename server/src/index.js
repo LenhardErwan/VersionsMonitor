@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 import express from "express";
+import http from "http";
+import https from "https";
 import multer from "multer";
 import fetch from "node-fetch";
 import { Headers } from "node-fetch";
@@ -11,9 +13,22 @@ const app = express();
 const upload = multer();
 if(process.env.NODE_ENV && process.env.NODE_ENV == "debug") app.use(cors());
 app.use(upload.array());
-const port = 8012;
+const port = process.env.PORT;
+if(process.env.HTTPS) {
+	https.createServer({
+		key: fs.readFileSync(path.resolve(__dirname, "..", "ressources", "key.pem")),
+		cert: fs.readFileSync(path.resolve(__dirname, "..", "ressources", "cert.pem"))
+	}, app).listen(port, function () {
+		console.log(`Listening on port ${port}! (Only HTTPS)`)
+	});
+}
+else {
+	http.createServer(app).listen(port, function () {
+		console.log(`Listening HTTP on port ${port}! (Only HTTP)`)
+	});
+}
 
-app.use(express.static(path.resolve(__dirname, '..', "public")));
+app.use(express.static(path.resolve(__dirname, "..", "public")));
 
 app.get('/', function (req, res) {
 	res.sendFile('index.html');
@@ -35,7 +50,7 @@ app.post('/get-newest', (req, res) => {
 });
 
 app.get("/get-conf", (req, res) => {
-	fs.readFile(path.resolve(__dirname, '..', "ressources", "conf.json"), (err, json) => {
+	fs.readFile(path.resolve(__dirname, "..", "ressources", "conf.json"), (err, json) => {
 		res.json(JSON.parse(json));
 	})
 });
@@ -54,10 +69,6 @@ app.post("/set-conf", (req, res) => {
 		res.json({error: true, value: "No JSON given"})
 	}
 });
-
-app.listen(port, function () {
-	console.log(`Listening on port ${port}!`)
-})
 
 async function getNewest(url, selector, regex, headers_json) {
 	let headers_params = new Headers();
@@ -80,7 +91,7 @@ async function getNewest(url, selector, regex, headers_json) {
 }
 
 async function writeConf(json) {
-	fs.writeFile(path.resolve(__dirname, '..', "ressources", "conf.json"), json, (err) => {
+	fs.writeFile(path.resolve(__dirname, "..", "ressources", "conf.json"), json, (err) => {
 		if(err) throw new Error(err);
 	});
 }
