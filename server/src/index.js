@@ -80,7 +80,7 @@ async function getNewest(url, selector, regex, headers_json) {
 }
 
 async function writeConf(json) {
-	fs.writeFile("./ressources/conf.json", json, (err) => {
+	fs.writeFile(path.resolve(__dirname, '..', "ressources", "conf.json"), json, (err) => {
 		if(err) throw new Error(err);
 	});
 }
