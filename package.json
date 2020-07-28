@@ -1,12 +1,12 @@
 {
   "name": "versions-monitor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-		"start": "cross-env NODE_ENV=prod HTTPS=false PORT=8012 node -r esm server/src/index.js --exec babel-node",
-		"start-https": "cross-env NODE_ENV=prod HTTPS=true PORT=8012 node -r esm server/src/index.js --exec babel-node",
-		"dev": "npm run dev-client & npm run dev-server",
+    "start": "cross-env NODE_ENV=prod HTTPS=false PORT=8012 node -r esm server/src/index.js --exec babel-node",
+    "start-https": "cross-env NODE_ENV=prod HTTPS=true PORT=8012 node -r esm server/src/index.js --exec babel-node",
+    "dev": "npm run dev-client & npm run dev-server",
     "build-dev": "webpack --mode development --config client/webpack.config.js --progress",
     "build-prod": "webpack --mode production --config client/webpack.config.js --progress",
     "dev-client": "webpack-dev-server -d --hot --config client/webpack.config.js --watch --env.ENDPOINT=http://localhost:8012",

@@ -39,12 +39,12 @@ class App extends Component {
 
 		const monitors_load = Model.loadMonitorSync();
 		const preferences = Model.loadPreferencesSync();
-		const theme_load = preferences ? preferences.theme : "light";
 
     this.state = {
       monitors: monitors_load ? monitors_load : new Map(),
       filter: "",
-      theme: theme_load 
+			theme: preferences.theme ? preferences.theme : "light",
+			unsave: preferences.unsave ? preferences.unsave : false
     };
 
     this.setTheme();
@@ -56,7 +56,8 @@ class App extends Component {
     this.savePreferences = this.savePreferences.bind(this);
     this.setFilter = this.setFilter.bind(this);
     this.toggleTheme = this.toggleTheme.bind(this);
-    this.setTheme = this.setTheme.bind(this);
+		this.setTheme = this.setTheme.bind(this);
+		this.setUnsave = this.setUnsave.bind(this);
     this.loadMonitorsFromServer = this.loadMonitorsFromServer.bind(this);
     this.loadMonitorsFromClient = this.loadMonitorsFromClient.bind(this);
     this.saveMonitorsToClient = this.saveMonitorsToClient.bind(this);
@@ -80,11 +81,12 @@ class App extends Component {
   }
 
   saveMonitors() {
+		this.setUnsave(true);
     Model.saveMonitors(this.state.monitors);
 	}
 	
 	savePreferences() {
-		Model.savePreferences({theme: this.state.theme});
+		Model.savePreferences({theme: this.state.theme, unsave: this.state.unsave});
 	}
 
   setFilter(nfilter) {
@@ -102,10 +104,15 @@ class App extends Component {
   setTheme() {
 		this.savePreferences();
     document.querySelector("html").setAttribute("theme", this.state.theme);
-  }
+	}
+	
+	setUnsave(bool) {
+		this.setState({
+			unsave: bool
+		});
+	}
 
   async saveMonitorsToClient() {
-		console.log("saveMonitorsToClient");
 		const json = await Model.makeJsonOfMonitors(this.state.monitors);
 		const blob = new Blob([json], { type: "data:text/json;charset=utf-8" });
 		const link = URL.createObjectURL(blob);
@@ -115,11 +122,13 @@ class App extends Component {
 		document.body.appendChild(a);
 		a.click();
 		a.remove();
+		this.setUnsave(false);
   }
 
   async saveMonitorsToServer() {
 		try {
 			Model.setConfToServ(this.state.monitors);
+			this.setUnsave(false);
 			Toastr.success("The monitor configuration was set correctly on the server.", "Saved !", toastr_option);
 		}
 		catch (e) {
@@ -170,11 +179,11 @@ class App extends Component {
     return (
       <div className="uk-container">
         <Menu
-          monitors={this.state.monitors}
           setFilter={this.setFilter}
           createMonitor={this.createMonitor}
           dark_theme={this.state.theme == "dark"}
 					toggleTheme={this.toggleTheme}
+					unsave={this.state.unsave}
 					loadMonitorsFromServer = {this.loadMonitorsFromServer}
 					loadMonitorsFromClient = {this.loadMonitorsFromClient}
 					saveMonitorsToClient = {this.saveMonitorsToClient}

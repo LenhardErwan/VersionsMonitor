@@ -8,14 +8,14 @@ export default class Menu extends Component {
 
     this.state = {
 			input_filter: "",
-			monitors: this.props.monitors,
-      showModal: false,
+			showUnsave: this.props.unsave,
+			showModal: false
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleOpenModal = this.handleOpenModal.bind(this);
 		this.handleCloseModal = this.handleCloseModal.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
+		this.handleEdit = this.handleEdit.bind(this);
     this.createMonitor = this.props.createMonitor.bind(this);
   }
 
@@ -40,6 +40,14 @@ export default class Menu extends Component {
 	
 	handleEdit(params) {
 		this.createMonitor(params);
+	}
+
+	componentDidUpdate(prevProps) {
+		if(prevProps.unsave != this.props.unsave) {
+			this.setState({
+				showUnsave: this.props.unsave
+			})
+		}
 	}
 
   render() {
@@ -69,6 +77,7 @@ export default class Menu extends Component {
 				<span className="spacer">|</span>
 				<button onClick={this.props.saveMonitorsToServer} className="uk-button icon-button" uk-tooltip="title: Save monitors configuration to server"><i className="fas fa-cloud-upload-alt"></i></button>
 				<button onClick={this.props.saveMonitorsToClient} className="uk-button icon-button" uk-tooltip="title: Save monitors configuration to file"><i className="fas fa-file-download"></i></button>
+				{this.state.showUnsave && <span className="unsave uk-label uk-label-warning">Changes are only saved on the navigator</span>}
 				<div className="switch" onClick={this.props.toggleTheme} uk-tooltip="title: Toggle theme; pos: bottom">
 					<input type="checkbox" checked={this.props.dark_theme} onChange={() => {}}/>
 					<span className="slider round"></span>
