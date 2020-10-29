@@ -1,9 +1,9 @@
 {
   "name": "versions-monitor",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_ENV=prod node -r esm server/src/index.js -r dotenv/config --exec babel-node",
+    "start": "cross-env NODE_ENV=prod node -r dotenv/config -r esm server/src/index.js --exec babel-node",
     "dev": "npm run dev-client & npm run dev-server",
     "build-dev": "webpack --mode development --config client/webpack.config.js --progress",
     "build-prod": "webpack --mode production --config client/webpack.config.js --progress",
