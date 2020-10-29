@@ -16,6 +16,7 @@ export default class App {
 		this.db_connected = false
 		this.monitors = new Map();
 		this.inError = new Map();
+
 		this.load()
 			.then(async () => {
 				this.db_connected = true
@@ -26,6 +27,7 @@ export default class App {
 				this.db_connected = false;
 				console.error("Error with database communication!\n", err);
 			});
+
 		this.reload = this.load.bind(this);
 		this.setMonitor = this.setMonitor.bind(this);
 		this.deleteMonitor = this.deleteMonitor.bind(this);
@@ -65,9 +67,9 @@ export default class App {
 
 	async checkAndReload(monitor_id) {
 		try {
-			const res = await new Monitor(await Model.getMonitor(monitor_id)).checkNewVersion();
+			const pre_monitor = await Model.getMonitor(monitor_id)
+			const res = await new Monitor(pre_monitor).checkNewVersion();
 			this.reloadMonitor(monitor_id);
-			console.log(this.inError);
 			return res;
 		} catch (e) {
 			throw e;
@@ -80,7 +82,7 @@ export default class App {
 	}
 
 	async checkAllVersion() {
-		for (const monitor of this.monitors) {
+		for (const [id, monitor] of this.monitors) {
 			try {
 				const result = monitor.checkNewVersion();
 				if(result.update) {
@@ -88,7 +90,7 @@ export default class App {
 				}
 			}
 			catch (e) {
-				this.inError.set(monitor.id, e);
+				this.inError.set(id, {monitor: monitor, error: e});
 			}
 		}
 	}
