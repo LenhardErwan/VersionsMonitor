@@ -26,8 +26,11 @@ export default class App {
 				this.db_connected = false;
 				console.error("Error with database communication!\n", err);
 			});
-		this.reload = this.load;
-
+		this.reload = this.load.bind(this);
+		this.setMonitor = this.setMonitor.bind(this);
+		this.deleteMonitor = this.deleteMonitor.bind(this);
+		this.checkAndReload = this.checkAndReload.bind(this);
+		this.reloadMonitor = this.reloadMonitor.bind(this);
 		this.checkAllVersion = this.checkAllVersion.bind(this);
 	}
 
