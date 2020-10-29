@@ -13,7 +13,7 @@
 ## Required
 
 - This project requires a version of NodeJS >= 12.18.3 (not tested with earlier versions).
-- The application stores the data in the browser so it is necessary that your browser has the `localStorage` property (on the latest versions of most browsers it is present), you can still check if your version is compatible [here](https://developer.mozilla.org/fr/docs/Web/API/Window/localStorage). In case you don't have it, don't worry, you can always save the configuration on the server or on your machine.
+- This project requires a connection to a PostgreSQL database in version 12.4 (not tested with earlier versions).
 
 ## Build
 
@@ -44,6 +44,10 @@ npm run dev
 There are other scripts in the `package.json` file to help you with development. They are explicit enough for you to understand them.
 
 ## Run
+
+Before running a command in the console you have to create 2 files from the 2 `.example` files at the root of the project.
+So at the root you should have `.env`, `.env.example`, `dev.env` and finally `dev.env.example`.
+Once the 2 new files created modify them with the parameters you wanted.
 
 Once the build (dev or prod) is done you just have to launch the server, for that you just have to type the following commands (Run only HTTP server):
 
