@@ -1,124 +1,125 @@
-var storage = window["localStorage"];
+import Monitor from "../templates/monitor";
+const storage = window["localStorage"];
 
 export default class Model {
 
 	static endpoint = "";
 
-	static setEndpoint(endpoint) {
-		this.endpoint = endpoint;
-	}
+	static async makeRequest(path, method, requestBody = null) {
+		const headers = new Headers();
+		if(requestBody) {
+			headers.append("Accept", "application/json");
+			headers.append("Content-Type", "application/json");
+		}
 
-	static mapToJson(map) {
-		return JSON.stringify([...map]);
-	}
+		const myInit = {
+			headers: headers,
+			method: method,
+			body: requestBody ? JSON.stringify(requestBody) : null,
+			mode: "cors"
+		}
 
-	static jsonToMap(json) {
-		return new Map(JSON.parse(json));
-	}
-
-	static addMinutes(date, minutes) {
-		return new Date(date.getTime() + minutes*60000);
-	}
-
-	static async getNewest(url, selector, regex, headers) {
-
-		const form = new FormData();
-		form.append("url", url);
-		form.append("selector", selector);
-		form.append("regex", regex);
-		form.append("headers", Model.mapToJson(headers));
-
-		const myInit = { 
-			method: "POST",
-			mode: "cors",
-			body: form 
-		};
-							 
-    const response = await fetch(`${this.endpoint}/get-newest`, myInit);
-		if(!response.ok) throw new Error(`Error fetch: ${response.status} | ${response.body}`);
-		const data = await response.json();
-
-		if(data && data.error) throw new Error(data.value.toString());
-		
-		return data.value;
-	}
-	
-	static async getConfFromServ() {
-		const response = await fetch(`${this.endpoint}/get-conf`, {mode: "cors"});
-		if(!response.ok) throw new Error(`Error fetch: ${response.status} | ${response.body}`)
-		const data = await response.text();
+		const res = await fetch(`${Model.endpoint}${path}`, myInit);
+		if(!res.ok) {
+			if(res.status == 500 || res.status == 400) {
+				const data = await res.json();
+				throw {msg: data.error, code: res.status};
+			}
+			else {
+				throw `Error in fetch! status code: ${res.status}`;
+			}
+		}
+		const data = await res.json();
 		return data;
 	}
 
-	static async setConfToServ(monitors) {
-		const conf_json = await Model.makeJsonOfMonitors(monitors);
-		const form = new FormData();
-		form.append("json", conf_json);
-
-		const myInit = { 
-			method: "POST",
-			mode: "cors",
-			body: form 
-		};
-							 
-    const response = await fetch(`${this.endpoint}/set-conf`, myInit);
-		if(!response.ok) throw new Error(`Error fetch: ${response.status} | ${response.body}`);
-		const data = await response.json();
-
-		if(data && data.error) throw new Error(data.value.toString());
-		
-		return data.value;
-	}
-
-	static async makeJsonOfMonitors(monitors) {
-		const monitors_save = new Map();
-		for (const [key, monitor] of monitors.entries()) {
-			let dc_monitor = {...monitor};
-			dc_monitor.headers = this.mapToJson(dc_monitor.headers);
-			monitors_save.set(key, dc_monitor);
-		}
-		return Model.mapToJson(monitors_save);
-	}
-
-	static makeMonitorsFromJson(json) {
-		const monitors = Model.jsonToMap(json);
-		for (const [key, monitor] of monitors.entries()) {
-			monitor.headers = Model.jsonToMap(monitor.headers);
+  static async getMonitors() {
+		const data = await Model.makeRequest(`/api/monitors`, "GET");
+		const monitors = new Map();
+		for (const monitor of data.got) {
+			try {
+				const nmonitor = new Monitor(monitor);
+				monitors.set(nmonitor.id, nmonitor);
+			} catch (e) {
+				console.error(e);
+			}
 		}
 		return monitors;
 	}
-  
-  static async saveMonitors(monitors) {
-    storage.setItem("monitors", await Model.makeJsonOfMonitors(monitors));
-  }
 
-  static async loadMonitors() {
-    return this.loadMonitorSync();
-  }
+	static async getMonitor(id) {
+		const data = await Model.makeRequest(`/api/monitors/${id}`, "GET");
+		return new Monitor(data.got);
+	}
 
-  static loadMonitorSync() {
-		const json = storage.getItem("monitors");
-		if(json != "undefined") {
-			return Model.makeMonitorsFromJson(json);
-		}
-		else {
-			return null;
-		}
+	static async checkMonitor(id) {
+		const data = await Model.makeRequest(`/api/monitors/${id}/check`, "POST");
+		return new Monitor(data.got);
+	}
+
+	static async createMonitor(params) {
+		return await Model.makeRequest(`/api/monitors`, "POST", new Monitor(params, {create: true}));
+	}
+
+	static async updateMonitor(id, params) {
+		return await Model.makeRequest(`/api/monitors/${id}`, "PATCH", new Monitor(params, {update: true}));
 	}
 	
-	static async savePreferences(preferences) {
-		storage.setItem("preferences", JSON.stringify(preferences));
+	static async deleteMonitor(id) {
+		return await Model.makeRequest(`/api/monitors/${id}`, "DELETE");
 	}
 
-	static async loadPreferences() {
-		return this.loadPreferencesSync();
+	static async getHeaders() {
+		const data = await Model.makeRequest(`/api/headers`, "GET");
+		if(data.success) {
+			const headers = new Map();
+			for (const header of data.got) {
+				headers.set(header.id, header);
+			}
+			return headers;
+		}
+		else {
+			throw {error: data.error}
+		}
 	}
 
-	static loadPreferencesSync() {
-		const json = storage.getItem("preferences");
+	static async createHeader(header) {
+		return await Model.makeRequest(`/api/headers`, "POST", header)
+	}
+
+	static async updateHeader(id, header) {
+		return await Model.makeRequest(`/api/headers/${id}`, "PATCH", header)
+	}
+
+	static async deleteHeader(id) {
+		return await Model.makeRequest(`/api/headers/${id}`, "DELETE")
+	}
+
+	static async linkHeaderToMonitor(monitor_id, header_id) {
+		return await Model.makeRequest(`/api/monitors/${monitor_id}/headers/${header_id}`, "POST");
+	}
+
+	static async unlinkHeaderToMonitor(monitor_id, header_id) {
+		return await Model.makeRequest(`/api/monitors/${monitor_id}/headers/${header_id}`, "DELETE");
+	}
+
+	static async createAndLinkHeader(monitor_id, header) {
+		return await Model.makeRequest(`/api/monitors/${monitor_id}/headers`, "POST", header);
+	}
+
+	static async deleteVersion(id) {
+		return await Model.makeRequest(`/api/versions/${id}`, "DELETE");
+	}
+	
+	static async saveInStorage(name, object) {
+		storage.setItem(name, JSON.stringify(object));
+	}
+
+	static loadFromStorage(name) {
+		const json = storage.getItem(name);
 		if(json != "undefined") {
-			const preferences = JSON.parse(json);
-			return preferences;
+			const object = JSON.parse(json);
+			return object;
 		}
 		else {
 			return null;
@@ -148,4 +149,30 @@ export default class Model {
       );
     }
 	}
+
+	static getDateFormatString() {
+		const locale = window.navigator.userLanguage || window.navigator.language;
+		const formatObj = new Intl.DateTimeFormat(locale).formatToParts();
+
+    return formatObj
+      .map(obj => {
+        switch (obj.type) {
+					case "second":
+						return "ss";
+					case "minute":
+						return "mm";
+					case "hour":
+						return "hh";
+          case "day":
+            return "DD";
+          case "month":
+            return "MM";
+          case "year":
+						return "YYYY";
+          default:
+            return obj.value;
+        }
+      })
+      .join("");
+  }
 }

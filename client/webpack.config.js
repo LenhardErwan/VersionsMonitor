@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssets = require('optimize-css-assets-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 
 var config = {
@@ -43,9 +44,9 @@ var config = {
             outputPath: 'assets/images/'
           }
         }]
-      },
+			},
       {
-        test: /\.(otf|eot|svg|ttf|woff|woff2)$/,
+        test: /\.(otf|eot|ttf|woff|woff2)$/,
         use: [{
           loader: 'file-loader',
           options: {
@@ -64,22 +65,24 @@ var config = {
     new HtmlWebpackPlugin({
       template: './index.html',
       filename: './index.html'
-		})
+		}),
   ]
 }
 
 module.exports = (env, argv) => {
   if (argv.mode === 'development') {
 		config.devtool = 'eval'
-		const envKeys = Object.keys(env).reduce((prev, next) => {
-			prev[`process.env.${next}`] = JSON.stringify(env[next]);
-			return prev;
-		}, {});
 
-		console.log(envKeys)
-
+		const dotenv = new Dotenv({
+			path: './dev.env',
+      safe: './dev.env.example',
+      allowEmptyValues: true,
+      systemvars: true, 
+      silent: false, 
+      defaults: false
+    })
 		config.plugins.push(
-			new webpack.DefinePlugin(envKeys)
+			dotenv
 		);
 
     config.module.rules.push({
@@ -117,7 +120,19 @@ module.exports = (env, argv) => {
   }
 
   else if (argv.mode === 'production') {
-    config.devtool = 'source-map'
+		config.devtool = 'source-map'
+		
+		const dotenv = new Dotenv({
+			path: './.env',
+      safe: true,
+      allowEmptyValues: true,
+      systemvars: true, 
+      silent: false, 
+      defaults: false
+    })
+		config.plugins.push(
+			dotenv
+		);
 
     config.module.rules.push({
       test: /\.(sa|sc|c)ss$/,

@@ -1,16 +1,14 @@
 {
   "name": "versions-monitor",
-  "version": "1.0.1",
-  "main": "index.js",
+  "version": "2.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_ENV=prod HTTPS=false PORT=8012 node -r esm server/src/index.js --exec babel-node",
-    "start-https": "cross-env NODE_ENV=prod HTTPS=true PORT=8012 node -r esm server/src/index.js --exec babel-node",
+    "start": "cross-env NODE_ENV=prod node -r esm server/src/index.js -r dotenv/config --exec babel-node",
     "dev": "npm run dev-client & npm run dev-server",
     "build-dev": "webpack --mode development --config client/webpack.config.js --progress",
     "build-prod": "webpack --mode production --config client/webpack.config.js --progress",
-    "dev-client": "webpack-dev-server -d --hot --config client/webpack.config.js --watch --env.ENDPOINT=http://localhost:8012",
-    "dev-server": "cross-env NODE_ENV=debug PORT=8012 nodemon server/src/index.js --ignore 'server/ressources/*' --ignore 'client/*' --exec babel-node"
+    "dev-client": "webpack-dev-server --mode development -d --hot --config client/webpack.config.js --watch",
+    "dev-server": "cross-env NODE_ENV=debug nodemon server/src/index.js -r dotenv/config dotenv_config_path=dev.env --ignore 'server/ressources/*' --ignore 'client/*' --exec babel-node"
   },
   "keywords": [],
   "author": {
@@ -41,9 +39,11 @@
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "resolve-url-loader": "^3.1.1",
+    "react-image": "^4.0.3",
+    "resolve-url-loader": "^3.1.2",
     "sass-loader": "^9.0.2",
     "style-loader": "^1.2.1",
+    "svg-inline-loader": "^0.8.2",
     "toastr": "^2.1.4",
     "uikit": "^3.5.5",
     "webpack": "^4.43.0",
@@ -54,11 +54,18 @@
     "@babel/core": "^7.10.5",
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
+    "body-parser": "^1.19.0",
+    "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0",
+    "dotenv-webpack": "^5.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "jsdom": "^16.3.0",
     "multer": "^1.4.2",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.1",
+    "pg": "^8.3.0",
+    "serve-favicon": "^2.5.0",
+    "swagger-ui-express": "^4.1.4"
   }
 }

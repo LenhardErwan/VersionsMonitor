@@ -1,3 +1,5 @@
+$no-image: url("../images/no_image.svg");
+
 :root {
 	--bg-main-light: rgb(220, 220, 220);
 	--bg-main-dark: rgb(50, 50, 50);
@@ -16,8 +18,12 @@
 	--font-color: var(--font-color-light);
 
 	--color-accentuation-light: rgb(180, 180, 180);
-	--color-accentuation-dark: rgb(138, 138, 130);
+	--color-accentuation-dark: rgb(140, 140, 140);
 	--color-accentuation: var(--color-accentuation-light);
+
+	--color-accentuation2-light: rgb(140, 140, 140);
+	--color-accentuation2-dark: rgb(100, 100, 100);
+	--color-accentuation2: var(--color-accentuation2-light);
 
 	--color-tertiary: rgb(255, 220, 21);
 }
@@ -28,9 +34,10 @@ html[theme="dark"] {
 	--bg-button: var(--bg-button-dark);
 	--font-color: var(--font-color-dark);
 	--color-accentuation: var(--color-accentuation-dark);
+	--color-accentuation2: var(--color-accentuation2-dark);
 }
 
-* {
+body {
 	transition: 0.3s ease-out;
 	transition-property: color, background-color;
 }
@@ -97,11 +104,10 @@ header.menu {
 	line-height: 2rem;
 }
 
-.unsave {
-	margin: auto;
-	animation: ease-perso 0.2s ease-in-out;
-}
-
+.display-method {
+	margin-left: auto;
+	margin-right: 0.75rem;
+} 
 
 /* The switch - the box around the slider */
 .switch {
@@ -109,8 +115,7 @@ header.menu {
 	display: inline-block;
 	margin-top: auto;
 	margin-bottom: auto;
-	margin-left: auto;
-	margin-right: 0.5rem;
+	margin-right: 1rem;
   width: 2rem;
   height: 1rem;
 }
@@ -167,15 +172,37 @@ input:checked + .slider:before {
   border-radius: 50%;
 } 
 
-@keyframes ease-perso {
-	0% {
-			opacity: 0;
-	}
-	100% {
-			opacity: 1;
-	}
+table img {
+	width: 2rem;
+	max-height: 2rem;
 }
 
+h2 img {
+	width: 2rem;
+	max-height: 2rem;
+	vertical-align: sub;
+	margin-right: 1rem;
+}
+
+.actions-tab {
+	width: 5.5rem;
+}
+
+tr:not(:only-child).loading {
+	display: none;
+}
+
+tr.monitor-in-error {
+	background-color: rgba($color: #690000, $alpha: 0.5);
+}
+
+fieldset table.uk-table {
+	margin-top: 0;
+}
+
+.add-header {
+	text-align: center;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////
 //UIKit
@@ -190,6 +217,11 @@ input:checked + .slider:before {
 	border-bottom: 1px solid var(--color-accentuation);
 }
 
+.uk-modal-header h2 {
+	margin-bottom: 0.25rem;
+	margin-top: 0.25rem;
+}
+
 .uk-modal-footer {
 	border-top: 1px solid var(--color-accentuation);
 }
@@ -202,13 +234,17 @@ input:checked + .slider:before {
 }
 
 .uk-margin-auto-vertical {
-	max-height: 80vh;
-	overflow: scroll;
+	overflow: auto;
+	max-height: 95%;
 }
 
 .uk-modal-body {
 	max-height: 58vh;
 	overflow: scroll;
+}
+
+.uk-modal-dialog  {
+	width: 80%;
 }
 
 .uk-button {
@@ -252,6 +288,27 @@ input:checked + .slider:before {
 	font-size: 0.75rem;
 }
 
+.uk-table td {
+	vertical-align: middle;
+}
+
+.uk-table-hover tbody tr:hover, .uk-table-hover > tr:hover {
+	background: var(--bg-second);
+}
+
+.uk-table-divider > :first-child > tr:not(:first-child), 
+.uk-table-divider > :not(:first-child) > tr, 
+.uk-table-divider > tr:not(:first-child) {
+	border-top: 1px solid var(--color-accentuation2);
+}
+
+[class*="uk-animation-"] {
+	animation-duration: 0.2s;
+}
+
+.uk-text-small {
+	font-size: 75%;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////
 //Toasr

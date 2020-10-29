@@ -1,3 +1,5 @@
-node_modules
-*/public
-server/ressources/conf.json
+node_modules/
+.vscode/
+.DS_Store
+*/public/
+*.env

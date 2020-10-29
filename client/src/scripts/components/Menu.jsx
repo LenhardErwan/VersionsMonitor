@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import EditMonitor from "./EditMonitor.jsx"
+import MonitorEditor from "./MonitorEditor.jsx"
 
 export default class Menu extends Component {
   constructor(props) {
@@ -8,7 +8,6 @@ export default class Menu extends Component {
 
     this.state = {
 			input_filter: "",
-			showUnsave: this.props.unsave,
 			showModal: false
     };
 
@@ -16,7 +15,6 @@ export default class Menu extends Component {
     this.handleOpenModal = this.handleOpenModal.bind(this);
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.handleEdit = this.handleEdit.bind(this);
-    this.createMonitor = this.props.createMonitor.bind(this);
   }
 
   handleInputChange(event) {
@@ -42,14 +40,6 @@ export default class Menu extends Component {
 		this.createMonitor(params);
 	}
 
-	componentDidUpdate(prevProps) {
-		if(prevProps.unsave != this.props.unsave) {
-			this.setState({
-				showUnsave: this.props.unsave
-			})
-		}
-	}
-
   render() {
     return (
       <header className="menu">
@@ -68,20 +58,18 @@ export default class Menu extends Component {
 				<span className="spacer">|</span>
         <button className="uk-button icon-button" uk-toggle={`target: #create-modal`} uk-tooltip="title: Add new monitor"><i className="fas fa-plus-square"></i></button>
         <div id={`create-modal`} className="uk-flex-top" uk-modal="true">
-          <EditMonitor type="Create" handleClose={this.handleCloseModal} handleEdit={this.createMonitor} />
+          <MonitorEditor type="Create" handleClose={this.handleCloseModal} handleEdit={this.props.createMonitor} />
         </div>
-				<span className="spacer">|</span>
-				<button onClick={this.props.loadMonitorsFromServer} className="uk-button icon-button" uk-tooltip="title: Load monitors configuration from server"><i className="fas fa-cloud-download-alt"></i></button>
-				<button onClick={() => {document.querySelector("#file-input-monitors").click()}} className="uk-button icon-button" uk-tooltip="title: Load monitors configuration from file"><i className="fas fa-file-upload"></i></button>
-				<input id="file-input-monitors" type="file" name="monitors-client" style={{display: "none"}} onChange={this.props.loadMonitorsFromClient}></input>
-				<span className="spacer">|</span>
-				<button onClick={this.props.saveMonitorsToServer} className="uk-button icon-button" uk-tooltip="title: Save monitors configuration to server"><i className="fas fa-cloud-upload-alt"></i></button>
-				<button onClick={this.props.saveMonitorsToClient} className="uk-button icon-button" uk-tooltip="title: Save monitors configuration to file"><i className="fas fa-file-download"></i></button>
-				{this.state.showUnsave && <span className="unsave uk-label uk-label-warning">Changes are only saved on the navigator</span>}
+				{/* TODO Download CSV file */}
+				<div className="display-method">
+					<button onClick={this.props.toggleDisplay} style={{display: this.props.preferences.display == "grid" ? "block" : "none"}} className="uk-button icon-button" uk-tooltip="title: Change view to list"><i className="fas fa-list"></i></button>
+					<button onClick={this.props.toggleDisplay} style={{display: this.props.preferences.display == "grid" ? "none" : "block"}}  className="uk-button icon-button" uk-tooltip="title: Change view to card"><i className="fas fa-th"></i></button>
+				</div>
 				<div className="switch" onClick={this.props.toggleTheme} uk-tooltip="title: Toggle theme; pos: bottom">
-					<input type="checkbox" checked={this.props.dark_theme} onChange={() => {}}/>
+					<input type="checkbox" checked={this.props.preferences.theme == "dark"} onChange={() => {}}/>
 					<span className="slider round"></span>
 				</div>
+				<span className="spacer">|</span>
 				<button className="uk-button icon-button" uk-tooltip="title: Go to help" onClick={(event) => {event.preventDefault(); const win = window.open("https://github.com/LenhardErwan/VersionsMonitor#how-to-use-it", '_blank'); win.focus();}}><i className="fas fa-question-circle"></i></button>
       </header>
     );
