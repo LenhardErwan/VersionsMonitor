@@ -36,15 +36,13 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    const preferences = Model.loadFromStorage("preferences");
+		let preferences = Model.loadFromStorage("preferences");
+		if(!preferences) preferences = {theme: "light", display: "list"};
 
     this.state = {
       monitors: new Map(),
       filter: "",
-			preferences: {
-				theme: preferences.theme ? preferences.theme : "light",
-				display: preferences.display ? preferences.display : "list"
-			}
+			preferences: preferences
 		};
 		
 		Model.getMonitors()
