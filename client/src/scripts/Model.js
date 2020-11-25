@@ -23,7 +23,7 @@ export default class Model {
 		if(!res.ok) {
 			if(res.status == 500 || res.status == 400) {
 				const data = await res.json();
-				throw {msg: data.error, code: res.status};
+				throw {msg: data.error, code: res.status, data: data};
 			}
 			else {
 				throw `Error in fetch! status code: ${res.status}`;

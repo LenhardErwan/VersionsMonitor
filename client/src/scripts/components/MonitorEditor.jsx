@@ -33,13 +33,13 @@ export default class MonitorEditor extends Component {
 
     this.state = {
 			params: {
-				id: this.props.id ? this.props.id : "",
-				name: this.props.name ? this.props.name : "",
-				url: this.props.url ? this.props.url : "",
-				selector: this.props.selector ? this.props.selector : "",
-				regex: this.props.regex ? this.props.regex : "",
-				image_url: this.props.image ? this.props.image : "",
-				headers: this.props.headers ? this.props.headers : new Array()
+				id: this.props.id,
+				name: this.props.name,
+				url: this.props.url,
+				selector: this.props.selector,
+				regex: this.props.regex,
+				image_url: this.props.image,
+				headers: this.props.headers ? this.props.headers : new Map()
 			},
 			show_advance: this.props.show_advance ? this.props.show_advance : false
 		};
@@ -53,23 +53,23 @@ export default class MonitorEditor extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		this.state.params = this.valuesEditor.current.getValues();
-		if(this.state.params.name == "" || this.state.params.url == "" || this.state.params.selector == "") {
+		let params = this.valuesEditor.current.getValues();
+		if(params.name == null || params.url == null || params.selector == null) {
 			Toastr.error("As a minimum, the monitor needs a name, a valid URL and a selector.", "Error in form!", toastr_options);
 		}
 		else {
 			try {
-				const url = new URL(this.state.params.url);
+				const url = new URL(params.url);
 			} catch (e) {
 				Toastr.error("the URL entered is not valid, please check it!", "Error in URL!", toastr_options);
 				return;
 			}
-			if(this.state.params.image_url == "") this.state.params.image_url = this.state.params.url;
 			let new_headers = null
 			if(this.headersEditor.current) {
 				new_headers = this.headersEditor.current.handleSubmit();
 			}
-			this.handleEdit({...this.state.params, new_headers: new_headers});
+			console.log(params)
+			this.handleEdit({...params, new_headers: new_headers});
 			this.setState({show_advance: false});
 			if(this.props.type.toLowerCase() == "create") {
 				UIkit.modal(`#create-modal`).hide();
@@ -92,14 +92,14 @@ export default class MonitorEditor extends Component {
 		if(prevProps !== this.props) {
 			this.setState({
 				params: {
-					name: this.props.name ? this.props.name : "",
-					url: this.props.url ? this.props.url : "",
-					selector: this.props.selector ? this.props.selector : "",
-					regex: this.props.regex ? this.props.regex : "",
-					image_url: this.props.image ? this.props.image : "",
-					headers: this.props.headers ? this.props.headers : new Array(),
-					last_know_version: this.props.last_know_version ? this.props.last_know_version : "",
-					id: this.props.id ? this.props.id : ""
+					id: this.props.id,
+					name: this.props.name,
+					url: this.props.url,
+					selector: this.props.selector,
+					regex: this.props.regex,
+					image_url: this.props.image,
+					headers: this.props.headers ? this.props.headers : new Map(),
+					last_know_version: this.props.last_know_version
 				},
 				show_advance: this.state.show_advance
 			});
@@ -115,10 +115,10 @@ export default class MonitorEditor extends Component {
 				</div>
 				<div className="uk-modal-body">
 					<form className="uk-form-stacked" onSubmit={this.handleSubmit}>
-						<ValuesEditor {...this.state.params} ref={this.valuesEditor} />
+						<ValuesEditor {...this.props} ref={this.valuesEditor} />
 					</form>
 					{this.state.show_advance && 
-						<HeadersEditor headers={this.state.params.headers} editHeader={this.props.editHeader} deleteHeader={this.props.deleteHeader} ref={this.headersEditor} />
+						<HeadersEditor headers={this.props.headers} editHeader={this.props.editHeader} deleteHeader={this.props.deleteHeader} ref={this.headersEditor} />
 					}
 				</div>
 				<div className="uk-modal-footer uk-text-right">

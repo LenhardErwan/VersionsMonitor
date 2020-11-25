@@ -45,14 +45,14 @@ export default class Monitors {
       Model.createMonitor(monitor)
         .then(async (result) => {
 					try {
-						await this.app.checkAndReload(result.monitor.id);
-						const res_v = await Model.getVersionsOfMonitor(result.monitor.id);
+						await this.app.checkAndReload(result.id);
+						const res_v = await Model.getVersionsOfMonitor(result.id);
 						if(res_v.length <= 0) throw "No version found";
 						result.versions = res_v;
 						res.json({ success: true, posted: result });
 					} 
 					catch(err) {
-						res.status(500).json({ success: false, error: err });
+						res.status(500).json({ success: false, error: `${err}`, posted: result});
 					}
 					
         })
@@ -63,7 +63,11 @@ export default class Monitors {
 
     this.router.patch("/:id", async (req, res) => {
       const id = req.params.id;
-      //Prevents the addition of new properties but allows to dynamically generate a query without the possibility of SQL injection.
+			//Prevents the addition of new properties but allows to dynamically generate a query without the possibility of SQL injection.
+			if(Object.keys(req.body).length <= 0) {
+				res.status(500).json({ success: false, error: `No parameters to modify` });
+				return;
+			}
 			const monitor = new Monitor(req.body, { patch: true });
       const map = new Map();
       for (const property in monitor) {
@@ -80,7 +84,7 @@ export default class Monitors {
 					res.json({ success: true, updated: result });
 				} 
 				catch(err) {
-					res.status(500).json({ success: false, error: err });
+					res.status(500).json({ success: false, error: err , updated: result});
 				}
 				
 			})

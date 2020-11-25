@@ -4,16 +4,16 @@ export default class Monitor {
 			this.name = name;
 			this.url = url;
 			this.selector = selector;
-			if(regex != undefined) this.regex = regex;
-			if(image != undefined) this.image = image;
-			if(headers != undefined) this.headers = headers
+			if(regex !== undefined) this.regex = regex;
+			if(image !== undefined) this.image = image;
+			if(headers !== undefined) this.headers = headers
 		}
 		else if(option.update) {	//In the case of a change, not all of the variables are required.
-			if(name != undefined) this.name = name;
-			if(url != undefined) this.url = url;
-			if(selector != undefined) this.selector = selector;
-			if(regex != undefined) this.regex = regex;
-			if(image != undefined) this.image = image;
+			if(name !== undefined) this.name = name;
+			if(url !== undefined) this.url = url;
+			if(selector !== undefined) this.selector = selector;
+			if(regex !== undefined) this.regex = regex;
+			if(image !== undefined) this.image = image;
 		}
 		else {
 			this.id = id ? id : null;

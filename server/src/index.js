@@ -15,8 +15,10 @@ const HTTPS = process.env.HTTPS.toLowerCase() === "true" ? true : false;
 const API_ENDPOINT = `${HTTPS ? "https" : "http"}://127.0.0.1:${PORT}/api`;
 const CORS = process.env.CORS.toLowerCase() === "true" ? true : false;
 const server = express();
+const router = express.Router();
 const app = new App(API_ENDPOINT);
 const api = new API(app);
+const installed = fs.existsSync(path.resolve(__dirname, "..", "installed"));
 
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
@@ -30,6 +32,7 @@ if(CORS) {
 	server.use(cors(corsOptions));
 }
 server.use('/api', api.router);
+server.use('/', router);
 
 if(HTTPS) {
 	https.createServer({
@@ -45,9 +48,14 @@ else {
 	});
 }
 
-server.get('/', function (req, res) {
+router.get('/', function (req, res) {
 	try {
-		res.sendFile("index.html");
+		if(!installed) {
+			res.redirect('./install');
+		}
+		else {
+			res.sendFile(path.resolve(__dirname, "..", "public", "app.html"));
+		}
 	}
 	catch (e) {
 		console.error(e.message);
@@ -55,5 +63,22 @@ server.get('/', function (req, res) {
 	}
 });
 
+
+if(!installed) {
+	server.use(express.static(path.resolve(__dirname, "..", "install")));
+	router.get('/install', function(req, res) {
+		res.sendFile(path.resolve(__dirname, "..", "install", "install.html"))
+	});
+
+	router.post('/install', function(req, res) {
+		console.log(req.body)
+		const params = req.body;
+		if(/^[0-9]{1,5}$/.test(params.server_ports))
+		if(params.db_user)
+		if(params.https)
+		if(params.cors)
+		res.redirect("/")
+	});
+}
 
 

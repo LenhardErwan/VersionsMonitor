@@ -28,19 +28,23 @@ export default class MonitorValuesEditor extends Component {
 
     this.state = {
       id: this.props.id ? this.props.id : "",
-      name: this.props.name ? this.props.name : "",
-      url: this.props.url ? this.props.url : "",
-      selector: this.props.selector ? this.props.selector : "",
-      regex: this.props.regex ? this.props.regex : "",
-      image_url: this.props.image_url ? this.props.image_url : "",
-      headers: this.props.headers ? this.props.headers : new Array(),
+			name: this.props.name ? this.props.name : "",
+			url: this.props.url ? this.props.url : "",
+			selector: this.props.selector ? this.props.selector : "",
+			regex: this.props.regex ? this.props.regex : "",
+			image_url: this.props.image_url ? this.props.image_url : "",
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   getValues() {
-    return this.state;
+		let obj = {}
+		for (const key in this.state) {
+			if(this.state[key].length <= 0) obj[key] = null;
+			else obj[key] = this.state[key]
+		}
+    return obj;
   }
 
   handleInputChange(event) {
@@ -52,16 +56,15 @@ export default class MonitorValuesEditor extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.setState({
+				id: this.props.id ? this.props.id : "",
         name: this.props.name ? this.props.name : "",
         url: this.props.url ? this.props.url : "",
         selector: this.props.selector ? this.props.selector : "",
         regex: this.props.regex ? this.props.regex : "",
         image_url: this.props.image_url ? this.props.image_url : "",
-        headers: this.props.headers ? this.props.headers : new Array(),
         last_know_version: this.props.last_know_version
           ? this.props.last_know_version
-          : "",
-        id: this.props.id ? this.props.id : "",
+          : ""
       });
     }
   }

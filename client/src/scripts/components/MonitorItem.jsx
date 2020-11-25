@@ -126,7 +126,7 @@ export default class MonitorItem extends Component {
 				<div id={`view-modal-${this.state.id}`} className="uk-flex-top" uk-modal="true">
 					<MonitorView {...this.state} handleRefresh={this.handleRefresh} reload={this.props.fctMonitor.reload}/>
 				</div>
-				<button className="uk-button icon-button" onClick={this.handleRefresh} uk-tooltip="title: View monitor"><i className="fas fa-sync-alt"></i></button>
+				<button className="uk-button icon-button" onClick={this.handleRefresh} uk-tooltip="title: Refresh monitor"><i className="fas fa-sync-alt"></i></button>
 				<button className="uk-button icon-button" uk-toggle={`target: #edit-modal-${this.state.id}`} uk-tooltip="title: Edit monitor"><i className="fas fa-edit"></i></button>
 				<div id={`edit-modal-${this.state.id}`} className="uk-flex-top" uk-modal="true">
 					<MonitorEditor {...this.state} type="Edit" show_advance={false} handleEdit={this.handleEdit} editHeader={this.props.fctHeader.edit} deleteHeader={this.deleteHeader} />

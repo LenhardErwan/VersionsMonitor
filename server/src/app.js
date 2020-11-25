@@ -84,7 +84,7 @@ export default class App {
 	async checkAllVersion() {
 		for (const [id, monitor] of this.monitors) {
 			try {
-				const result = monitor.checkNewVersion();
+				const result = await monitor.checkNewVersion();
 				if(result.update) {
 					//TODO Do something on update (like mail)
 				}

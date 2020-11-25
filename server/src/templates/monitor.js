@@ -6,11 +6,11 @@ import Model from "../Model";
 export default class Monitor {
 	constructor({id, name, url, selector, regex, image, versions, headers}, option = {}) {
 		if(option.patch) {	//In the case of a change, not all of the variables are required.
-			if(name != undefined) this.name = name;
-			if(url != undefined) this.url = url;
-			if(selector != undefined) this.selector = selector;
-			if(regex != undefined) this.regex = regex;
-			if(image != undefined) this.image = image;
+			if(name !== undefined) this.name = name;
+			if(url !== undefined) this.url = url;
+			if(selector !== undefined) this.selector = selector;
+			if(regex !== undefined) this.regex = regex;
+			if(image !== undefined) this.image = image;
 		}
 		else {
 			this.id = id ? id : null;
@@ -44,28 +44,34 @@ export default class Monitor {
 			headers_params.append(header.title, header.value)
 		}
 
-		const response = await fetch(this.url, {headers: headers_params});
-		if(!response.ok) throw `Error in fetch! status code: ${response.status}`;
-		const data = await response.text();
-		const dom = new JSDOM(data);
-		const selected = dom.window.document.querySelector(this.selector);
-		if(selected == undefined || selected == null) throw "Error with given selector, if you are sure about it, think about Headers parameters.";
-		let newest = selected.textContent;
-		const regex_obj = new RegExp(this.regex);
-		const result = regex_obj.exec(newest);
-		if(result && result[1]) newest = result[1];
-
-		let updated = false;
-		if(this.versions.length <= 0 || newest != this.versions[0].value) {
-			try {
-				await Model.createVersion(this.id, newest);
-				updated = true;
+		try {
+			const response = await fetch(this.url, {headers: headers_params});
+			if(!response.ok) throw `Error with given URL! status code: ${response.status}`;
+			const data = await response.text();
+			const dom = new JSDOM(data);
+			const selected = dom.window.document.querySelector(this.selector);
+			if(selected == undefined || selected == null) throw "Error with given selector, if you are sure about it, think about Headers parameters.";
+			let newest = selected.textContent;
+			const regex_obj = new RegExp(this.regex);
+			const result = regex_obj.exec(newest);
+			if(result && result[1]) newest = result[1];
+	
+			let updated = false;
+			if(this.versions.length <= 0 || newest != this.versions[0].value) {
+				try {
+					await Model.createVersion(this.id, newest);
+					updated = true;
+				}
+				catch(e) {
+					console.error(e);
+				}
 			}
-			catch(e) {
-				console.error(e);
-			}
+			
+			return {newest: newest, updated: updated};
 		}
-		
-		return {newest: newest, updated: updated};
+		catch (err) {
+			if(err.errno) throw err.message;
+			else throw err;
+		}
 	}
 }

@@ -28,7 +28,7 @@ export default class HeadersEditor extends Component {
 		super(props);
 
 		this.state = {
-			headers_monitor: this.props.headers,
+			headers_monitor: this.props.headers ? this.props.headers : new Map(),
 			headers: new Map()
 		};
 

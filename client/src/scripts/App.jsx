@@ -10,6 +10,7 @@ import * as Toastr from "toastr";
 import Model from "./Model.js";
 import Menu from "./components/Menu.jsx";
 import MonitorList from "./components/MonitorList.jsx";
+import Monitor from "../templates/monitor"
 
 const ENDPOINT = process.env.ENDPOINT || window.location.origin;
 Model.endpoint = ENDPOINT;
@@ -45,6 +46,7 @@ class App extends Component {
 			preferences: preferences
 		};
 		
+		//TODO inError on load
 		Model.getMonitors()
       .then((monitors) => {
         this.setState({
@@ -62,6 +64,7 @@ class App extends Component {
     this.editMonitor = this.editMonitor.bind(this);
 		this.deleteMonitor = this.deleteMonitor.bind(this);
 		this.reloadMonitor = this.reloadMonitor.bind(this);
+		this.manageHeaders = this.manageHeaders.bind(this);
 		this.createHeader = this.createHeader.bind(this);
 		this.editHeader = this.editHeader.bind(this);
 		this.deleteHeader = this.deleteHeader.bind(this);
@@ -90,8 +93,8 @@ class App extends Component {
 			const data = await Model.createMonitor(param);
 			if(data.success) {
 				let monitor = data.posted;
-				if(param.headers) {
-					await this.manageHeaders(id, param.headers);
+				if(param.headers && Object.keys(param.headers).length > 0) {
+					await this.manageHeaders(monitor.id, param.headers);
 				}
 				monitor.versions = data.posted.versions
 				this.state.monitors.set(monitor.id, monitor);
@@ -102,22 +105,31 @@ class App extends Component {
 		}
 		catch(err) {
 			console.error(err);
-			Toastr.error(err.msg, "Error when creating monitor", toastr_options);
+			if(err.data.posted) {
+				let monitor = new Monitor(err.data.posted);
+				monitor.inError = true;
+				this.state.monitors.set(monitor.id, monitor);
+				this.forceUpdate();
+				Toastr.warning(`Monitor \"${monitor.name}\" has been created with error:\n"${err.msg}"`, `Monitor created - ${monitor.name}`, toastr_options);
+			}
+			else {
+				Toastr.error(err.msg, "Error when creating monitor", toastr_options);
+			}
 			return false
 		}
 	}
 
-  async editMonitor(id, param) {
+  async editMonitor(id, params) {
 		try {
-			if(param.headers) {
-				await this.manageHeaders(id, param.headers);
+			if(params.headers && Object.keys(params.headers).length > 0) {
+				await this.manageHeaders(id, params.headers);
 			}
-			if((Object.keys(param).length > 1 && param.headers) || (Object.keys(param).length > 0 && !param.headers)) {
-				const data = await Model.updateMonitor(id, param);
+			if((Object.keys(params).length > 1 && params.headers) || (Object.keys(params).length > 0 && !params.headers)) {
+				const data = await Model.updateMonitor(id, params);
 				if(data.success) {
 					let monitor = this.state.monitors.get(id);
-					for (const key in param) {
-						if(key != "headers") monitor[key] = param[key];
+					for (const key in params) {
+						if(key != "headers") monitor[key] = params[key];
 					}
 					monitor.versions = data.updated.versions
 					monitor.inError = false;
@@ -133,9 +145,16 @@ class App extends Component {
 		}
 		catch(err) {
 			console.error(err);
-			Toastr.error(err.msg, `Error when updating monitor - ${this.state.monitors.get(id).name}`, toastr_options);
-			this.state.monitors.get(id).inError = true;
-			this.forceUpdate();
+			if(err.data.updated) {
+				let monitor = new Monitor(err.data.updated);
+				monitor.inError = true;
+				this.state.monitors.set(monitor.id, monitor);
+				this.forceUpdate();
+				Toastr.warning(`Monitor \"${monitor.name}\" has been updated with error:\n"${err.msg}"`, `Monitor updated - ${monitor.name}`, toastr_options);
+			}
+			else {
+				Toastr.error(err.msg, `Error when updating monitor - ${this.state.monitors.get(id).name}`, toastr_options);
+			}
 			return false
 		}
 	}
@@ -146,7 +165,7 @@ class App extends Component {
 			if(data.success) {
 				this.state.monitors.delete(data.deleted.id);
 				this.forceUpdate();
-				Toastr.success(`Monitor \"${monitor.name}\" has been deleted`, `Monitor deleted - ${monitor.name}`, toastr_options);
+				Toastr.success(`Monitor \"${data.deleted.name}\" has been deleted`, `Monitor deleted - ${data.deleted.name}`, toastr_options);
 			}
 			return data.success;
 		}

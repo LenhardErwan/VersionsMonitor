@@ -312,7 +312,7 @@ fieldset table.uk-table {
 
 /////////////////////////////////////////////////////////////////////////////////////
 //Toasr
-@import url("https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css");
+@import url("../../../node_modules/toastr/toastr.scss");
 
 #toast-container > .toast-info > .toast-message {
 	font-size: 0.75rem;
