@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import https from "https"
 
 import Monitor from "./templates/monitor";
 import Model from './Model'
@@ -37,7 +38,10 @@ export default class App {
 	}
 
 	async load() {
-		const response = await fetch(`${this.endpoint}/monitors`);
+		const agent = new https.Agent({
+			rejectUnauthorized: false
+		})
+		const response = await fetch(`${this.endpoint}/monitors`, {agent});
 		if(!response.ok) throw {message: `Error in fetch! status code: ${response.status}`, code: response.status};
 		const data = await response.json();
 		if(data.success) {

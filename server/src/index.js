@@ -36,8 +36,9 @@ server.use('/', router);
 
 if(HTTPS) {
 	https.createServer({
-		key: fs.readFileSync(path.resolve(__dirname, "..", "ressources", "key.pem")),
-		cert: fs.readFileSync(path.resolve(__dirname, "..", "ressources", "cert.pem"))
+		key: fs.readFileSync(path.resolve(__dirname, "..", "ressources", "server-key.pem")),
+		cert: fs.readFileSync(path.resolve(__dirname, "..", "ressources", "server-crt.pem")),
+		ca: fs.readFileSync(path.resolve(__dirname, "..", "ressources", "ca-crt.pem"))
 	}, server).listen(PORT, function () {
 		console.log(`Listening on port ${PORT}! (Only HTTPS)`)
 	});
