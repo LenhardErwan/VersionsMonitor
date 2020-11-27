@@ -2,28 +2,28 @@ import React, { Component } from "react";
 import * as Toastr from "toastr";
 import {Img} from "react-image";
 
-import Model from "../Model.js";
 import MonitorEditor from "./MonitorEditor.jsx";
 import MonitorView from "./MonitorView.jsx";
 
 import noImage from "../../images/no_image.svg"
 
 const toastr_options = {
-  "closeButton": true,
-  "debug": false,
-  "newestOnTop": true,
-  "progressBar": true,
-  "positionClass": "toast-top-right",
-  "preventDuplicates": false,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "30000",
-  "extendedTimeOut": "5000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
-}
+  closeButton: true,
+  debug: false,
+  newestOnTop: true,
+  progressBar: true,
+  positionClass: "toast-top-right",
+  preventDuplicates: false,
+  onclick: null,
+  showDuration: "300",
+  hideDuration: "1000",
+  timeOut: "10000",
+  extendedTimeOut: "2000",
+  showEasing: "swing",
+  hideEasing: "linear",
+  showMethod: "fadeIn",
+  hideMethod: "fadeOut",
+};
 
 export default class MonitorItem extends Component {
   constructor(props) {
@@ -74,18 +74,13 @@ export default class MonitorItem extends Component {
 	}
 
 	async handleRefresh() {
-    try {
-			await Model.checkMonitor(this.state.id);
-      this.props.fctMonitor.reload(this.state.id);
-      Toastr.success(
-        `Monitor \"${this.state.name}\" has been refresh`,
-        "Monitor refreshed",
-        toastr_options
-      );
-    } catch (err) {
-      console.error(err);
-      Toastr.error(err.msg, "Error when refresh monitor", toastr_options);
-    }
+		const resCheck = await this.props.fctMonitor.check(this.state.id, false);
+		if(resCheck) {
+			const resReload = await this.props.fctMonitor.reload(this.state.id, false);
+			if(resReload) {
+				Toastr.success(`Monitor \"${this.state.name}\" has been refreshed`, "Monitor refreshed", toastr_options);
+			}
+		}
   }
 
 	async openTab() {

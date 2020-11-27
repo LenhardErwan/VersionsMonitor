@@ -55,7 +55,7 @@ class App extends Component {
       })
       .catch((err) => {
 				console.error(err);
-				Toastr.error(err.msg, "Error loading monitors", toastr_options);
+				iToastr.error(err.msg, "Error loading monitors", toastr_options);
       });
 
     this.setTheme();
@@ -63,6 +63,7 @@ class App extends Component {
     this.createMonitor = this.createMonitor.bind(this);
     this.editMonitor = this.editMonitor.bind(this);
 		this.deleteMonitor = this.deleteMonitor.bind(this);
+		this.checkMonitor = this.checkMonitor.bind(this);
 		this.reloadMonitor = this.reloadMonitor.bind(this);
 		this.manageHeaders = this.manageHeaders.bind(this);
 		this.createHeader = this.createHeader.bind(this);
@@ -78,7 +79,8 @@ class App extends Component {
 			create: this.createMonitor,
 			edit: this.editMonitor,
 			delete: this.deleteMonitor,
-			reload: this.reloadMonitor
+			reload: this.reloadMonitor,
+			check: this.checkMonitor
 		}
 
 		this.fctHeader = {
@@ -88,7 +90,7 @@ class App extends Component {
 		}
   }
 
-   async createMonitor(param) {
+   async createMonitor(param, show_success = true) {
 		try {
 			const data = await Model.createMonitor(param);
 			if(data.success) {
@@ -99,7 +101,7 @@ class App extends Component {
 				monitor.versions = data.posted.versions
 				this.state.monitors.set(monitor.id, monitor);
 				this.forceUpdate();
-				Toastr.success(`Monitor \"${monitor.name}\" has been created`, `Monitor created - ${monitor.name}`, toastr_options);
+				if(show_success) if(show_success) Toastr.success(`Monitor \"${monitor.name}\" has been created`, `Monitor created - ${monitor.name}`, toastr_options);
 			}
 			return data.success;
 		}
@@ -110,23 +112,26 @@ class App extends Component {
 				monitor.inError = true;
 				this.state.monitors.set(monitor.id, monitor);
 				this.forceUpdate();
-				Toastr.warning(`Monitor \"${monitor.name}\" has been created with error:\n"${err.msg}"`, `Monitor created - ${monitor.name}`, toastr_options);
+				if(show_success) Toastr.warning(`Monitor \"${monitor.name}\" has been created with error:\n"${err.msg}"`, `Monitor created - ${monitor.name}`, toastr_options);
 			}
 			else {
-				Toastr.error(err.msg, "Error when creating monitor", toastr_options);
+				iToastr.error(err.msg, "Error when creating monitor", toastr_options);
 			}
 			return false
 		}
 	}
 
-  async editMonitor(id, params) {
+  async editMonitor(id, params, show_success = true) {
 		try {
-			if(params.headers && Object.keys(params.headers).length > 0) {
+			let needCheck = false;
+			if(params.headers && params.headers.size > 0) {
 				await this.manageHeaders(id, params.headers);
+				needCheck = true;
 			}
 			if((Object.keys(params).length > 1 && params.headers) || (Object.keys(params).length > 0 && !params.headers)) {
 				const data = await Model.updateMonitor(id, params);
 				if(data.success) {
+					needCheck = false;
 					let monitor = this.state.monitors.get(id);
 					for (const key in params) {
 						if(key != "headers") monitor[key] = params[key];
@@ -135,12 +140,20 @@ class App extends Component {
 					monitor.inError = false;
 					this.state.monitors.set(id, monitor);
 					this.forceUpdate();
-					Toastr.success(`Monitor \"${monitor.name}\" has been updated`, `Monitor updated - ${monitor.name}`, toastr_options);
+					if(show_success) Toastr.success(`Monitor \"${monitor.name}\" has been updated`, `Monitor updated - ${monitor.name}`, toastr_options);
 				}
 				else {
 					throw data.error;
 				}
 				return data.success;
+			}
+			if(needCheck) {
+				await Model.checkMonitor(id);
+				const monitor = await Model.getMonitor(id);
+				monitor.inError = false;
+				this.state.monitors.set(id, monitor);
+				this.forceUpdate();
+				if(show_success) Toastr.success(`Monitor \"${monitor.name}\" has been updated`, `Monitor updated - ${monitor.name}`, toastr_options);
 			}
 		}
 		catch(err) {
@@ -150,28 +163,30 @@ class App extends Component {
 				monitor.inError = true;
 				this.state.monitors.set(monitor.id, monitor);
 				this.forceUpdate();
-				Toastr.warning(`Monitor \"${monitor.name}\" has been updated with error:\n"${err.msg}"`, `Monitor updated - ${monitor.name}`, toastr_options);
+				if(show_success) Toastr.warning(`Monitor \"${monitor.name}\" has been updated with error:\n"${err.msg}"`, `Monitor updated - ${monitor.name}`, toastr_options);
 			}
 			else {
-				Toastr.error(err.msg, `Error when updating monitor - ${this.state.monitors.get(id).name}`, toastr_options);
+				const monitor = this.state.monitors.get(id);
+				monitor.inError = true;
+				iToastr.error(err.msg, `Error when updating monitor - ${monitor.name}`, toastr_options);
 			}
 			return false
 		}
 	}
 
-  async deleteMonitor(id) {
+  async deleteMonitor(id, show_success = true) {
 		try {
 			const data = await Model.deleteMonitor(id);
 			if(data.success) {
 				this.state.monitors.delete(data.deleted.id);
 				this.forceUpdate();
-				Toastr.success(`Monitor \"${data.deleted.name}\" has been deleted`, `Monitor deleted - ${data.deleted.name}`, toastr_options);
+				if(show_success) Toastr.success(`Monitor \"${data.deleted.name}\" has been deleted`, `Monitor deleted - ${data.deleted.name}`, toastr_options);
 			}
 			return data.success;
 		}
 		catch(err) {
 			console.error(err)
-			Toastr.error(err.msg, `Error when deleting monitor - ${this.state.monitors.get(id).name}`, toastr_options);
+			iToastr.error(err.msg, `Error when deleting monitor - ${this.state.monitors.get(id).name}`, toastr_options);
 			return false
 		}
 	}
@@ -271,12 +286,12 @@ class App extends Component {
 		}
 	}
 
-	async deleteHeader(monitor_id, header_id) {
+	async deleteHeader(monitor_id, header_id, show_success = true) {
 		try {
 			const data = await Model.deleteHeader(header_id);
 			if(data.success) {
 				this.state.monitors.get(monitor_id).headers.delete(data.deleted.id);
-				Toastr.success("Header correctly deleted", "Delete", toastr_options);
+				if(show_success) Toastr.success("Header correctly deleted", "Delete", toastr_options);
 				this.forceUpdate();
 			}
 			return data.success;
@@ -287,10 +302,34 @@ class App extends Component {
 		}
 	}
 
-	async reloadMonitor(id) {
-		const monitor = await Model.getMonitor(id);
-		this.state.monitors.set(id, monitor);
-		this.forceUpdate();
+	async checkMonitor(id, show_success = true) {
+		try {
+			await Model.checkMonitor(id);
+			if(show_success) Toastr.success(`Monitor \"${monitor.name}\" has been checked`, "Monitor checked", toastr_options);
+			return true;
+    } catch (err) {
+			this.state.monitors.get(id).inError = true;
+			this.forceUpdate();
+      console.error(err);
+			iToastr.error(err.msg, "Error when check monitor", toastr_options);
+			return false;
+    }
+	}
+
+	async reloadMonitor(id, show_success = true) {
+		try {
+			const monitor = await Model.getMonitor(id);
+			this.state.monitors.set(id, monitor);
+			this.forceUpdate();
+			if(show_success) Toastr.success(`Monitor \"${monitor.name}\" has been reloaded`, "Monitor reloaded", toastr_options);
+			return true;
+		} catch (err) {
+			this.state.monitors.get(id).inError = true;
+			this.forceUpdate();
+      console.error(err);
+			iToastr.error(err.msg, "Error when reload monitor", toastr_options);
+			return false
+    }
 	}
 
   savePreferences() {

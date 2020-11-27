@@ -68,7 +68,6 @@ export default class MonitorEditor extends Component {
 			if(this.headersEditor.current) {
 				new_headers = this.headersEditor.current.handleSubmit();
 			}
-			console.log(params)
 			this.handleEdit({...params, new_headers: new_headers});
 			this.setState({show_advance: false});
 			if(this.props.type.toLowerCase() == "create") {

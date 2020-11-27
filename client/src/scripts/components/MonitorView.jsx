@@ -38,7 +38,7 @@ export default class MonitorView extends Component {
   async handleDeleteVersion(id) {
     try {
       const res = await Model.deleteVersion(id);
-      this.props.reload(this.props.id);
+      this.props.reload(this.props.id, false);
       Toastr.success(
         `Version \"${res.deleted.value}\" has been deleted`,
         "Version deleted",
