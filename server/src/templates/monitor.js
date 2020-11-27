@@ -1,4 +1,4 @@
-import { JSDOM } from "jsdom";
+import { JSDOM } from "jsdom-no-css";
 import fetch, { Headers } from "node-fetch";
 
 import Model from "../Model";
@@ -70,6 +70,7 @@ export default class Monitor {
 			return {newest: newest, updated: updated};
 		}
 		catch (err) {
+			console.error(this.name, err)
 			if(err.errno) throw err.message;
 			else throw err;
 		}
