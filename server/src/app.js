@@ -5,7 +5,7 @@ import Monitor from "./templates/monitor";
 import Model from './Model'
 
 export default class App {
-	constructor(endpoint) {
+	constructor(endpoint, https) {
 		Model.init({
 			user: process.env.DB_USER,
 			password: process.env.DB_PASSWD,
@@ -14,6 +14,7 @@ export default class App {
 			database: process.env.DB_NAME
 		});
 		this.endpoint = endpoint;
+		this.https = https;
 		this.db_connected = false
 		this.monitors = new Map();
 		this.inError = new Map();
@@ -38,10 +39,16 @@ export default class App {
 	}
 
 	async load() {
-		const agent = new https.Agent({
-			rejectUnauthorized: false
-		})
-		const response = await fetch(`${this.endpoint}/monitors`, {agent});
+		let response;
+		if(this.https) {
+			const agent = new https.Agent({
+				rejectUnauthorized: false
+			})
+			response = await fetch(`${this.endpoint}/monitors`, {agent});
+		}
+		else {
+			response = await fetch(`${this.endpoint}/monitors`);
+		}
 		if(!response.ok) throw {message: `Error in fetch! status code: ${response.status}`, code: response.status};
 		const data = await response.json();
 		if(data.success) {
