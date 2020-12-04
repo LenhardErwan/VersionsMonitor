@@ -13,7 +13,12 @@
 		"meteor-node-stubs": "^1.0.1",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
-		"simpl-schema": "^1.10.2"
+		"semantic-ui-css": "^2.4.1",
+		"semantic-ui-react": "^2.0.1",
+		"simpl-schema": "^1.10.2",
+		"uniforms": "^3.0.0-rc.7",
+		"uniforms-bridge-simple-schema-2": "^3.0.0-rc.7",
+		"uniforms-semantic": "^3.0.0-rc.7"
 	},
 	"meteor": {
 		"mainModule": {
@@ -23,13 +28,25 @@
 		"testModule": "tests/main.js"
 	},
 	"devDependencies": {
+		"autoprefixer": "^6.5.1",
 		"husky": "^4.3.0",
+		"postcss": "^6.0.22",
+		"postcss-load-config": "^1.2.0",
 		"prettier": "^2.2.1",
 		"pretty-quick": "^3.1.0"
 	},
 	"husky": {
 		"hooks": {
 			"pre-commit": "npx pretty-quick --staged"
+		}
+	},
+	"postcss": {
+		"plugins": {
+			"autoprefixer": {
+				"browsers": [
+					"last 2 versions"
+				]
+			}
 		}
 	}
 }
