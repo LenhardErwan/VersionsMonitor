@@ -39,27 +39,33 @@ export default class MonitorList extends React.Component {
 	}
 
 	render() {
-		if (this.props.loading) {
-			return <Loader active inline='centered' />;
-		} else {
-			return (
-				<table>
-					<thead>
+		return (
+			<table>
+				<thead>
+					<tr>
+						<th>Icon</th>
+						<th>Name</th>
+						<th>Newest version</th>
+						<th>
+							Discovery date <span>({this.getDateFormatString()})</span>
+						</th>
+						<th>Download</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{this.props.loading ? (
 						<tr>
-							<th>Icon</th>
-							<th>Name</th>
-							<th>Newest version</th>
-							<th>
-								Discovery date <span>({this.getDateFormatString()})</span>
-							</th>
-							<th>Download</th>
-							<th>Actions</th>
+							<td colSpan='6'>
+								<Loader active inline='centered' />
+							</td>
 						</tr>
-					</thead>
-					<tbody>{this.getMonitorList()}</tbody>
-				</table>
-			);
-		}
+					) : (
+						this.getMonitorList()
+					)}
+				</tbody>
+			</table>
+		);
 	}
 
 	getDateFormatString() {
