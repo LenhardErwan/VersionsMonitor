@@ -6,8 +6,30 @@ export const monitor = new SimpleSchema({
 	name: String,
 	url: String,
 	selector: String,
-	regex: String,
-	icon_url: String,
-	headers: [header],
-	versions: [version],
+	regex: {
+		type: String,
+		optional: true,
+		defaultValue: null
+	},
+	icon_url: {
+		type: String,
+		optional: true,
+		defaultValue: null
+	},
+	headers: {
+		type: Array,
+		optional: true,
+		defaultValue: []
+	},
+	'headers.$': {
+		type: header,
+	},
+	versions: {
+		type: Array,
+		optional: true,
+		defaultValue: []
+	},
+	'versions.$': {
+		type: version
+	}
 });
