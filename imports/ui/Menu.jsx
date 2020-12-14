@@ -21,7 +21,7 @@ export default class Menu extends React.Component {
 	render() {
 		return (
 			<header>
-				<div className={`ui icon input ${this.props.loaded ? '' : 'loading'}`}>
+				<div className={`ui icon input ${this.props.loading ? 'loading' : ''}`}>
 					<input
 						type='text'
 						placeholder='Search...'

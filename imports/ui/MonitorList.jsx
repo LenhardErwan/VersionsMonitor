@@ -1,5 +1,7 @@
 import React from 'react';
-import { Img } from 'react-image';
+import { Loader } from 'semantic-ui-react';
+
+import MonitorItem from '/imports/ui/MonitorItem.jsx';
 
 export default class MonitorList extends React.Component {
 	constructor(props) {
@@ -15,42 +17,7 @@ export default class MonitorList extends React.Component {
 	getMonitorList() {
 		if (this.state.monitor_list.length > 0) {
 			return this.state.monitor_list.map((monitor) => {
-				return (
-					<tr key={monitor._id}>
-						<td>
-							<Img
-								src={[
-									monitor.image,
-									`${new URL(monitor.url).origin}/favicon.ico`,
-									'./images/no-image.svg',
-								]}
-							/>
-						</td>
-						<td>{monitor.name}</td>
-						<td>
-							{monitor.versions[0]
-								? monitor.versions[0].label
-								: 'No version label'}
-						</td>
-						<td>
-							{monitor.versions[0]
-								? monitor.versions[0].label
-								: 'No version date'}
-						</td>
-						<td>
-							<a
-								href={monitor.url}
-								onClick={(event) => {
-									event.preventDefault();
-									const win = window.open(monitor.url, '_blank');
-									win.focus();
-								}}>
-								Link
-							</a>
-						</td>
-						<td>TODO</td>
-					</tr>
-				);
+				return <MonitorItem {...monitor} key={monitor._id} />;
 			});
 		} else {
 			return (
@@ -72,23 +39,27 @@ export default class MonitorList extends React.Component {
 	}
 
 	render() {
-		return (
-			<table>
-				<thead>
-					<tr>
-						<th>Icon</th>
-						<th>Name</th>
-						<th>Newest version</th>
-						<th>
-							Discovery date <span>({this.getDateFormatString()})</span>
-						</th>
-						<th>Download</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>{this.getMonitorList()}</tbody>
-			</table>
-		);
+		if (this.props.loading) {
+			return <Loader active inline='centered' />;
+		} else {
+			return (
+				<table>
+					<thead>
+						<tr>
+							<th>Icon</th>
+							<th>Name</th>
+							<th>Newest version</th>
+							<th>
+								Discovery date <span>({this.getDateFormatString()})</span>
+							</th>
+							<th>Download</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>{this.getMonitorList()}</tbody>
+				</table>
+			);
+		}
 	}
 
 	getDateFormatString() {

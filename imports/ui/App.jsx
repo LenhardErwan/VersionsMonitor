@@ -14,6 +14,7 @@ class App extends React.Component {
 			monitors: new Array(),
 			filter: '',
 			loading: props.loading,
+			loading_filter: false,
 			monitor_list: new Array(),
 		};
 
@@ -43,7 +44,7 @@ class App extends React.Component {
 	setFilter(filter) {
 		this.setState({
 			filter: filter,
-			loading: true,
+			loading_filter: true,
 		});
 		this.filter(filter);
 	}
@@ -56,14 +57,18 @@ class App extends React.Component {
 		}
 		this.setState({
 			monitor_list: mlist,
+			loading_filter: false,
 		});
 	}
 
 	render() {
 		return (
 			<div>
-				<Menu loaded={this.state.loading} setFilter={this.setFilter} />
-				<MonitorList monitor_list={this.state.monitor_list} />
+				<Menu loading={this.state.loading_filter} setFilter={this.setFilter} />
+				<MonitorList
+					monitor_list={this.state.monitor_list}
+					loading={this.state.loading}
+				/>
 			</div>
 		);
 	}
@@ -71,7 +76,7 @@ class App extends React.Component {
 
 const AppContainer = withTracker(() => {
 	const monitorsHandle = Meteor.subscribe('monitors.list');
-	const loading = monitorsHandle.ready();
+	const loading = !monitorsHandle.ready();
 	return {
 		monitors: MonitorsCollection.find().fetch(),
 		loading: loading,
