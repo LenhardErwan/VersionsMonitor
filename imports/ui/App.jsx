@@ -1,14 +1,16 @@
 import React from 'react';
+import { withTracker } from 'meteor/react-meteor-data';
 
 import Menu from '/imports/ui/Menu.jsx';
 import MonitorList from '/imports/ui/MonitorList.jsx';
+import MonitorsCollection from '/imports/api/MonitorsCollection';
 
-export default class App extends React.Component {
+class App extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			monitors: new Array(), //TODO DB connection
+			monitors: new Array(),
 			filter: '',
 			loaded: true,
 			monitor_list: new Array(),
@@ -16,6 +18,17 @@ export default class App extends React.Component {
 
 		this.setFilter = this.setFilter.bind(this);
 		this.filter = this.filter.bind(this);
+	}
+
+	static getDerivedStateFromProps(props, current_state) {
+		if (current_state.monitor_list !== props.monitors) {
+			return {
+				monitors: props.monitors,
+				monitor_list: props.monitors,
+			};
+		}
+
+		return null;
 	}
 
 	setFilter(filter) {
@@ -46,3 +59,11 @@ export default class App extends React.Component {
 		);
 	}
 }
+
+const AppContainer = withTracker(() => {
+	return {
+		monitors: MonitorsCollection.find().fetch(),
+	};
+})(App);
+
+export default AppContainer;
