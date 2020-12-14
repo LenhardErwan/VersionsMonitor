@@ -3,33 +3,33 @@ import { header } from '/imports/api/schemas/header';
 import { version } from '/imports/api/schemas/version';
 
 export const monitor = new SimpleSchema({
-	name: String,
-	url: String,
-	selector: String,
-	regex: {
+	'name': String,
+	'url': String,
+	'selector': String,
+	'regex': {
 		type: String,
 		optional: true,
-		defaultValue: null
+		defaultValue: null,
 	},
-	icon_url: {
+	'icon_url': {
 		type: String,
 		optional: true,
-		defaultValue: null
+		defaultValue: null,
 	},
-	headers: {
+	'headers': {
 		type: Array,
 		optional: true,
-		defaultValue: []
+		defaultValue: [],
 	},
 	'headers.$': {
 		type: header,
 	},
-	versions: {
+	'versions': {
 		type: Array,
 		optional: true,
-		defaultValue: []
+		defaultValue: [],
 	},
 	'versions.$': {
-		type: version
-	}
+		type: version,
+	},
 });

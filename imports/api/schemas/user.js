@@ -4,5 +4,5 @@ export const user = new SimpleSchema({
 	login: String,
 	password: String,
 	mail: String,
-	groupsId: [String]
-})
+	groupsId: [String],
+});

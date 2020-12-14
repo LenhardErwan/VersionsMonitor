@@ -5,22 +5,22 @@ export const group = new SimpleSchema({
 	canView: {
 		type: Boolean,
 		optional: true,
-		defaultValue: false
+		defaultValue: false,
 	},
 	canCreate: {
 		type: Boolean,
 		optional: true,
-		defaultValue: false
+		defaultValue: false,
 	},
 	canEdit: {
 		type: Boolean,
 		optional: true,
-		defaultValue: false
+		defaultValue: false,
 	},
 	canDelete: {
 		type: Boolean,
 		optional: true,
-		defaultValue: false
+		defaultValue: false,
 	},
-	monitorsId: [String]
-})
+	monitorsId: [String],
+});
