@@ -1,4 +1,5 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
 import Menu from '/imports/ui/Menu.jsx';
@@ -12,7 +13,7 @@ class App extends React.Component {
 		this.state = {
 			monitors: new Array(),
 			filter: '',
-			loaded: true,
+			loading: props.loading,
 			monitor_list: new Array(),
 		};
 
@@ -20,21 +21,29 @@ class App extends React.Component {
 		this.filter = this.filter.bind(this);
 	}
 
-	static getDerivedStateFromProps(props, current_state) {
-		if (current_state.monitor_list !== props.monitors) {
-			return {
-				monitors: props.monitors,
-				monitor_list: props.monitors,
-			};
+	componentDidUpdate(prevProps) {
+		if (prevProps.monitors !== this.props.monitors) {
+			this.setState(
+				{
+					monitors: this.props.monitors,
+				},
+				() => {
+					this.filter(this.state.filter);
+				}
+			);
 		}
 
-		return null;
+		if (prevProps.loading !== this.props.loading) {
+			this.setState({
+				loading: this.props.loading,
+			});
+		}
 	}
 
 	setFilter(filter) {
 		this.setState({
 			filter: filter,
-			loaded: false,
+			loading: true,
 		});
 		this.filter(filter);
 	}
@@ -53,7 +62,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<Menu loaded={this.state.loaded} setFilter={this.setFilter} />
+				<Menu loaded={this.state.loading} setFilter={this.setFilter} />
 				<MonitorList monitor_list={this.state.monitor_list} />
 			</div>
 		);
@@ -61,8 +70,11 @@ class App extends React.Component {
 }
 
 const AppContainer = withTracker(() => {
+	const monitorsHandle = Meteor.subscribe('monitors.list');
+	const loading = monitorsHandle.ready();
 	return {
 		monitors: MonitorsCollection.find().fetch(),
+		loading: loading,
 	};
 })(App);
 

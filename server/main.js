@@ -48,3 +48,7 @@ Meteor.startup(() => {
 		});
 	}
 });
+
+Meteor.publish('monitors.list', function () {
+	return MonitorsCollection.find();
+});
