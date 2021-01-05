@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Img } from 'react-image';
-import { Button, Image, Table } from 'semantic-ui-react';
+import { Button, Loader, Image, Table } from 'semantic-ui-react';
 
 export default class MonitorItem extends Component {
 	constructor(props) {
@@ -15,7 +15,16 @@ export default class MonitorItem extends Component {
 			icon_url: this.props.image,
 			headers: this.props.headers,
 			versions: this.props.versions,
+			error: this.props.error ? this.props.error : null,
 		};
+
+		try {
+			this.state.alternate_icon = `${
+				new URL(this.state.url).origin
+			}/favicon.ico`;
+		} catch (err) {
+			console.error(err);
+		}
 	}
 
 	getVersionString() {
@@ -40,15 +49,18 @@ export default class MonitorItem extends Component {
 
 	render() {
 		return (
-			<Table.Row key={this.state._id}>
+			<Table.Row
+				key={this.state._id}
+				{...(this.state.error === null ? {} : { negative: true })}>
 				<Table.Cell>
 					<Image>
 						<Img
 							src={[
 								this.state.icon_url,
-								`${new URL(this.state.url).origin}/favicon.ico`,
-								'./images/no-image.svg',
+								this.state.alternate_icon,
+								'./images/no_image.svg',
 							]}
+							loader={<Loader active inline='centered' />}
 						/>
 					</Image>
 				</Table.Cell>

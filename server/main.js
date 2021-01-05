@@ -24,6 +24,12 @@ Meteor.startup(() => {
 			selector: '.release-entry .release-main-section a',
 		});
 
+		let m3 = MonitorsCollection.insert({
+			name: 'jeSuisNul',
+			url: 'JeSuisUneURLNul',
+			selector: 'JeSuisUnMauvaisSelector',
+		});
+
 		let g1 = GroupsCollection.insert({
 			name: 'Viewer',
 			canView: true,
