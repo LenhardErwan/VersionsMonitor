@@ -18,7 +18,15 @@ class FormModal extends React.Component {
 
 		if (old_monitor !== new_monitor) {
 			if (old_monitor.id === new_monitor.id) {
-				Meteor.call('monitors.update', old_monitor.id, new_monitor);
+				let updated_monitor = {};
+
+				for (let key of Object.keys(new_monitor)) {
+					if (old_monitor[key] !== new_monitor[key]) {
+						updated_monitor[key] = new_monitor[key];
+					}
+				}
+
+				Meteor.call('monitors.update', old_monitor.id, updated_monitor);
 
 				// TODO display success
 			} else {
