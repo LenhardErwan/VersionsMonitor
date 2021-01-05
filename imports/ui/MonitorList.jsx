@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader } from 'semantic-ui-react';
+import { Loader, Table } from 'semantic-ui-react';
 
 import MonitorItem from '/imports/ui/MonitorItem.jsx';
 
@@ -40,20 +40,18 @@ export default class MonitorList extends React.Component {
 
 	render() {
 		return (
-			<table>
-				<thead>
-					<tr>
-						<th>Icon</th>
-						<th>Name</th>
-						<th>Newest version</th>
-						<th>
-							Discovery date <span>({this.getDateFormatString()})</span>
-						</th>
-						<th>Download</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
+			<Table celled>
+				<Table.Header>
+					<Table.Row>
+						<Table.HeaderCell>Icon</Table.HeaderCell>
+						<Table.HeaderCell>Name</Table.HeaderCell>
+						<Table.HeaderCell>Newest version</Table.HeaderCell>
+						<Table.HeaderCell>Discovery date <span>({this.getDateFormatString()})</span></Table.HeaderCell>
+						<Table.HeaderCell>Download</Table.HeaderCell>
+						<Table.HeaderCell>Actions</Table.HeaderCell>
+					</Table.Row>
+				</Table.Header>
+				<Table.Body>
 					{this.props.loading ? (
 						<tr>
 							<td colSpan='6'>
@@ -63,8 +61,8 @@ export default class MonitorList extends React.Component {
 					) : (
 						this.getMonitorList()
 					)}
-				</tbody>
-			</table>
+				</Table.Body>
+			</Table>
 		);
 	}
 
