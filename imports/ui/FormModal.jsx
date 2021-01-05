@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal } from 'semantic-ui-react';
 
-import { monitor } from '/imports/api/schemas/monitor';
+import { monitor } from '/imports/db/schemas/monitor';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { AutoFields, AutoForm, ErrorsField } from 'uniforms-semantic';
 
@@ -14,14 +14,12 @@ class FormModal extends React.Component {
 
 	onSubmit(monitor) {
 		console.log('updating...');
-		/*console.log(
-			MonitorsCollection.update(monitor.id, {
-				$set: {
-					name: monitor.name,
-				},
-			})
-		);*/
-		console.log('updated !');
+
+		/*MonitorsCollection.update(monitor.id, {
+			$set: {
+				name: monitor.name,
+			},
+		});*/
 
 		this.props.onClose();
 	}
