@@ -30,11 +30,10 @@ export default class App {
 	}
 
 	async addVersion(monitor_id, label, date) {
-		const result = MonitorsCollection.update(
+		MonitorsCollection.update(
 			{ _id: monitor_id },
 			{ $push: { versions: { label: label, date: date } } }
 		);
-		console.log(result);
 	}
 
 	async check(monitor_id) {
