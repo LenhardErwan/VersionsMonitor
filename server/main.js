@@ -4,6 +4,7 @@ import MonitorsCollection from '/imports/db/MonitorsCollection';
 import GroupsCollection from '/imports/db/GroupsCollection';
 import UsersCollection from '/imports/db/UsersCollection';
 
+import '/imports/api/monitorsPublications';
 import App from '/server/app.js';
 
 Meteor.startup(() => {
@@ -51,8 +52,4 @@ Meteor.startup(() => {
 			groupsId: [g2],
 		});
 	}
-});
-
-Meteor.publish('monitors.list', function () {
-	return MonitorsCollection.find();
 });
