@@ -30,10 +30,25 @@ export default class App {
 	}
 
 	async addVersion(monitor_id, label, date) {
-		MonitorsCollection.update(
-			{ _id: monitor_id },
-			{ $push: { versions: { label: label, date: date } } }
-		);
+		try {
+			await MonitorsCollection.update(
+				{ _id: monitor_id },
+				{ $push: { versions: { label: label, date: date } } }
+			);
+		} catch (err) {
+			console.error(err);
+		}
+	}
+
+	async editError(monitor_id, error) {
+		try {
+			await MonitorsCollection.update(
+				{ _id: monitor_id },
+				{ $set: { error: error.toString() } }
+			);
+		} catch (err) {
+			console.error(err);
+		}
 	}
 
 	async check(monitor_id) {
@@ -45,6 +60,10 @@ export default class App {
 		}
 
 		try {
+			const test = new URL(monitor.url); // Test URL
+			if (test.protocol !== 'http:' && test.protocol !== 'https:')
+				throw 'URL is not a valid HTTP URL'; // Test HTTP URL
+
 			const response = await fetch(monitor.url, { headers: headers }); // Fetch page
 			if (!response.ok)
 				throw `Error with given URL! status code: ${response.status}`;
@@ -68,7 +87,7 @@ export default class App {
 				this.addVersion(monitor_id, newest, new Date());
 			}
 		} catch (err) {
-			console.error(err);
+			this.editError(monitor_id, err);
 		}
 	}
 

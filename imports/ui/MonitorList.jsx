@@ -46,7 +46,9 @@ export default class MonitorList extends React.Component {
 						<Table.HeaderCell>Icon</Table.HeaderCell>
 						<Table.HeaderCell>Name</Table.HeaderCell>
 						<Table.HeaderCell>Newest version</Table.HeaderCell>
-						<Table.HeaderCell>Discovery date <span>({this.getDateFormatString()})</span></Table.HeaderCell>
+						<Table.HeaderCell>
+							Discovery date <span>({this.getDateFormatString()})</span>
+						</Table.HeaderCell>
 						<Table.HeaderCell>Download</Table.HeaderCell>
 						<Table.HeaderCell>Actions</Table.HeaderCell>
 					</Table.Row>

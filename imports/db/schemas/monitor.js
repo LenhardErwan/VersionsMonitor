@@ -32,4 +32,9 @@ export const monitor = new SimpleSchema({
 	'versions.$': {
 		type: version,
 	},
+	'error': {
+		type: String,
+		optional: true,
+		defaultValue: null,
+	},
 });
