@@ -4,7 +4,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 
 import Menu from '/imports/ui/Menu.jsx';
 import MonitorList from '/imports/ui/MonitorList.jsx';
-import MonitorsCollection from '/imports/api/MonitorsCollection';
+import MonitorsCollection from '/imports/db/MonitorsCollection';
 
 class App extends React.Component {
 	constructor(props) {

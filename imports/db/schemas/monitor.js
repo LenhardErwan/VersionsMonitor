@@ -1,6 +1,6 @@
 import SimpleSchema from 'simpl-schema';
-import { header } from '/imports/api/schemas/header';
-import { version } from '/imports/api/schemas/version';
+import { header } from '/imports/db/schemas/header';
+import { version } from '/imports/db/schemas/version';
 
 export const monitor = new SimpleSchema({
 	'name': String,

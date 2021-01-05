@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
-import MonitorsCollection from '/imports/api/MonitorsCollection';
-import GroupsCollection from '/imports/api/GroupsCollection';
-import UsersCollection from '/imports/api/UsersCollection';
+import MonitorsCollection from '/imports/db/MonitorsCollection';
+import GroupsCollection from '/imports/db/GroupsCollection';
+import UsersCollection from '/imports/db/UsersCollection';
 
 import App from '/server/app.js';
 

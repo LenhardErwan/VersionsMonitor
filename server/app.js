@@ -1,7 +1,7 @@
 import fetch, { Headers } from 'node-fetch';
 import { JSDOM } from 'jsdom';
 
-import MonitorsCollection from '/imports/api/MonitorsCollection';
+import MonitorsCollection from '/imports/db/MonitorsCollection';
 
 export default class App {
 	constructor() {
