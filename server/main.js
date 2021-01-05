@@ -4,7 +4,11 @@ import MonitorsCollection from '/imports/api/MonitorsCollection';
 import GroupsCollection from '/imports/api/GroupsCollection';
 import UsersCollection from '/imports/api/UsersCollection';
 
+import App from '/server/app.js';
+
 Meteor.startup(() => {
+	const app = new App();
+
 	if (MonitorsCollection.find().count() == 0) {
 		let m1 = MonitorsCollection.insert({
 			name: 'VersionsMonitor',
