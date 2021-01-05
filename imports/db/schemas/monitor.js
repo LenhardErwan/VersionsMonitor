@@ -4,7 +4,7 @@ import { version } from '/imports/db/schemas/version';
 
 export const monitor = new SimpleSchema({
 	'name': String,
-	'url': String,
+	'url': SimpleSchema.RegEx.Url,
 	'selector': String,
 	'regex': {
 		type: String,
@@ -12,7 +12,7 @@ export const monitor = new SimpleSchema({
 		defaultValue: null,
 	},
 	'icon_url': {
-		type: String,
+		type: SimpleSchema.RegEx.Url,
 		optional: true,
 		defaultValue: null,
 	},

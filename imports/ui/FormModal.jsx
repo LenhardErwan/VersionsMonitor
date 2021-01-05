@@ -18,11 +18,7 @@ class FormModal extends React.Component {
 
 		if (old_monitor !== new_monitor) {
 			if (old_monitor.id === new_monitor.id) {
-				Meteor.call(
-					'monitors.update',
-					old_monitor.id,
-					new_monitor,
-				);
+				Meteor.call('monitors.update', old_monitor.id, new_monitor);
 
 				// TODO display success
 			} else {
@@ -51,7 +47,7 @@ class FormModal extends React.Component {
 							model={this.props.monitor}
 							ref={(ref) => (formRef = ref)}
 							onSubmit={this.onSubmit.bind(this)}>
-							<AutoFields omitFields={['versions']} />
+							<AutoFields omitFields={['versions', 'error']} />
 							<ErrorsField />
 						</AutoForm>
 					</Modal.Description>
