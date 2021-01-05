@@ -12,7 +12,19 @@ class FormModal extends React.Component {
 		super(props);
 	}
 
-	onSubmit(monitor) {}
+	onSubmit(monitor) {
+		console.log('updating...');
+		/*console.log(
+			MonitorsCollection.update(monitor.id, {
+				$set: {
+					name: monitor.name,
+				},
+			})
+		);*/
+		console.log('updated !');
+
+		this.props.onClose();
+	}
 
 	render() {
 		let formRef;
@@ -26,7 +38,7 @@ class FormModal extends React.Component {
 							schema={bridge}
 							model={this.props.monitor}
 							ref={(ref) => (formRef = ref)}
-							onSubmit={this.onSubmit}>
+							onSubmit={this.onSubmit.bind(this)}>
 							<AutoFields omitFields={['versions']} />
 							<ErrorsField />
 						</AutoForm>
