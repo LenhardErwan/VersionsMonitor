@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Img } from 'react-image';
 import { Image, Table } from 'semantic-ui-react';
 
 export default class MonitorItem extends Component {
@@ -20,7 +21,7 @@ export default class MonitorItem extends Component {
 	getVersionString() {
 		let str;
 		if (this.state.versions.length > 0) {
-			str = this.state.versions[0].value;
+			str = this.state.versions[0].label;
 		} else {
 			str = 'No version';
 		}
@@ -30,9 +31,7 @@ export default class MonitorItem extends Component {
 	getDateString() {
 		let str;
 		if (this.state.versions.length > 0) {
-			str = new Date(
-				this.state.versions[0].discovery_timestamp
-			).toLocaleString();
+			str = new Date(this.state.versions[0].date).toLocaleString();
 		} else {
 			str = 'No version';
 		}
@@ -42,8 +41,16 @@ export default class MonitorItem extends Component {
 	render() {
 		return (
 			<Table.Row key={this.state._id}>
-				<Table.Cell image>
-					<Image src={this.state.image ? this.state.image : (`${new URL(this.state.url).origin}/favicon.ico` ? `${new URL(this.state.url).origin}/favicon.ico` : 'images/no_image.svg')} size='mini' />
+				<Table.Cell>
+					<Image>
+						<Img
+							src={[
+								this.state.icon_url,
+								`${new URL(this.state.url).origin}/favicon.ico`,
+								'./images/no-image.svg',
+							]}
+						/>
+					</Image>
 				</Table.Cell>
 				<Table.Cell>{this.state.name}</Table.Cell>
 				<Table.Cell>{this.getVersionString()}</Table.Cell>
