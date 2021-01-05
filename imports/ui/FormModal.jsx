@@ -4,6 +4,7 @@ import { Button, Modal } from 'semantic-ui-react';
 import { monitor } from '/imports/db/schemas/monitor';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { AutoFields, AutoForm, ErrorsField } from 'uniforms-semantic';
+import MonitorsCollection from '/imports/db/MonitorsCollection';
 
 const bridge = new SimpleSchema2Bridge(monitor);
 
@@ -12,15 +13,28 @@ class FormModal extends React.Component {
 		super(props);
 	}
 
-	onSubmit(monitor) {
-		console.log('updating...');
+	onSubmit(new_monitor) {
+		let old_monitor = this.props.monitor;
 
-		/*MonitorsCollection.update(monitor.id, {
-			$set: {
-				name: monitor.name,
-			},
-		});*/
+		if (old_monitor !== new_monitor) {
+			if (old_monitor.id === new_monitor.id) {
+				Meteor.call(
+					'monitors.update',
+					old_monitor.id,
+					new_monitor,
+				);
 
+				// TODO display success
+			} else {
+				// TODO display error
+				//console.log('monitorId is diff');
+			}
+		} else {
+			// TODO display error
+			//console.log('No diff');
+		}
+
+		// TODO find how to refresh the client list
 		this.props.onClose();
 	}
 

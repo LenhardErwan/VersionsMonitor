@@ -5,6 +5,7 @@ import GroupsCollection from '/imports/db/GroupsCollection';
 import UsersCollection from '/imports/db/UsersCollection';
 
 import '/imports/api/monitorsPublications';
+import '/imports/api/monitorsMethods';
 import App from '/server/app.js';
 
 Meteor.startup(() => {
