@@ -1,5 +1,5 @@
 import { Mongo } from 'meteor/mongo';
-import { monitor } from '/imports/api/schemas/monitor';
+import { monitor } from '/imports/db/schemas/monitor';
 
 export default MonitorsCollection = new Mongo.Collection('monitors');
 

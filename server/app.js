@@ -1,7 +1,7 @@
 import fetch, { Headers } from 'node-fetch';
 import { JSDOM } from 'jsdom';
 
-import MonitorsCollection from '/imports/api/MonitorsCollection';
+import MonitorsCollection from '/imports/db/MonitorsCollection';
 
 export default class App {
 	constructor() {
@@ -30,11 +30,10 @@ export default class App {
 	}
 
 	async addVersion(monitor_id, label, date) {
-		const result = MonitorsCollection.update(
+		MonitorsCollection.update(
 			{ _id: monitor_id },
 			{ $push: { versions: { label: label, date: date } } }
 		);
-		console.log(result);
 	}
 
 	async check(monitor_id) {

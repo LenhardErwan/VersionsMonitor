@@ -1,5 +1,5 @@
 import { Mongo } from 'meteor/mongo';
-import { group } from '/imports/api/schemas/group';
+import { group } from '/imports/db/schemas/group';
 
 export default GroupsCollection = new Mongo.Collection('groups');
 

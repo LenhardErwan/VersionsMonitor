@@ -1,10 +1,8 @@
 import assert from 'assert';
 
-import { monitor } from '/imports/api/schemas/monitor';
-
-import MonitorsCollection from '/imports/api/MonitorsCollection';
-import GroupsCollection from '/imports/api/GroupsCollection';
-import UsersCollection from '/imports/api/UsersCollection';
+import MonitorsCollection from '/imports/db/MonitorsCollection';
+import GroupsCollection from '/imports/db/GroupsCollection';
+import UsersCollection from '/imports/db/UsersCollection';
 
 describe('VersionsMonitor', function () {
 	it('package.json has correct name', async function () {
