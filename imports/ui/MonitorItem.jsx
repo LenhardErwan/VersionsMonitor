@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Table } from 'semantic-ui-react';
+import { Button, Image, Table } from 'semantic-ui-react';
 
 export default class MonitorItem extends Component {
 	constructor(props) {
@@ -43,7 +43,16 @@ export default class MonitorItem extends Component {
 		return (
 			<Table.Row key={this.state._id}>
 				<Table.Cell image>
-					<Image src={this.state.image ? this.state.image : (`${new URL(this.state.url).origin}/favicon.ico` ? `${new URL(this.state.url).origin}/favicon.ico` : 'images/no_image.svg')} size='mini' />
+					<Image
+						src={
+							this.state.image
+								? this.state.image
+								: `${new URL(this.state.url).origin}/favicon.ico`
+								? `${new URL(this.state.url).origin}/favicon.ico`
+								: 'images/no_image.svg'
+						}
+						size='mini'
+					/>
 				</Table.Cell>
 				<Table.Cell>{this.state.name}</Table.Cell>
 				<Table.Cell>{this.getVersionString()}</Table.Cell>
@@ -53,7 +62,13 @@ export default class MonitorItem extends Component {
 						Link
 					</a>
 				</Table.Cell>
-				<Table.Cell>TODO</Table.Cell>
+				<Table.Cell>
+					<Button
+						circular
+						icon='edit'
+						onClick={() => this.props.onEdit(this.state)}
+					/>
+				</Table.Cell>
 			</Table.Row>
 		);
 	}

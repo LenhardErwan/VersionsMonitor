@@ -10,35 +10,30 @@ const bridge = new SimpleSchema2Bridge(monitor);
 class FormModal extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			open: true,
-		};
 	}
 
-	onSubmit(monitor) {
-		console.log(test);
-	}
+	onSubmit(monitor) {}
 
 	render() {
 		let formRef;
 
 		return (
-			<Modal
-				onClose={() => this.setState({ open: false })}
-				onOpen={() => this.setState({ open: true })}
-				open={this.state.open}>
+			<Modal onClose={this.props.onClose} open={this.props.open}>
 				<Modal.Header>Add a new application</Modal.Header>
 				<Modal.Content>
 					<Modal.Description>
-						<AutoForm schema={bridge} model={this.props.monitor} ref={ref => (formRef = ref) } onSubmit={this.onSubmit}>
+						<AutoForm
+							schema={bridge}
+							model={this.props.monitor}
+							ref={(ref) => (formRef = ref)}
+							onSubmit={this.onSubmit}>
 							<AutoFields omitFields={['versions']} />
 							<ErrorsField />
 						</AutoForm>
 					</Modal.Description>
 				</Modal.Content>
 				<Modal.Actions>
-					<Button color='black' onClick={() => this.setState({ open: false })}>
+					<Button color='black' onClick={this.props.onClose}>
 						Nope
 					</Button>
 					<Button

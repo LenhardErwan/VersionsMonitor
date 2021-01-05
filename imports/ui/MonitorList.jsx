@@ -2,6 +2,7 @@ import React from 'react';
 import { Loader, Table } from 'semantic-ui-react';
 
 import MonitorItem from '/imports/ui/MonitorItem.jsx';
+import FormModal from '/imports/ui/FormModal.jsx';
 
 export default class MonitorList extends React.Component {
 	constructor(props) {
@@ -9,6 +10,8 @@ export default class MonitorList extends React.Component {
 
 		this.state = {
 			monitor_list: props.monitor_list,
+			selected_monitor: null,
+			modal_edit_monitor_open: false,
 		};
 
 		this.getMonitorList = this.getMonitorList.bind(this);
@@ -17,7 +20,18 @@ export default class MonitorList extends React.Component {
 	getMonitorList() {
 		if (this.state.monitor_list.length > 0) {
 			return this.state.monitor_list.map((monitor) => {
-				return <MonitorItem {...monitor} key={monitor._id} />;
+				return (
+					<MonitorItem
+						{...monitor}
+						key={monitor._id}
+						onEdit={(monitor) =>
+							this.setState({
+								selected_monitor: monitor,
+								modal_edit_monitor_open: true,
+							})
+						}
+					/>
+				);
 			});
 		} else {
 			return (
@@ -26,44 +40,6 @@ export default class MonitorList extends React.Component {
 				</tr>
 			);
 		}
-	}
-
-	static getDerivedStateFromProps(props, current_state) {
-		if (props.monitor_list !== current_state.monitor_list) {
-			return {
-				monitor_list: props.monitor_list,
-			};
-		}
-
-		return null;
-	}
-
-	render() {
-		return (
-			<Table celled>
-				<Table.Header>
-					<Table.Row>
-						<Table.HeaderCell>Icon</Table.HeaderCell>
-						<Table.HeaderCell>Name</Table.HeaderCell>
-						<Table.HeaderCell>Newest version</Table.HeaderCell>
-						<Table.HeaderCell>Discovery date <span>({this.getDateFormatString()})</span></Table.HeaderCell>
-						<Table.HeaderCell>Download</Table.HeaderCell>
-						<Table.HeaderCell>Actions</Table.HeaderCell>
-					</Table.Row>
-				</Table.Header>
-				<Table.Body>
-					{this.props.loading ? (
-						<tr>
-							<td colSpan='6'>
-								<Loader active inline='centered' />
-							</td>
-						</tr>
-					) : (
-						this.getMonitorList()
-					)}
-				</Table.Body>
-			</Table>
-		);
 	}
 
 	getDateFormatString() {
@@ -90,5 +66,50 @@ export default class MonitorList extends React.Component {
 				}
 			})
 			.join('');
+	}
+
+	static getDerivedStateFromProps(props, current_state) {
+		if (props.monitor_list !== current_state.monitor_list) {
+			return {
+				monitor_list: props.monitor_list,
+			};
+		}
+
+		return null;
+	}
+
+	render() {
+		return (
+			<Table celled>
+				<Table.Header>
+					<Table.Row>
+						<Table.HeaderCell>Icon</Table.HeaderCell>
+						<Table.HeaderCell>Name</Table.HeaderCell>
+						<Table.HeaderCell>Newest version</Table.HeaderCell>
+						<Table.HeaderCell>
+							Discovery date <span>({this.getDateFormatString()})</span>
+						</Table.HeaderCell>
+						<Table.HeaderCell>Download</Table.HeaderCell>
+						<Table.HeaderCell>Actions</Table.HeaderCell>
+					</Table.Row>
+				</Table.Header>
+				<Table.Body>
+					{this.props.loading ? (
+						<tr>
+							<td colSpan='6'>
+								<Loader active inline='centered' />
+							</td>
+						</tr>
+					) : (
+						this.getMonitorList()
+					)}
+				</Table.Body>
+				<FormModal
+					monitor={this.state.selected_monitor}
+					open={this.state.modal_edit_monitor_open}
+					onClose={() => this.setState({ modal_edit_monitor_open: false })}
+				/>
+			</Table>
+		);
 	}
 }
