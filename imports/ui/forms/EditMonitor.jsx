@@ -22,9 +22,12 @@ class EditMonitor extends React.Component {
 	}
 
 	onSubmit(new_monitor) {
+		// TODO check valid url, name and selector (might add preview of the given link)
+
 		if (this.props.monitor.id == null) {
 			/** We are creating a new monitor */
 			Meteor.call('monitors.insert', new_monitor);
+			this.props.closeModal();
 		} else {
 			/** We are editing an existing monitor */
 			let old_monitor = this.props.monitor;
@@ -41,15 +44,13 @@ class EditMonitor extends React.Component {
 
 					Meteor.call('monitors.update', old_monitor.id, updated_monitor);
 
-					// TODO display success and refresh client list
+					// TODO success and refresh client list
 					this.props.closeModal();
 				} else {
-					// TODO display error
-					//console.log('monitorId is diff');
+					// TODO the new id is different
 				}
 			} else {
-				// TODO display error
-				//console.log('No diff');
+				// TODO no changes error or simply close modal
 			}
 		}
 	}
