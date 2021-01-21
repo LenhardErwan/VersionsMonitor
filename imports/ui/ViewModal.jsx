@@ -9,6 +9,7 @@ import {
 	Divider,
 	Icon,
 	Header,
+	Message,
 } from 'semantic-ui-react';
 
 class ViewModal extends React.Component {
@@ -37,12 +38,21 @@ class ViewModal extends React.Component {
 					</Modal.Header>
 
 					<Modal.Content scrolling>
+						{monitor.error && (
+							<Message
+								negative
+								icon='exclamation triangle'
+								header='Monitor in error :'
+								content={monitor.error}></Message>
+						)}
+
 						<Divider horizontal>
 							<Header as='h4'>
 								<Icon name='sliders horizontal' />
 								Properties
 							</Header>
 						</Divider>
+
 						<Table celled striped>
 							<Table.Header>
 								<Table.Row>
