@@ -77,12 +77,12 @@ export default class MonitorItem extends React.Component {
 				</Table.Cell>
 				<Table.Cell>
 					<Button
-						circular
+						className='action-button'
 						icon='eye'
 						onClick={() => this.props.onView(this.state)}
 					/>
 					<Button
-						circular
+						className='action-button'
 						icon='edit'
 						onClick={() => this.props.onEdit(this.state)}
 					/>
