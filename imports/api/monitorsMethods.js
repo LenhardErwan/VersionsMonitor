@@ -13,4 +13,7 @@ Meteor.methods({
 			$set: monitor,
 		});
 	},
+	'monitors.delete'(monitorId) {
+		MonitorsCollection.remove(monitorId);
+	}
 });

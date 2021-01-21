@@ -34,7 +34,7 @@ export default class Menu extends React.Component {
 				<Button
 					circular
 					icon='add'
-					onClick={() => this.props.openFormModal('monitor', {})}
+					onClick={() => this.props.openFormModal('edit_monitor', {})}
 				/>
 			</header>
 		);

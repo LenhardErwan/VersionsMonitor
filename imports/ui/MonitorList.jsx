@@ -22,7 +22,12 @@ export default class MonitorList extends React.Component {
 					<MonitorItem
 						{...monitor}
 						key={monitor._id}
-						handleEdit={(monitor) => this.props.openFormModal('monitor', monitor)}
+						handleEdit={(monitor) =>
+							this.props.openFormModal('edit_monitor', monitor)
+						}
+						handleDelete={(monitor) =>
+							this.props.openFormModal('delete_monitor', monitor)
+						}
 					/>
 				);
 			});

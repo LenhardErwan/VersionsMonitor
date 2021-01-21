@@ -78,6 +78,11 @@ export default class MonitorItem extends Component {
 						icon='edit'
 						onClick={() => this.props.handleEdit(this.state)}
 					/>
+					<Button
+						circular
+						icon='delete'
+						onClick={() => this.props.handleDelete(this.state)}
+					/>
 				</Table.Cell>
 			</Table.Row>
 		);
