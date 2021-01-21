@@ -73,9 +73,15 @@ export default class App {
 			if (selected == undefined || selected == null)
 				throw 'Error with given selector, if you are sure about it, think about Headers parameters.';
 			let newest = selected.textContent; // Text in selector
-			const regex_obj = new RegExp(monitor.regex);
-			const result = regex_obj.exec(newest); // Refine the result with the regex
-			if (result && result[1]) newest = result[1]; // If regex as a match (1 is for between first brackets)
+
+			const regex_white_space = /^\s*([^\n\r\f]*)\s*$/gm; // Delete all white spaces before and after the text, if any
+			newest = regex_white_space.exec(newest)[1]; // Regex match (1 is for between brackets)
+
+			if (monitor.regex) {
+				const regex_obj = new RegExp(monitor.regex);
+				const result = regex_obj.exec(newest); // Refine the result with the regex
+				if (result && result[1]) newest = result[1]; // If regex as a match (1 is for between first brackets)
+			}
 
 			monitor.versions.sort((a, b) => {
 				// Sort version by date (most recent on top)
