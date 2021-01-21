@@ -12,3 +12,7 @@ body {
 	padding: 0px !important;
 	background: transparent !important;
 }
+
+.icon-list img {
+	width: 2rem !important;
+}

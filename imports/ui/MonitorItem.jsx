@@ -55,8 +55,8 @@ export default class MonitorItem extends React.Component {
 			<Table.Row
 				key={this.state._id}
 				{...(this.state.error === null ? {} : { negative: true })}>
-				<Table.Cell>
-					<Image>
+				<Table.Cell collapsing>
+					<Image className='icon-list'>
 						<Img
 							src={[
 								this.state.icon_url,
