@@ -5,6 +5,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import Menu from '/imports/ui/Menu.jsx';
 import MonitorList from '/imports/ui/MonitorList.jsx';
 import MonitorsCollection from '/imports/db/MonitorsCollection';
+import FormModal from '/imports/ui/FormModal.jsx';
 
 class App extends React.Component {
 	constructor(props) {
@@ -16,6 +17,9 @@ class App extends React.Component {
 			loading: props.loading,
 			loading_filter: false,
 			monitor_list: new Array(),
+			fmodal_name: null,
+			fmodal_param: null,
+			is_fmodal_open: false,
 		};
 
 		this.setFilter = this.setFilter.bind(this);
@@ -68,6 +72,19 @@ class App extends React.Component {
 				<MonitorList
 					monitor_list={this.state.monitor_list}
 					loading={this.state.loading}
+					openFormModal={(name, param) => {
+						this.setState({
+							fmodal_name: name,
+							fmodal_param: param,
+							is_fmodal_open: true,
+						});
+					}}
+				/>
+				<FormModal
+					isOpen={this.state.is_fmodal_open}
+					closeModal={() => this.setState({ is_fmodal_open: false })}
+					name={this.state.fmodal_name}
+					param={this.state.fmodal_param}
 				/>
 			</div>
 		);

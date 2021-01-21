@@ -10,8 +10,6 @@ export default class MonitorList extends React.Component {
 
 		this.state = {
 			monitor_list: props.monitor_list,
-			selected_monitor: null,
-			modal_edit_monitor_open: false,
 		};
 
 		this.getMonitorList = this.getMonitorList.bind(this);
@@ -24,12 +22,7 @@ export default class MonitorList extends React.Component {
 					<MonitorItem
 						{...monitor}
 						key={monitor._id}
-						onEdit={(monitor) =>
-							this.setState({
-								selected_monitor: monitor,
-								modal_edit_monitor_open: true,
-							})
-						}
+						handleEdit={(monitor) => this.props.openFormModal('monitor', monitor)}
 					/>
 				);
 			});
@@ -104,11 +97,6 @@ export default class MonitorList extends React.Component {
 						this.getMonitorList()
 					)}
 				</Table.Body>
-				<FormModal
-					monitor={this.state.selected_monitor}
-					open={this.state.modal_edit_monitor_open}
-					onClose={() => this.setState({ modal_edit_monitor_open: false })}
-				/>
 			</Table>
 		);
 	}

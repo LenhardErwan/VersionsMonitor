@@ -76,7 +76,7 @@ export default class MonitorItem extends Component {
 					<Button
 						circular
 						icon='edit'
-						onClick={() => this.props.onEdit(this.state)}
+						onClick={() => this.props.handleEdit(this.state)}
 					/>
 				</Table.Cell>
 			</Table.Row>
