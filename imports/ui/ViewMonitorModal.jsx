@@ -12,7 +12,7 @@ import {
 	Message,
 } from 'semantic-ui-react';
 
-class ViewModal extends React.Component {
+export default class ViewMonitorModal extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -183,5 +183,3 @@ class ViewModal extends React.Component {
 		}
 	}
 }
-
-export default ViewModal;
