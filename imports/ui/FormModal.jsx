@@ -7,7 +7,13 @@ class FormModal extends React.Component {
 	}
 
 	render() {
-		return <EditMonitor isOpen={this.props.isOpen} monitor={this.props.param} closeModal={this.props.closeModal} />;
+		return (
+			<EditMonitor
+				isOpen={this.props.isOpen}
+				monitor={this.props.param}
+				closeModal={this.props.closeModal}
+			/>
+		);
 	}
 }
 

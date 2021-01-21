@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'semantic-ui-react';
 
 export default class Menu extends React.Component {
 	constructor(props) {
@@ -30,6 +31,11 @@ export default class Menu extends React.Component {
 					/>
 					<i className='search icon'></i>
 				</div>
+				<Button
+					circular
+					icon='add'
+					onClick={() => this.props.openFormModal('monitor', {})}
+				/>
 			</header>
 		);
 	}

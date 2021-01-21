@@ -24,6 +24,7 @@ class App extends React.Component {
 
 		this.setFilter = this.setFilter.bind(this);
 		this.filter = this.filter.bind(this);
+		this.openFormModal = this.openFormModal.bind(this);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -65,20 +66,26 @@ class App extends React.Component {
 		});
 	}
 
+	openFormModal(name, param) {
+		this.setState({
+			fmodal_name: name,
+			fmodal_param: param,
+			is_fmodal_open: true,
+		});
+	}
+
 	render() {
 		return (
 			<div>
-				<Menu loading={this.state.loading_filter} setFilter={this.setFilter} />
+				<Menu
+					loading={this.state.loading_filter}
+					setFilter={this.setFilter}
+					openFormModal={this.openFormModal}
+				/>
 				<MonitorList
 					monitor_list={this.state.monitor_list}
 					loading={this.state.loading}
-					openFormModal={(name, param) => {
-						this.setState({
-							fmodal_name: name,
-							fmodal_param: param,
-							is_fmodal_open: true,
-						});
-					}}
+					openFormModal={this.openFormModal}
 				/>
 				<FormModal
 					isOpen={this.state.is_fmodal_open}
