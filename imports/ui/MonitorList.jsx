@@ -2,6 +2,7 @@ import React from 'react';
 import { Loader, Table } from 'semantic-ui-react';
 
 import MonitorItem from '/imports/ui/MonitorItem.jsx';
+import ViewModal from '/imports/ui/ViewModal.jsx';
 import FormModal from '/imports/ui/FormModal.jsx';
 
 export default class MonitorList extends React.Component {
@@ -11,6 +12,7 @@ export default class MonitorList extends React.Component {
 		this.state = {
 			monitor_list: props.monitor_list,
 			selected_monitor: null,
+			modal_view_monitor_open: false,
 			modal_edit_monitor_open: false,
 		};
 
@@ -24,6 +26,12 @@ export default class MonitorList extends React.Component {
 					<MonitorItem
 						{...monitor}
 						key={monitor._id}
+						onView={(monitor) =>
+							this.setState({
+								selected_monitor: monitor,
+								modal_view_monitor_open: true,
+							})
+						}
 						onEdit={(monitor) =>
 							this.setState({
 								selected_monitor: monitor,
@@ -104,6 +112,12 @@ export default class MonitorList extends React.Component {
 						this.getMonitorList()
 					)}
 				</Table.Body>
+				<ViewModal
+					monitor={this.state.selected_monitor}
+					date_format={this.getDateFormatString()}
+					open={this.state.modal_view_monitor_open}
+					onClose={() => this.setState({ modal_view_monitor_open: false })}
+				/>
 				<FormModal
 					monitor={this.state.selected_monitor}
 					open={this.state.modal_edit_monitor_open}

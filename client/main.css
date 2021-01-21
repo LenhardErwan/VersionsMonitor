@@ -2,3 +2,7 @@ body {
 	padding: 10px;
 	font-family: sans-serif;
 }
+
+.ui.table:last-child.margin-last-table {
+	margin-bottom: 2rem;
+}

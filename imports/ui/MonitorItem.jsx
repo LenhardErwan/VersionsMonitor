@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Img } from 'react-image';
 import { Button, Loader, Image, Table } from 'semantic-ui-react';
 
-export default class MonitorItem extends Component {
+export default class MonitorItem extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -17,6 +17,9 @@ export default class MonitorItem extends Component {
 			versions: this.props.versions,
 			error: this.props.error ? this.props.error : null,
 		};
+
+		if (this.state.error !== null)
+			console.error(this.state.name, ': ', this.state.error);
 
 		try {
 			this.state.alternate_icon = `${
@@ -73,6 +76,11 @@ export default class MonitorItem extends Component {
 					</a>
 				</Table.Cell>
 				<Table.Cell>
+					<Button
+						circular
+						icon='eye'
+						onClick={() => this.props.onView(this.state)}
+					/>
 					<Button
 						circular
 						icon='edit'
