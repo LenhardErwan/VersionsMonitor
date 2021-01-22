@@ -2,6 +2,7 @@ import React from 'react';
 import { Loader, Table } from 'semantic-ui-react';
 
 import MonitorItem from '/imports/ui/MonitorItem.jsx';
+import ViewMonitorModal from '/imports/ui/ViewMonitorModal.jsx';
 import FormModal from '/imports/ui/FormModal.jsx';
 
 export default class MonitorList extends React.Component {
@@ -10,6 +11,8 @@ export default class MonitorList extends React.Component {
 
 		this.state = {
 			monitor_list: props.monitor_list,
+			selected_monitor: null,
+			modal_view_monitor_open: false,
 		};
 
 		this.getMonitorList = this.getMonitorList.bind(this);
@@ -27,6 +30,12 @@ export default class MonitorList extends React.Component {
 						}
 						handleDelete={(monitor) =>
 							this.props.openFormModal('delete_monitor', monitor)
+						}
+						onView={(monitor) =>
+							this.setState({
+								selected_monitor: monitor,
+								modal_view_monitor_open: true,
+							})
 						}
 					/>
 				);
@@ -78,31 +87,39 @@ export default class MonitorList extends React.Component {
 
 	render() {
 		return (
-			<Table celled>
-				<Table.Header>
-					<Table.Row>
-						<Table.HeaderCell>Icon</Table.HeaderCell>
-						<Table.HeaderCell>Name</Table.HeaderCell>
-						<Table.HeaderCell>Newest version</Table.HeaderCell>
-						<Table.HeaderCell>
-							Discovery date <span>({this.getDateFormatString()})</span>
-						</Table.HeaderCell>
-						<Table.HeaderCell>Download</Table.HeaderCell>
-						<Table.HeaderCell>Actions</Table.HeaderCell>
-					</Table.Row>
-				</Table.Header>
-				<Table.Body>
-					{this.props.loading ? (
-						<tr>
-							<td colSpan='6'>
-								<Loader active inline='centered' />
-							</td>
-						</tr>
-					) : (
-						this.getMonitorList()
-					)}
-				</Table.Body>
-			</Table>
+			<div>
+				<Table celled>
+					<Table.Header>
+						<Table.Row>
+							<Table.HeaderCell>Icon</Table.HeaderCell>
+							<Table.HeaderCell>Name</Table.HeaderCell>
+							<Table.HeaderCell>Newest version</Table.HeaderCell>
+							<Table.HeaderCell>
+								Discovery date <span>({this.getDateFormatString()})</span>
+							</Table.HeaderCell>
+							<Table.HeaderCell>Download</Table.HeaderCell>
+							<Table.HeaderCell>Actions</Table.HeaderCell>
+						</Table.Row>
+					</Table.Header>
+					<Table.Body>
+						{this.props.loading ? (
+							<tr>
+								<td colSpan='6'>
+									<Loader active inline='centered' />
+								</td>
+							</tr>
+						) : (
+							this.getMonitorList()
+						)}
+					</Table.Body>
+				</Table>
+				<ViewMonitorModal
+					monitor={this.state.selected_monitor}
+					date_format={this.getDateFormatString()}
+					open={this.state.modal_view_monitor_open}
+					onClose={() => this.setState({ modal_view_monitor_open: false })}
+				/>
+			</div>
 		);
 	}
 }
