@@ -3,14 +3,12 @@ import { Loader, Table } from 'semantic-ui-react';
 
 import MonitorItem from '/imports/ui/MonitorItem.jsx';
 import ViewMonitorModal from '/imports/ui/ViewMonitorModal.jsx';
-import FormModal from '/imports/ui/FormModal.jsx';
 
 export default class MonitorList extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			monitor_list: props.monitor_list,
 			selected_monitor: null,
 			modal_view_monitor_open: false,
 		};
@@ -19,8 +17,8 @@ export default class MonitorList extends React.Component {
 	}
 
 	getMonitorList() {
-		if (this.state.monitor_list.length > 0) {
-			return this.state.monitor_list.map((monitor) => {
+		if (this.props.monitor_list.length > 0) {
+			return this.props.monitor_list.map((monitor) => {
 				return (
 					<MonitorItem
 						{...monitor}
@@ -73,16 +71,6 @@ export default class MonitorList extends React.Component {
 				}
 			})
 			.join('');
-	}
-
-	static getDerivedStateFromProps(props, current_state) {
-		if (props.monitor_list !== current_state.monitor_list) {
-			return {
-				monitor_list: props.monitor_list,
-			};
-		}
-
-		return null;
 	}
 
 	render() {
