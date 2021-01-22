@@ -11,6 +11,16 @@ import App from '/server/app.js';
 Meteor.startup(() => {
 	const app = new App();
 
+	const cursor = MonitorsCollection.find();
+	cursor.observe({
+		added: function (monitor) {
+			app.check(monitor);
+		},
+		changed: function (monitor) {
+			app.check(monitor);
+		},
+	});
+
 	if (MonitorsCollection.find().count() == 0) {
 		let m1 = MonitorsCollection.insert({
 			name: 'VersionsMonitor',

@@ -5,28 +5,10 @@ import MonitorsCollection from '/imports/db/MonitorsCollection';
 
 export default class App {
 	constructor() {
-		this.monitors = new Map();
-
-		this.reload = this.reload.bind(this);
 		this.check = this.check.bind(this);
 		this.checkAll = this.checkAll.bind(this);
-		this.reloadAndCheckAll = this.reloadAndCheckAll.bind(this);
 
-		this.reloadAndCheckAll();
-		setInterval(this.reloadAndCheckAll, 43200000); //12H
-	}
-
-	async getMonitors() {
-		const monitors = await MonitorsCollection.find().fetch();
-		const map = new Map();
-		for (const monitor of monitors) {
-			map.set(monitor._id, monitor);
-		}
-		return map;
-	}
-
-	async reload() {
-		this.monitors = await this.getMonitors();
+		setInterval(this.checkAll, 43200000); //12H
 	}
 
 	async addVersion(monitor_id, label, date) {
@@ -51,9 +33,7 @@ export default class App {
 		}
 	}
 
-	async check(monitor_id) {
-		const monitor = this.monitors.get(monitor_id);
-
+	async check(monitor) {
 		const headers = new Headers();
 		for (const header of monitor.headers) {
 			headers.append(header.name, header.value);
@@ -90,21 +70,16 @@ export default class App {
 
 			if (monitor.versions.length <= 0 || newest != monitor.versions[0].label) {
 				// Is a new version
-				this.addVersion(monitor_id, newest, new Date());
+				this.addVersion(monitor._id, newest, new Date());
 			}
 		} catch (err) {
-			this.editError(monitor_id, err);
+			this.editError(monitor._id, err);
 		}
 	}
 
 	checkAll() {
-		for (const [monitor_id] of this.monitors) {
-			this.check(monitor_id);
+		for (const [, monitor] of MonitorsCollection.fetch()) {
+			this.check(monitor);
 		}
-	}
-
-	async reloadAndCheckAll() {
-		await this.reload();
-		this.checkAll();
 	}
 }
