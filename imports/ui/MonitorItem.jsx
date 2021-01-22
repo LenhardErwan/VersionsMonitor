@@ -50,6 +50,24 @@ export default class MonitorItem extends React.Component {
 		return str;
 	}
 
+	componentDidUpdate(prevProps) {
+		if (this.props !== prevProps) {
+			this.setState({
+				id: this.props._id,
+				name: this.props.name,
+				url: this.props.url,
+				selector: this.props.selector,
+				regex: this.props.regex,
+				icon_url: this.props.image,
+				headers: this.props.headers,
+				versions: this.props.versions,
+				error: this.props.error ? this.props.error : null,
+			});
+		}
+
+		return null;
+	}
+
 	render() {
 		return (
 			<Table.Row
