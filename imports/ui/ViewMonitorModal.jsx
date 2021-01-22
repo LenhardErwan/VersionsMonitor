@@ -21,6 +21,11 @@ export default class ViewMonitorModal extends React.Component {
 		const monitor = this.props.monitor;
 
 		if (monitor !== null) {
+			monitor.versions.sort((a, b) => {
+				// Sort version by date (most recent on top)
+				return b.date - a.date;
+			});
+
 			return (
 				<Modal closeIcon onClose={this.props.onClose} open={this.props.open}>
 					<Modal.Header>
