@@ -55,11 +55,10 @@ class App extends React.Component {
 	}
 
 	filter(filter) {
-		const mlist = new Array();
-		for (const monitor of this.state.monitors) {
-			if (monitor.name.toLowerCase().includes(filter.toLowerCase()))
-				mlist.push(monitor);
-		}
+		const mlist = this.props.monitors.filter((monitor) =>
+			monitor.name.toLowerCase().includes(filter.toLowerCase())
+		);
+
 		this.setState({
 			monitor_list: mlist,
 			loading_filter: false,
