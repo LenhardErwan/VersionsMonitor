@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
+import { ToastContainer, toast } from 'react-toastify';
 
 import Menu from '/imports/ui/Menu.jsx';
 import MonitorList from '/imports/ui/MonitorList.jsx';
@@ -22,9 +23,19 @@ class App extends React.Component {
 			is_fmodal_open: false,
 		};
 
+		const cursor = MonitorsCollection.find();
+		cursor.observe({
+			added: (monitor) => this.addedMonitor(monitor),
+			changed: (monitor) => this.changedMonitor(monitor),
+			removed: (monitor) => this.removedMonitor(monitor),
+		});
+
 		this.setFilter = this.setFilter.bind(this);
 		this.filter = this.filter.bind(this);
 		this.openFormModal = this.openFormModal.bind(this);
+		this.addedMonitor = this.addedMonitor.bind(this);
+		this.changedMonitor = this.changedMonitor.bind(this);
+		this.removedMonitor = this.removedMonitor.bind(this);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -73,6 +84,29 @@ class App extends React.Component {
 		});
 	}
 
+	addedMonitor(monitor) {
+		if (!this.state.loading) {
+			// Don't trigger on start
+			if (monitor.error !== null) {
+				toast.error(`${monitor.name} has errors!`);
+			} else {
+				toast.success(`${monitor.name} has been added!`);
+			}
+		}
+	}
+
+	changedMonitor(monitor) {
+		if (monitor.error !== null) {
+			toast.error(`${monitor.name} has errors!`);
+		} else {
+			toast.success(`${monitor.name} has been updated!`);
+		}
+	}
+
+	removedMonitor(monitor) {
+		toast.success(`${monitor.name} has been removed!`);
+	}
+
 	render() {
 		return (
 			<div>
@@ -91,6 +125,17 @@ class App extends React.Component {
 					closeModal={() => this.setState({ is_fmodal_open: false })}
 					name={this.state.fmodal_name}
 					param={this.state.fmodal_param}
+				/>
+				<ToastContainer
+					position='top-right'
+					autoClose={10000}
+					hideProgressBar={false}
+					newestOnTop
+					closeOnClick={false}
+					rtl={false}
+					pauseOnFocusLoss
+					draggable={false}
+					pauseOnHover
 				/>
 			</div>
 		);
