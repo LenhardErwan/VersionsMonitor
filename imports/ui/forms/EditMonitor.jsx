@@ -4,6 +4,7 @@ import { Button, Modal } from 'semantic-ui-react';
 import { monitor } from '/imports/db/schemas/monitor';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { AutoFields, AutoForm, ErrorsField } from 'uniforms-semantic';
+import { toast } from 'react-toastify';
 
 const bridge = new SimpleSchema2Bridge(monitor);
 
@@ -22,8 +23,6 @@ class EditMonitor extends React.Component {
 	}
 
 	onSubmit(new_monitor) {
-		// TODO check valid url, name and selector (might add preview of the given link)
-
 		if (this.props.monitor.id == null) {
 			/** We are creating a new monitor */
 			Meteor.call('monitors.insert', new_monitor);
@@ -44,13 +43,14 @@ class EditMonitor extends React.Component {
 
 					Meteor.call('monitors.update', old_monitor.id, updated_monitor);
 
-					// TODO success and refresh client list
 					this.props.closeModal();
 				} else {
-					// TODO the new id is different
+					/** The id of the new monitor differs from the old id */
+					toast.error('Something bad happened, try again later!');
 				}
 			} else {
-				// TODO no changes error or simply close modal
+				/** No changes in the monitor */
+				toast.error('Nothing to save!');
 			}
 		}
 	}
@@ -75,10 +75,10 @@ class EditMonitor extends React.Component {
 				</Modal.Content>
 				<Modal.Actions>
 					<Button color='black' onClick={this.props.closeModal}>
-						Nope
+						Cancel
 					</Button>
 					<Button
-						content="Yep, that's me"
+						content="Save"
 						labelPosition='right'
 						icon='checkmark'
 						onClick={() => formRef.submit()}
