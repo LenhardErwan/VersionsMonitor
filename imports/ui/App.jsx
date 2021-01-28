@@ -129,23 +129,23 @@ class App extends React.Component {
 							name={this.state.fmodal_name}
 							param={this.state.fmodal_param}
 						/>
-						<ToastContainer
-							position='top-right'
-							autoClose={10000}
-							hideProgressBar={false}
-							newestOnTop
-							closeOnClick={false}
-							rtl={false}
-							pauseOnFocusLoss
-							draggable={false}
-							pauseOnHover
-						/>
 					</div>
 				) : (
 					<div>
 						<Login />
 					</div>
 				)}
+				<ToastContainer
+					position='top-right'
+					autoClose={5000}
+					hideProgressBar={false}
+					newestOnTop
+					closeOnClick={false}
+					rtl={false}
+					pauseOnFocusLoss
+					draggable={false}
+					pauseOnHover
+				/>
 			</div>
 		);
 	}

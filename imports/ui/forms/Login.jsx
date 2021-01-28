@@ -1,13 +1,15 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
+import { Button, Form } from 'semantic-ui-react';
+import { toast } from 'react-toastify';
 
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			username: null,
-			password: null,
+			username: '',
+			password: '',
 		};
 
 		this.submit = this.submit.bind(this);
@@ -16,35 +18,44 @@ class Login extends React.Component {
 	submit(event) {
 		event.preventDefault();
 
-		Meteor.loginWithPassword(this.state.username, this.state.password);
-		console.log('test');
+		Meteor.loginWithPassword(
+			this.state.username,
+			this.state.password,
+			(error) => {
+				if (error) {
+					toast.error(error.reason);
+				}
+			}
+		);
 	}
 
 	render() {
 		return (
-			<form onSubmit={this.submit}>
-				<label htmlFor='username'>Username</label>
+			<Form onSubmit={this.submit}>
+				<Form.Field>
+					<label htmlFor='username'>Username</label>
+					<input
+						name='password'
+						type='text'
+						placeholder='Username'
+						required
+						onChange={(e) => this.setState({ username: e.target.value })}
+					/>
+				</Form.Field>
 
-				<input
-					type='text'
-					placeholder='Username'
-					name='username'
-					required
-					onChange={(e) => this.setState({ username: e.target.value })}
-				/>
+				<Form.Field>
+					<label htmlFor='password'>Password</label>
+					<input
+						name='password'
+						type='password'
+						placeholder='Password'
+						required
+						onChange={(e) => this.setState({ password: e.target.value })}
+					/>
+				</Form.Field>
 
-				<label htmlFor='password'>Password</label>
-
-				<input
-					type='password'
-					placeholder='Password'
-					name='password'
-					required
-					onChange={(e) => this.setState({ password: e.target.value })}
-				/>
-
-				<button type='submit'>Log In</button>
-			</form>
+				<Button type='submit'>Log In</Button>
+			</Form>
 		);
 	}
 }
