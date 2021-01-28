@@ -1,26 +1,25 @@
 import SimpleSchema from 'simpl-schema';
 
-export const group = new SimpleSchema({
-	name: String,
+export const monitorPerms = new SimpleSchema({
+	monitor_id: String,
 	canView: {
 		type: Boolean,
-		optional: true,
+		optional: false,
 		defaultValue: false,
 	},
 	canCreate: {
 		type: Boolean,
-		optional: true,
+		optional: false,
 		defaultValue: false,
 	},
 	canEdit: {
 		type: Boolean,
-		optional: true,
+		optional: false,
 		defaultValue: false,
 	},
 	canDelete: {
 		type: Boolean,
-		optional: true,
+		optional: false,
 		defaultValue: false,
 	},
-	monitorsId: [String],
 });

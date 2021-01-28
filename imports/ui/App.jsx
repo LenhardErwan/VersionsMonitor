@@ -137,11 +137,19 @@ class App extends React.Component {
 }
 
 const AppContainer = withTracker(() => {
-	const monitorsHandle = Meteor.subscribe('monitors.list');
+	const user = Meteor.user();
+
+	if (user !== undefined && user !== null) {
+		Meteor.subscribe('Meteor.users.groups', user._id);
+	}
+
+	const groups = user && user.groups ? user.groups : ['everyone'];
+
+	const monitorsHandle = Meteor.subscribe('monitors.list', groups);
 	const loading = !monitorsHandle.ready();
 
 	return {
-		user: Meteor.user(),
+		user: user,
 		monitors: MonitorsCollection.find().fetch(),
 		loading: loading,
 	};
