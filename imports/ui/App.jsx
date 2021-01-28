@@ -14,9 +14,7 @@ class App extends React.Component {
 		super(props);
 
 		this.state = {
-			monitors: new Array(),
 			filter: '',
-			loading: props.loading,
 			loading_filter: false,
 			monitor_list: new Array(),
 			fmodal_name: null,
@@ -41,20 +39,7 @@ class App extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.monitors !== this.props.monitors) {
-			this.setState(
-				{
-					monitors: this.props.monitors,
-				},
-				() => {
-					this.filter(this.state.filter);
-				}
-			);
-		}
-
-		if (prevProps.loading !== this.props.loading) {
-			this.setState({
-				loading: this.props.loading,
-			});
+			this.filter(this.state.filter);
 		}
 	}
 
@@ -86,7 +71,7 @@ class App extends React.Component {
 	}
 
 	addedMonitor(monitor) {
-		if (!this.state.loading) {
+		if (!this.props.loading) {
 			// Don't trigger on start
 			if (monitor.error !== null) {
 				toast.error(`${monitor.name} has errors!`);
@@ -120,7 +105,7 @@ class App extends React.Component {
 						/>
 						<MonitorList
 							monitor_list={this.state.monitor_list}
-							loading={this.state.loading}
+							loading={this.props.loading}
 							openFormModal={this.openFormModal}
 						/>
 						<FormModal
