@@ -9,13 +9,13 @@ import { toast } from 'react-toastify';
 const bridge = new SimpleSchema2Bridge(monitor);
 
 /**
- * @param {Object} props - test
+ * @param {Object} props
  * @param {monitor} props.monitor - Current monitor to be edited or null if we
  * are creating a new monitor
  * @param {Boolean} props.isOpen - Check if the modal is open
  * @param {Function} props.clodeModal - JS function to close the modal
  */
-class EditMonitor extends React.Component {
+class EditMonitorForm extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -90,4 +90,4 @@ class EditMonitor extends React.Component {
 	}
 }
 
-export default EditMonitor;
+export default EditMonitorForm;

@@ -7,7 +7,7 @@ import Menu from '/imports/ui/Menu.jsx';
 import MonitorList from '/imports/ui/MonitorList.jsx';
 import MonitorsCollection from '/imports/db/MonitorsCollection';
 import FormModal from '/imports/ui/FormModal.jsx';
-import Login from '/imports/ui/forms/Login.jsx';
+import LoginForm from '/imports/ui/forms/LoginForm.jsx';
 
 class App extends React.Component {
 	constructor(props) {
@@ -117,7 +117,7 @@ class App extends React.Component {
 					</div>
 				) : (
 					<div>
-						<Login />
+						<LoginForm />
 					</div>
 				)}
 				<ToastContainer

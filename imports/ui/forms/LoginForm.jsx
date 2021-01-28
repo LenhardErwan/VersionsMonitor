@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Button, Form } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 
-class Login extends React.Component {
+class LoginForm extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -60,4 +60,4 @@ class Login extends React.Component {
 	}
 }
 
-export default Login;
+export default LoginForm;

@@ -8,7 +8,7 @@ import { Button, Modal } from 'semantic-ui-react';
  * @param {Boolean} props.isOpen - Check if the modal is open
  * @param {Function} props.closeModal - Method to close the modal
  */
-class DeleteMonitor extends React.Component {
+class DeleteMonitorForm extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -42,4 +42,4 @@ class DeleteMonitor extends React.Component {
 	}
 }
 
-export default DeleteMonitor;
+export default DeleteMonitorForm;

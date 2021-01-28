@@ -1,7 +1,7 @@
 import React from 'react';
 
-import EditMonitor from './forms/EditMonitor';
-import DeleteMonitor from './forms/DeleteMonitor';
+import EditMonitorForm from './forms/EditMonitorForm';
+import DeleteMonitorForm from './forms/DeleteMonitorForm';
 
 class FormModal extends React.Component {
 	constructor(props) {
@@ -11,7 +11,7 @@ class FormModal extends React.Component {
 	render() {
 		if (this.props.name == 'edit_monitor') {
 			return (
-				<EditMonitor
+				<EditMonitorForm
 					isOpen={this.props.isOpen}
 					monitor={this.props.param}
 					closeModal={this.props.closeModal}
@@ -19,7 +19,7 @@ class FormModal extends React.Component {
 			);
 		} else if (this.props.name == 'delete_monitor') {
 			return (
-				<DeleteMonitor
+				<DeleteMonitorForm
 					isOpen={this.props.isOpen}
 					monitor={this.props.param}
 					closeModal={this.props.closeModal}
