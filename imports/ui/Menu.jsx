@@ -1,4 +1,5 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import { Button } from 'semantic-ui-react';
 
 export default class Menu extends React.Component {
@@ -35,6 +36,11 @@ export default class Menu extends React.Component {
 					circular
 					icon='add'
 					onClick={() => this.props.openFormModal('edit_monitor', {})}
+				/>
+				<Button
+					circular
+					icon='sign-out'
+					onClick={() => Meteor.logout()}
 				/>
 			</header>
 		);

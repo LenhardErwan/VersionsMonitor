@@ -7,6 +7,7 @@ import Menu from '/imports/ui/Menu.jsx';
 import MonitorList from '/imports/ui/MonitorList.jsx';
 import MonitorsCollection from '/imports/db/MonitorsCollection';
 import FormModal from '/imports/ui/FormModal.jsx';
+import Login from '/imports/ui/forms/Login.jsx';
 
 class App extends React.Component {
 	constructor(props) {
@@ -110,33 +111,41 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<Menu
-					loading={this.state.loading_filter}
-					setFilter={this.setFilter}
-					openFormModal={this.openFormModal}
-				/>
-				<MonitorList
-					monitor_list={this.state.monitor_list}
-					loading={this.state.loading}
-					openFormModal={this.openFormModal}
-				/>
-				<FormModal
-					isOpen={this.state.is_fmodal_open}
-					closeModal={() => this.setState({ is_fmodal_open: false })}
-					name={this.state.fmodal_name}
-					param={this.state.fmodal_param}
-				/>
-				<ToastContainer
-					position='top-right'
-					autoClose={10000}
-					hideProgressBar={false}
-					newestOnTop
-					closeOnClick={false}
-					rtl={false}
-					pauseOnFocusLoss
-					draggable={false}
-					pauseOnHover
-				/>
+				{this.props.user ? (
+					<div>
+						<Menu
+							loading={this.state.loading_filter}
+							setFilter={this.setFilter}
+							openFormModal={this.openFormModal}
+						/>
+						<MonitorList
+							monitor_list={this.state.monitor_list}
+							loading={this.state.loading}
+							openFormModal={this.openFormModal}
+						/>
+						<FormModal
+							isOpen={this.state.is_fmodal_open}
+							closeModal={() => this.setState({ is_fmodal_open: false })}
+							name={this.state.fmodal_name}
+							param={this.state.fmodal_param}
+						/>
+						<ToastContainer
+							position='top-right'
+							autoClose={10000}
+							hideProgressBar={false}
+							newestOnTop
+							closeOnClick={false}
+							rtl={false}
+							pauseOnFocusLoss
+							draggable={false}
+							pauseOnHover
+						/>
+					</div>
+				) : (
+					<div>
+						<Login />
+					</div>
+				)}
 			</div>
 		);
 	}
@@ -145,7 +154,9 @@ class App extends React.Component {
 const AppContainer = withTracker(() => {
 	const monitorsHandle = Meteor.subscribe('monitors.list');
 	const loading = !monitorsHandle.ready();
+
 	return {
+		user: Meteor.user(),
 		monitors: MonitorsCollection.find().fetch(),
 		loading: loading,
 	};

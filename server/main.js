@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 
 import MonitorsCollection from '/imports/db/MonitorsCollection';
-import GroupsCollection from '/imports/db/GroupsCollection';
-import UsersCollection from '/imports/db/UsersCollection';
 
 import '/imports/api/monitorsPublications';
 import '/imports/api/monitorsMethods';
@@ -21,6 +20,13 @@ Meteor.startup(() => {
 		},
 	});
 
+	if (!Accounts.findUserByUsername('meteorite')) {
+		Accounts.createUser({
+		  	username: 'meteorite',
+		  	password: 'password',
+		});
+	}
+
 	if (MonitorsCollection.find().count() == 0) {
 		let m1 = MonitorsCollection.insert({
 			name: 'VersionsMonitor',
@@ -32,41 +38,6 @@ Meteor.startup(() => {
 			name: 'BeerBrowser',
 			url: 'https://github.com/LenhardErwan/BeerBrowser/releases',
 			selector: '.release-entry .release-main-section a',
-		});
-
-		let m3 = MonitorsCollection.insert({
-			name: 'jeSuisNul',
-			url: 'JeSuisUneURLNul',
-			selector: 'JeSuisUnMauvaisSelector',
-		});
-
-		let g1 = GroupsCollection.insert({
-			name: 'Viewer',
-			canView: true,
-			monitorsId: [m1, m2],
-		});
-
-		let g2 = GroupsCollection.insert({
-			name: 'Editor',
-			canView: true,
-			canCreate: true,
-			canEdit: true,
-			canDelete: true,
-			monitorsId: [m1, m2],
-		});
-
-		let u1 = UsersCollection.insert({
-			login: 'John',
-			password: 'helloworld',
-			mail: 'john.smith@mail.net',
-			groupsId: [g1],
-		});
-
-		let u2 = UsersCollection.insert({
-			login: 'admin',
-			password: 'securepassword',
-			mail: 'admin@versions-monitor',
-			groupsId: [g2],
 		});
 	}
 });
