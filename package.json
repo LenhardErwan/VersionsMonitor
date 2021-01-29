@@ -25,7 +25,7 @@
 		"simpl-schema": "^1.10.2",
 		"uniforms": "^3.0.0-rc.7",
 		"uniforms-bridge-simple-schema-2": "^3.0.0-rc.7",
-		"uniforms-semantic": "^3.0.0-rc.7"
+		"uniforms-material": "^3.0.1"
 	},
 	"meteor": {
 		"mainModule": {
