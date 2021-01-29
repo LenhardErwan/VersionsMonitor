@@ -39,9 +39,8 @@ Meteor.startup(() => {
 		});
 	}
 
-	let g_everyone = null;
-	if (GroupsCollection.find().count() <= 0) {
-		g_everyone = GroupsCollection.insert({
+	if (GroupsCollection.find({ name: 'everyone' }).count() <= 0) {
+		GroupsCollection.insert({
 			name: 'everyone',
 		});
 	}
@@ -59,17 +58,17 @@ Meteor.startup(() => {
 			selector: '.release-entry .release-main-section a',
 		});
 
-		let g_test = GroupsCollection.insert({
+		GroupsCollection.insert({
 			name: 'test',
 		});
 
 		GroupsCollection.update(
-			{ _id: g_everyone },
+			{ name: 'everyone' },
 			{ $push: { perms: { monitor_id: m1, canView: true } } }
 		);
 
 		GroupsCollection.update(
-			{ _id: g_test },
+			{ name: 'test' },
 			{ $push: { perms: { monitor_id: m2, canView: true } } }
 		);
 	}

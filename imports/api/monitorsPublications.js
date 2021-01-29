@@ -6,7 +6,7 @@ import GroupsCollection from '/imports/db/GroupsCollection';
 
 Meteor.publish('monitors.list', function (group_names) {
 	check(group_names, [String]);
-	console.log(group_names);
+
 	const groups = GroupsCollection.find(
 		{ name: { $in: group_names } },
 		{ '_id': 0, 'perms.monitor_id': 1 }
