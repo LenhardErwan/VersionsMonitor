@@ -22,19 +22,9 @@ class App extends React.Component {
 			is_fmodal_open: false,
 		};
 
-		const cursor = MonitorsCollection.find();
-		cursor.observe({
-			added: (monitor) => this.addedMonitor(monitor),
-			changed: (monitor) => this.changedMonitor(monitor),
-			removed: (monitor) => this.removedMonitor(monitor),
-		});
-
 		this.setFilter = this.setFilter.bind(this);
 		this.filter = this.filter.bind(this);
 		this.openFormModal = this.openFormModal.bind(this);
-		this.addedMonitor = this.addedMonitor.bind(this);
-		this.changedMonitor = this.changedMonitor.bind(this);
-		this.removedMonitor = this.removedMonitor.bind(this);
 	}
 
 	async componentDidUpdate(prevProps) {
@@ -89,29 +79,6 @@ class App extends React.Component {
 			fmodal_param: param,
 			is_fmodal_open: true,
 		});
-	}
-
-	addedMonitor(monitor) {
-		if (!this.props.loading) {
-			// Don't trigger on start
-			if (monitor.error !== null) {
-				toast.error(`${monitor.name} has errors!`);
-			} else {
-				toast.success(`${monitor.name} has been added!`);
-			}
-		}
-	}
-
-	changedMonitor(monitor) {
-		if (monitor.error !== null) {
-			toast.error(`${monitor.name} has errors!`);
-		} else {
-			toast.success(`${monitor.name} has been updated!`);
-		}
-	}
-
-	removedMonitor(monitor) {
-		toast.success(`${monitor.name} has been removed!`);
 	}
 
 	render() {

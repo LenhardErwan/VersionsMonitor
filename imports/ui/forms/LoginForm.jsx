@@ -16,7 +16,7 @@ const styles = (theme) => ({
 		maxWidth: '330px',
 	},
 	input: {
-		marginBottom: '20px',
+		marginBottom: '10px',
 	},
 });
 

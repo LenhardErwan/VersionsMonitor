@@ -9,6 +9,7 @@ import {
 	Button,
 } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
+import { toast } from 'react-toastify';
 
 /**
  * @param {Object} props
@@ -24,7 +25,13 @@ class DeleteMonitorForm extends React.Component {
 	}
 
 	onConfirm() {
-		Meteor.call('monitors.delete', this.props.monitor.id);
+		Meteor.call('monitors.delete', this.props.monitor.id, (error) => {
+			if (error) {
+				toast.error('Something went wrong, try again later!');
+			} else {
+				toast.success(this.props.monitor.name + ' was successfully deleted!');
+			}
+		});
 		this.props.closeModal();
 	}
 
