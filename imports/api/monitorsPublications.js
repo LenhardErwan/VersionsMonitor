@@ -14,7 +14,7 @@ Meteor.publish('monitors.list', function (group_names) {
 	const monitorIds = new Array();
 	for (const group of groups) {
 		for (const perm of group.monitorPerms) {
-			monitorIds.push(perm.monitor_id);
+			if (perm.canView) monitorIds.push(perm.monitor_id);
 		}
 	}
 
