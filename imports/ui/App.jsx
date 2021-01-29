@@ -45,7 +45,7 @@ class App extends React.Component {
 		/**
 		 * Avoids memory leak while filtering when the component is not
 		 * mounted.
-		 * 
+		 *
 		 * https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html
 		 */
 		if (this._isMounted) {
@@ -68,7 +68,7 @@ class App extends React.Component {
 			filter: filter,
 			loading_filter: true,
 		});
-		
+
 		this.filter(filter);
 	}
 
