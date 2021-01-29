@@ -16,7 +16,7 @@ class DeleteMonitorForm extends React.Component {
 	}
 
 	onConfirm() {
-		Meteor.call('monitors.delete', this.props.monitor.id);
+		Meteor.call('monitors.delete', this.props.monitor.id, this.props.user);
 		this.props.closeModal();
 	}
 
@@ -24,13 +24,15 @@ class DeleteMonitorForm extends React.Component {
 		return (
 			<Modal onClose={this.props.closeModal} open={this.props.isOpen}>
 				<Modal.Header>Delete {this.props.monitor.name} ?</Modal.Header>
-				<Modal.Content>Are you sure you want to delete {this.props.monitor.name} ?</Modal.Content>
+				<Modal.Content>
+					Are you sure you want to delete {this.props.monitor.name} ?
+				</Modal.Content>
 				<Modal.Actions>
 					<Button color='black' onClick={this.props.closeModal}>
 						No
 					</Button>
 					<Button
-						content="Yes"
+						content='Yes'
 						labelPosition='right'
 						icon='checkmark'
 						onClick={this.onConfirm}

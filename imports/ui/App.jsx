@@ -132,6 +132,7 @@ class App extends React.Component {
 					closeModal={() => this.setState({ is_fmodal_open: false })}
 					name={this.state.fmodal_name}
 					param={this.state.fmodal_param}
+					user={this.props.user}
 				/>
 				<ToastContainer
 					position='top-right'
@@ -156,9 +157,10 @@ const AppContainer = withTracker(() => {
 		Meteor.subscribe('Meteor.users.groups', user._id);
 	}
 
-	const groups = user && user.groups ? user.groups : ['everyone'];
-
-	const monitorsHandle = Meteor.subscribe('monitors.list', groups);
+	const monitorsHandle = Meteor.subscribe(
+		'monitors.list',
+		user && user.groups ? user.groups : ['everyone']
+	);
 	const loading = !monitorsHandle.ready();
 
 	return {

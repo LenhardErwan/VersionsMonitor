@@ -15,6 +15,7 @@ class FormModal extends React.Component {
 					isOpen={this.props.isOpen}
 					monitor={this.props.param}
 					closeModal={this.props.closeModal}
+					user={this.props.user}
 				/>
 			);
 		} else if (this.props.name == 'delete_monitor') {
@@ -23,12 +24,11 @@ class FormModal extends React.Component {
 					isOpen={this.props.isOpen}
 					monitor={this.props.param}
 					closeModal={this.props.closeModal}
+					user={this.props.user}
 				/>
-			)
-		} else {
-			return (
-				null
 			);
+		} else {
+			return null;
 		}
 	}
 }

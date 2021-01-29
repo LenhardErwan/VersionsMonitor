@@ -42,6 +42,7 @@ Meteor.startup(() => {
 	if (GroupsCollection.find({ name: 'everyone' }).count() <= 0) {
 		GroupsCollection.insert({
 			name: 'everyone',
+			priority: -1,
 		});
 	}
 
@@ -58,18 +59,14 @@ Meteor.startup(() => {
 			selector: '.release-entry .release-main-section a',
 		});
 
-		GroupsCollection.insert({
-			name: 'test',
-		});
-
 		GroupsCollection.update(
 			{ name: 'everyone' },
-			{ $push: { perms: { monitor_id: m1, canView: true } } }
+			{ $push: { monitorPerms: { monitor_id: m1, canView: true } } }
 		);
 
 		GroupsCollection.update(
-			{ name: 'test' },
-			{ $push: { perms: { monitor_id: m2, canView: true } } }
+			{ name: 'everyone' },
+			{ $push: { monitorPerms: { monitor_id: m2, canView: true } } }
 		);
 	}
 });

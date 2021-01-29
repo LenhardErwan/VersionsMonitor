@@ -9,11 +9,11 @@ Meteor.publish('monitors.list', function (group_names) {
 
 	const groups = GroupsCollection.find(
 		{ name: { $in: group_names } },
-		{ '_id': 0, 'perms.monitor_id': 1 }
+		{ '_id': 0, 'monitorPerms.monitor_id': 1 }
 	);
 	const monitorIds = new Array();
 	for (const group of groups) {
-		for (const perm of group.perms) {
+		for (const perm of group.monitorPerms) {
 			monitorIds.push(perm.monitor_id);
 		}
 	}

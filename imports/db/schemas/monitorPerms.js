@@ -7,11 +7,6 @@ export const monitorPerms = new SimpleSchema({
 		optional: false,
 		defaultValue: false,
 	},
-	canCreate: {
-		type: Boolean,
-		optional: false,
-		defaultValue: false,
-	},
 	canEdit: {
 		type: Boolean,
 		optional: false,

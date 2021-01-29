@@ -25,7 +25,7 @@ class EditMonitorForm extends React.Component {
 	onSubmit(new_monitor) {
 		if (this.props.monitor.id == null) {
 			/** We are creating a new monitor */
-			Meteor.call('monitors.insert', new_monitor);
+			Meteor.call('monitors.insert', new_monitor, this.props.user);
 			this.props.closeModal();
 		} else {
 			/** We are editing an existing monitor */
@@ -41,7 +41,12 @@ class EditMonitorForm extends React.Component {
 						}
 					}
 
-					Meteor.call('monitors.update', old_monitor.id, updated_monitor);
+					Meteor.call(
+						'monitors.update',
+						old_monitor.id,
+						updated_monitor,
+						this.props.user
+					);
 
 					this.props.closeModal();
 				} else {
@@ -78,7 +83,7 @@ class EditMonitorForm extends React.Component {
 						Cancel
 					</Button>
 					<Button
-						content="Save"
+						content='Save'
 						labelPosition='right'
 						icon='checkmark'
 						onClick={() => formRef.submit()}
