@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { toast } from 'react-toastify';
 import { navigate } from '@reach/router';
-import { TextField, Button } from '@material-ui/core';
+import { Grid, TextField, Button, Paper } from '@material-ui/core';
 
 class LoginForm extends React.Component {
 	constructor(props) {
@@ -39,25 +39,31 @@ class LoginForm extends React.Component {
 
 	render() {
 		return (
-			<form onSubmit={this.submit}>
-				<TextField
-					label='Username'
-					type='text'
-					variant='filled'
-					required
-					onChange={(e) => this.setState({ username: e.target.value })}
-				/>
+			<Paper className='formContainer'>
+				<form onSubmit={this.submit} className='form'>
+					<TextField
+						className='input'
+						label='Username'
+						type='text'
+						variant='outlined'
+						required
+						onChange={(e) => this.setState({ username: e.target.value })}
+					/>
 
-				<TextField
-					label='password'
-					type='password'
-					variant='filled'
-					required
-					onChange={(e) => this.setState({ password: e.target.value })}
-				/>
+					<TextField
+						className='input'
+						label='Password'
+						type='password'
+						variant='outlined'
+						required
+						onChange={(e) => this.setState({ password: e.target.value })}
+					/>
 
-				<Button variant="contained" color='primary' type='submit'>Log In</Button>
-			</form>
+					<Button variant='contained' color='primary' type='submit'>
+						Log In
+					</Button>
+				</form>
+			</Paper>
 		);
 	}
 }
