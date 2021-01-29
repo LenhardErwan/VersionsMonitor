@@ -1,18 +1,55 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Img } from 'react-image';
+import { withStyles } from '@material-ui/core/styles';
 import {
+	Avatar,
 	Button,
-	Modal,
-	Image,
-	Loader,
-	Table,
+	Grid,
+	CircularProgress,
+	Dialog,
 	Divider,
-	Icon,
-	Header,
-	Message,
-} from 'semantic-ui-react';
+	Typography,
+	IconButton,
+	List,
+	ListItem,
+	ListItemText,
+} from '@material-ui/core';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import CloseIcon from '@material-ui/icons/Close';
 
-export default class ViewMonitorModal extends React.Component {
+const styles = (theme) => ({
+	root: {
+		margin: 0,
+		padding: theme.spacing(2),
+	},
+	closeButton: {
+		position: 'absolute',
+		right: theme.spacing(1),
+		top: theme.spacing(1),
+		color: theme.palette.grey[500],
+	},
+	avatar: {
+		marginRight: theme.spacing(1),
+	},
+	itemSmTitle: {
+		width: '75px',
+		maxWidth: '75px',
+	},
+	itemMeTitle: {
+		width: '100px',
+		maxWidth: '100px',
+	},
+	itemLaTitle: {
+		width: '170px',
+		maxWidth: '170px',
+	},
+	itemText: {
+		textAlign: 'left',
+	},
+});
+
+class ViewMonitorModal extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -30,158 +67,133 @@ export default class ViewMonitorModal extends React.Component {
 			});
 
 			return (
-				<Modal closeIcon onClose={this.props.onClose} open={this.props.open}>
-					<Modal.Header>
-						<Image verticalAlign='middle' spaced='right'>
-							<Img
-								src={[
-									monitor.icon_url,
-									monitor.alternate_icon,
-									'./images/no_image.svg',
-								]}
-								loader={<Loader active inline='centered' />}
-							/>
-						</Image>
-						{monitor.name}
-					</Modal.Header>
-
-					<Modal.Content scrolling>
-						{monitor.error && (
-							<Message
-								negative
-								icon='exclamation triangle'
-								header='Monitor in error :'
-								content={monitor.error}></Message>
-						)}
-
-						<Divider horizontal>
-							<Header as='h4'>
-								<Icon name='sliders horizontal' />
-								Properties
-							</Header>
-						</Divider>
-
-						<Table celled striped>
-							<Table.Header>
-								<Table.Row>
-									<Table.HeaderCell colSpan='2'>Attributes</Table.HeaderCell>
-								</Table.Row>
-							</Table.Header>
-
-							<Table.Body>
-								<Table.Row>
-									<Table.Cell collapsing>Name</Table.Cell>
-									<Table.Cell collapsing textAlign='right'>
-										{monitor.name}
-									</Table.Cell>
-								</Table.Row>
-								<Table.Row>
-									<Table.Cell collapsing>Url</Table.Cell>
-									<Table.Cell collapsing textAlign='right'>
-										{monitor.url}
-									</Table.Cell>
-								</Table.Row>
-								<Table.Row>
-									<Table.Cell collapsing>Selector</Table.Cell>
-									<Table.Cell collapsing textAlign='right'>
-										{monitor.selector}
-									</Table.Cell>
-								</Table.Row>
-								<Table.Row>
-									<Table.Cell collapsing>Regex</Table.Cell>
-									<Table.Cell collapsing textAlign='right'>
-										{monitor.regex ? monitor.regex : 'None'}
-									</Table.Cell>
-								</Table.Row>
-								<Table.Row>
-									<Table.Cell collapsing>Icon URL</Table.Cell>
-									<Table.Cell collapsing textAlign='right'>
-										{monitor.icon_url ? monitor.icon_url : 'None'}
-									</Table.Cell>
-								</Table.Row>
-							</Table.Body>
-						</Table>
-
-						<Divider horizontal></Divider>
-
-						<Table celled striped>
-							<Table.Header>
-								<Table.Row>
-									<Table.HeaderCell colSpan='2'>Headers</Table.HeaderCell>
-								</Table.Row>
-								<Table.Row>
-									<Table.HeaderCell>Name</Table.HeaderCell>
-									<Table.HeaderCell>Value</Table.HeaderCell>
-								</Table.Row>
-							</Table.Header>
-
-							<Table.Body>
-								{monitor.headers.lenght > 0 ? (
-									monitor.headers.map((header, index) => {
-										return (
-											<Table.Row key={index}>
-												<Table.Cell collapsing>{header.name}</Table.Cell>
-												<Table.Cell collapsing textAlign='right'>
-													{header.value}
-												</Table.Cell>
-											</Table.Row>
-										);
-									})
+				<Dialog onClose={this.props.onClose} open={this.props.open}>
+					<MuiDialogTitle disableTypography className={this.props.classes.root}>
+						<Grid container direction='row' alignItems='center'>
+							<Avatar className={this.props.classes.avatar}>
+								<Img
+									src={[
+										monitor.icon_url,
+										monitor.alternate_icon,
+										'./images/no_image.svg',
+									]}
+									loader={<CircularProgress />}
+								/>
+							</Avatar>
+							<Typography variant='h6'>{monitor.name}</Typography>
+						</Grid>
+						<IconButton
+							className={this.props.classes.closeButton}
+							onClick={this.props.onClose}>
+							<CloseIcon />
+						</IconButton>
+					</MuiDialogTitle>
+					<MuiDialogContent dividers>
+						<Grid container direction='column'>
+							<Typography variant='h5'>Attributes</Typography>
+							<List>
+								<Divider />
+								<ListItem>
+									<ListItemText
+										primary='Name'
+										className={this.props.classes.itemMeTitle}
+									/>
+									<ListItemText
+										primary={monitor.name}
+										className={this.props.classes.itemText}
+									/>
+								</ListItem>
+								<Divider />
+								<ListItem>
+									<ListItemText
+										primary='Url'
+										className={this.props.classes.itemMeTitle}
+									/>
+									<ListItemText
+										primary={monitor.url}
+										className={this.props.classes.itemText}
+									/>
+								</ListItem>
+								<Divider />
+								<ListItem>
+									<ListItemText
+										primary='Selector'
+										className={this.props.classes.itemMeTitle}
+									/>
+									<ListItemText
+										primary={monitor.selector}
+										className={this.props.classes.itemText}
+									/>
+								</ListItem>
+								<Divider />
+								<ListItem>
+									<ListItemText
+										primary='Regex'
+										className={this.props.classes.itemMeTitle}
+									/>
+									<ListItemText
+										primary={monitor.regex ? monitor.regex : 'None'}
+										className={this.props.classes.itemText}
+									/>
+								</ListItem>
+								<Divider />
+								<ListItem>
+									<ListItemText
+										primary='Icon Url'
+										className={this.props.classes.itemMeTitle}
+									/>
+									<ListItemText
+										primary={monitor.icon_url ? monitor.icon_url : 'None'}
+										className={this.props.classes.itemText}
+									/>
+								</ListItem>
+							</List>
+							<Typography variant='h5'>Headers</Typography>
+							<List>
+								{monitor.headers.length > 0 ? (
+									monitor.headers.map((header, index) => (
+										<Fragment key={index}>
+											<Divider />
+											<ListItem>
+												<ListItemText
+													primary={header.name}
+													className={this.props.classes.itemLaTitle}
+												/>
+												<ListItemText primary={header.value} />
+											</ListItem>
+										</Fragment>
+									))
 								) : (
-									<Table.Row>
-										<Table.Cell colSpan='2' textAlign='center'>
-											None
-										</Table.Cell>
-									</Table.Row>
+									<ListItemText primary='No header' />
 								)}
-							</Table.Body>
-						</Table>
-
-						<Divider horizontal section>
-							<Header as='h4'>
-								<Icon name='tag' />
-								Versions
-							</Header>
-						</Divider>
-
-						<Table celled striped className='margin-last-table'>
-							<Table.Header>
-								<Table.Row>
-									<Table.HeaderCell>Label</Table.HeaderCell>
-									<Table.HeaderCell>
-										Date ({this.props.date_format})
-									</Table.HeaderCell>
-								</Table.Row>
-							</Table.Header>
-							<Table.Body>
+							</List>
+							<Typography variant='h5'>Versions</Typography>
+							<List>
 								{monitor.versions.length > 0 ? (
-									monitor.versions.map((version, index) => {
-										return (
-											<Table.Row key={index}>
-												<Table.Cell collapsing>{version.label}</Table.Cell>
-												<Table.Cell collapsing textAlign='right'>
-													{new Date(version.date).toLocaleString()}
-												</Table.Cell>
-											</Table.Row>
-										);
-									})
+									monitor.versions.map((version, index) => (
+										<Fragment key={index}>
+											<Divider />
+											<ListItem>
+												<ListItemText
+													primary={version.label}
+													className={this.props.classes.itemSmTitle}
+												/>
+												<ListItemText
+													primary={new Date(version.date).toLocaleString()}
+												/>
+											</ListItem>
+										</Fragment>
+									))
 								) : (
-									<Table.Row>
-										<Table.Cell colSpan='2' textAlign='center'>
-											None
-										</Table.Cell>
-									</Table.Row>
+									<ListItemText primary='No version' />
 								)}
-							</Table.Body>
-						</Table>
-					</Modal.Content>
-					<Modal.Actions>
-						<Button color='black' onClick={this.props.onClose}>
-							Close
-						</Button>
-					</Modal.Actions>
-				</Modal>
+							</List>
+						</Grid>
+					</MuiDialogContent>
+				</Dialog>
 			);
 		}
 	}
 }
+
+export default withStyles(styles)(ViewMonitorModal);
