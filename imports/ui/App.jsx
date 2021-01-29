@@ -1,5 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import { navigate } from '@reach/router';
 import { withTracker } from 'meteor/react-meteor-data';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -7,7 +8,6 @@ import Menu from '/imports/ui/Menu.jsx';
 import MonitorList from '/imports/ui/MonitorList.jsx';
 import MonitorsCollection from '/imports/db/MonitorsCollection';
 import FormModal from '/imports/ui/FormModal.jsx';
-import LoginForm from '/imports/ui/forms/LoginForm.jsx';
 
 class App extends React.Component {
 	constructor(props) {
@@ -37,10 +37,30 @@ class App extends React.Component {
 		this.removedMonitor = this.removedMonitor.bind(this);
 	}
 
-	componentDidUpdate(prevProps) {
-		if (prevProps.monitors !== this.props.monitors) {
-			this.filter(this.state.filter);
+	async componentDidUpdate(prevProps) {
+		if (!this.props.user) {
+			await navigate('/login');
 		}
+
+		/**
+		 * Avoids memory leak while filtering when the component is not
+		 * mounted.
+		 *
+		 * https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html
+		 */
+		if (this._isMounted) {
+			if (prevProps.monitors !== this.props.monitors) {
+				this.filter(this.state.filter);
+			}
+		}
+	}
+
+	componentDidMount() {
+		this._isMounted = true;
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	setFilter(filter) {
@@ -48,6 +68,7 @@ class App extends React.Component {
 			filter: filter,
 			loading_filter: true,
 		});
+
 		this.filter(filter);
 	}
 
@@ -96,30 +117,22 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				{this.props.user ? (
-					<div>
-						<Menu
-							loading={this.state.loading_filter}
-							setFilter={this.setFilter}
-							openFormModal={this.openFormModal}
-						/>
-						<MonitorList
-							monitor_list={this.state.monitor_list}
-							loading={this.props.loading}
-							openFormModal={this.openFormModal}
-						/>
-						<FormModal
-							isOpen={this.state.is_fmodal_open}
-							closeModal={() => this.setState({ is_fmodal_open: false })}
-							name={this.state.fmodal_name}
-							param={this.state.fmodal_param}
-						/>
-					</div>
-				) : (
-					<div>
-						<LoginForm />
-					</div>
-				)}
+				<Menu
+					loading={this.state.loading_filter}
+					setFilter={this.setFilter}
+					openFormModal={this.openFormModal}
+				/>
+				<MonitorList
+					monitor_list={this.state.monitor_list}
+					loading={this.props.loading}
+					openFormModal={this.openFormModal}
+				/>
+				<FormModal
+					isOpen={this.state.is_fmodal_open}
+					closeModal={() => this.setState({ is_fmodal_open: false })}
+					name={this.state.fmodal_name}
+					param={this.state.fmodal_param}
+				/>
 				<ToastContainer
 					position='top-right'
 					autoClose={5000}

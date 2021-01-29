@@ -1,7 +1,9 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
 import { Button, Form } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
+import { navigate } from '@reach/router';
 
 class LoginForm extends React.Component {
 	constructor(props) {
@@ -13,6 +15,12 @@ class LoginForm extends React.Component {
 		};
 
 		this.submit = this.submit.bind(this);
+	}
+
+	async componentDidUpdate() {
+		if (this.props.user) {
+			await navigate('/');
+		}
 	}
 
 	submit(event) {
@@ -60,4 +68,10 @@ class LoginForm extends React.Component {
 	}
 }
 
-export default LoginForm;
+const LoginContainer = withTracker(() => {
+	return {
+		user: Meteor.user(),
+	};
+})(LoginForm);
+
+export default LoginContainer;
