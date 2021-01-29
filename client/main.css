@@ -4,22 +4,6 @@ body {
 	background-color: #121212;
 }
 
-.formContainer {
-	margin: auto;
-	max-width: 350px;
-}
-
-.form {
-	padding: 10px;
-	max-width: 330px;
-	display: flex;
-	flex-direction: column;
-}
-
-.input {
-	margin-bottom: 10px;
-}
-
 .ui.table:last-child.margin-last-table {
 	margin-bottom: 2rem;
 }
