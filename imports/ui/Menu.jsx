@@ -1,6 +1,14 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
-import { Button } from 'semantic-ui-react';
+import {
+	IconButton,
+	Paper,
+	InputBase,
+	Grid,
+	CircularProgress,
+} from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 export default class Menu extends React.Component {
 	constructor(props) {
@@ -22,27 +30,25 @@ export default class Menu extends React.Component {
 
 	render() {
 		return (
-			<header>
-				<div className={`ui icon input ${this.props.loading ? 'loading' : ''}`}>
-					<input
-						type='text'
+			<Grid container direction='row' justify='flex-start' alignItems='center'>
+				<Paper>
+					<IconButton>
+						{this.props.loading ? <CircularProgress /> : <SearchIcon />}
+					</IconButton>
+					<InputBase
 						placeholder='Search...'
 						onChange={this.handleInputChange}
 						value={this.state.input_filter}
 					/>
-					<i className='search icon'></i>
-				</div>
-				<Button
-					circular
-					icon='add'
-					onClick={() => this.props.openFormModal('edit_monitor', {})}
-				/>
-				<Button
-					circular
-					icon='sign-out'
-					onClick={() => Meteor.logout()}
-				/>
-			</header>
+				</Paper>
+				<IconButton
+					onClick={() => this.props.openFormModal('edit_monitor', {})}>
+					<AddBoxIcon />
+				</IconButton>
+				<IconButton onClick={() => Meteor.logout()}>
+					<ExitToAppIcon />
+				</IconButton>
+			</Grid>
 		);
 	}
 }
