@@ -20,7 +20,10 @@ export default class ViewMonitorModal extends React.Component {
 	render() {
 		const monitor = this.props.monitor;
 
-		if (monitor !== null) {
+		/** On startup, the monitor passed in props is `null` */
+		if (monitor === null) {
+			return null;
+		} else {
 			monitor.versions.sort((a, b) => {
 				// Sort version by date (most recent on top)
 				return b.date - a.date;
@@ -177,12 +180,6 @@ export default class ViewMonitorModal extends React.Component {
 							Close
 						</Button>
 					</Modal.Actions>
-				</Modal>
-			);
-		} else {
-			return (
-				<Modal closeIcon onClose={this.props.onClose} open={this.props.open}>
-					<Modal.Content>No monitor is selected</Modal.Content>
 				</Modal>
 			);
 		}
