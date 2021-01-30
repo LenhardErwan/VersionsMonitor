@@ -1,5 +1,14 @@
 import React from 'react';
-import { Loader, Table } from 'semantic-ui-react';
+import {
+	CircularProgress,
+	Paper,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+} from '@material-ui/core';
 
 import MonitorItem from '/imports/ui/MonitorItem.jsx';
 import ViewMonitorModal from '/imports/ui/ViewMonitorModal.jsx';
@@ -75,31 +84,31 @@ export default class MonitorList extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<Table celled>
-					<Table.Header>
-						<Table.Row>
-							<Table.HeaderCell>Icon</Table.HeaderCell>
-							<Table.HeaderCell>Name</Table.HeaderCell>
-							<Table.HeaderCell>Newest version</Table.HeaderCell>
-							<Table.HeaderCell>
+			<TableContainer component={Paper}>
+				<Table size='small'>
+					<TableHead>
+						<TableRow>
+							<TableCell>Icon</TableCell>
+							<TableCell>Name</TableCell>
+							<TableCell>Newest version</TableCell>
+							<TableCell>
 								Discovery date <span>({this.getDateFormatString()})</span>
-							</Table.HeaderCell>
-							<Table.HeaderCell>Download</Table.HeaderCell>
-							<Table.HeaderCell>Actions</Table.HeaderCell>
-						</Table.Row>
-					</Table.Header>
-					<Table.Body>
+							</TableCell>
+							<TableCell>Download</TableCell>
+							<TableCell>Actions</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
 						{this.props.loading ? (
-							<tr>
-								<td colSpan='6'>
-									<Loader active inline='centered' />
-								</td>
-							</tr>
+							<TableRow>
+								<TableCell colSpan='6' align='center'>
+									<CircularProgress />
+								</TableCell>
+							</TableRow>
 						) : (
 							this.getMonitorList()
 						)}
-					</Table.Body>
+					</TableBody>
 				</Table>
 				<ViewMonitorModal
 					monitor={this.state.selected_monitor}
@@ -107,7 +116,7 @@ export default class MonitorList extends React.Component {
 					open={this.state.modal_view_monitor_open}
 					onClose={() => this.setState({ modal_view_monitor_open: false })}
 				/>
-			</div>
+			</TableContainer>
 		);
 	}
 }

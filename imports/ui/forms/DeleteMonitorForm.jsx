@@ -1,6 +1,15 @@
 import React from 'react';
 
-import { Button, Modal } from 'semantic-ui-react';
+import {
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogContentText,
+	DialogActions,
+	Button,
+} from '@material-ui/core';
+import CheckIcon from '@material-ui/icons/Check';
+import { toast } from 'react-toastify';
 
 /**
  * @param {Object} props
@@ -16,30 +25,44 @@ class DeleteMonitorForm extends React.Component {
 	}
 
 	onConfirm() {
-		Meteor.call('monitors.delete', this.props.monitor.id, this.props.user);
+		Meteor.call(
+			'monitors.delete',
+			this.props.monitor.id,
+			this.props.user,
+			(error) => {
+				if (error) {
+					toast.error('Something went wrong, try again later!');
+				} else {
+					toast.success(this.props.monitor.name + ' was successfully deleted!');
+				}
+			}
+		);
 		this.props.closeModal();
 	}
 
 	render() {
 		return (
-			<Modal onClose={this.props.closeModal} open={this.props.isOpen}>
-				<Modal.Header>Delete {this.props.monitor.name} ?</Modal.Header>
-				<Modal.Content>
-					Are you sure you want to delete {this.props.monitor.name} ?
-				</Modal.Content>
-				<Modal.Actions>
-					<Button color='black' onClick={this.props.closeModal}>
-						No
+			<Dialog onClose={this.props.closeModal} open={this.props.isOpen}>
+				<DialogTitle>Delete {this.props.monitor.name} ?</DialogTitle>
+				<DialogContent>
+					<DialogContentText>
+						Your are going to delete {this.props.monitor.name}, are you sure you
+						want to do this ?
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={this.props.closeModal} variant='contained'>
+						Cancel
 					</Button>
 					<Button
-						content='Yes'
-						labelPosition='right'
-						icon='checkmark'
 						onClick={this.onConfirm}
-						positive
-					/>
-				</Modal.Actions>
-			</Modal>
+						startIcon={<CheckIcon />}
+						variant='contained'
+						color='primary'>
+						Delete
+					</Button>
+				</DialogActions>
+			</Dialog>
 		);
 	}
 }

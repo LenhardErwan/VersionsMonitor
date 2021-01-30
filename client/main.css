@@ -1,6 +1,7 @@
 body {
 	padding: 10px;
 	font-family: sans-serif;
+	background-color: #121212;
 }
 
 .ui.table:last-child.margin-last-table {

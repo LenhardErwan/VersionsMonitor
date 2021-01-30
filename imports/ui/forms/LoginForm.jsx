@@ -1,9 +1,24 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Button, Form } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 import { navigate } from '@reach/router';
+import { Grid, TextField, Button, Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = (theme) => ({
+	formContainer: {
+		margin: 'auto',
+		maxWidth: '350px',
+	},
+	form: {
+		padding: '10px',
+		maxWidth: '330px',
+	},
+	input: {
+		marginBottom: '10px',
+	},
+});
 
 class LoginForm extends React.Component {
 	constructor(props) {
@@ -39,31 +54,35 @@ class LoginForm extends React.Component {
 
 	render() {
 		return (
-			<Form onSubmit={this.submit}>
-				<Form.Field>
-					<label htmlFor='username'>Username</label>
-					<input
-						name='password'
-						type='text'
-						placeholder='Username'
-						required
-						onChange={(e) => this.setState({ username: e.target.value })}
-					/>
-				</Form.Field>
+			<Paper className={this.props.classes.formContainer}>
+				<form onSubmit={this.submit} className={this.props.classes.form}>
+					<Grid container direction='column'>
+						<TextField
+							className='input'
+							label='Username'
+							type='text'
+							variant='outlined'
+							className={this.props.classes.input}
+							required
+							onChange={(e) => this.setState({ username: e.target.value })}
+						/>
 
-				<Form.Field>
-					<label htmlFor='password'>Password</label>
-					<input
-						name='password'
-						type='password'
-						placeholder='Password'
-						required
-						onChange={(e) => this.setState({ password: e.target.value })}
-					/>
-				</Form.Field>
+						<TextField
+							className='input'
+							label='Password'
+							type='password'
+							variant='outlined'
+							className={this.props.classes.input}
+							required
+							onChange={(e) => this.setState({ password: e.target.value })}
+						/>
 
-				<Button type='submit'>Log In</Button>
-			</Form>
+						<Button variant='contained' color='primary' type='submit'>
+							Log In
+						</Button>
+					</Grid>
+				</form>
+			</Paper>
 		);
 	}
 }
@@ -72,6 +91,6 @@ const LoginContainer = withTracker(() => {
 	return {
 		user: Meteor.user(),
 	};
-})(LoginForm);
+})(withStyles(styles)(LoginForm));
 
 export default LoginContainer;

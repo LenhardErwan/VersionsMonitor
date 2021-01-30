@@ -1,9 +1,16 @@
 import React from 'react';
 
-import { Button, Modal } from 'semantic-ui-react';
+import {
+	Button,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+} from '@material-ui/core';
+import SaveIcon from '@material-ui/icons/Save';
 import { monitor } from '/imports/db/schemas/monitor';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
-import { AutoFields, AutoForm, ErrorsField } from 'uniforms-semantic';
+import { AutoFields, AutoForm, ErrorsField } from 'uniforms-material';
 import { toast } from 'react-toastify';
 
 const bridge = new SimpleSchema2Bridge(monitor);
@@ -25,7 +32,13 @@ class EditMonitorForm extends React.Component {
 	onSubmit(new_monitor) {
 		if (this.props.monitor.id == null) {
 			/** We are creating a new monitor */
-			Meteor.call('monitors.insert', new_monitor, this.props.user);
+			Meteor.call('monitors.insert', new_monitor, this.props.user, (error) => {
+				if (error) {
+					toast.error('Something went wrong, try again later!');
+				} else {
+					toast.success(new_monitor.name + ' was successfully created!');
+				}
+			});
 			this.props.closeModal();
 		} else {
 			/** We are editing an existing monitor */
@@ -45,13 +58,20 @@ class EditMonitorForm extends React.Component {
 						'monitors.update',
 						old_monitor.id,
 						updated_monitor,
-						this.props.user
+						this.props.user,
+						(error) => {
+							if (error) {
+								toast.error('Something went wrong, try again later!');
+							} else {
+								toast.success(new_monitor.name + ' was successfully updated!');
+							}
+						}
 					);
 
 					this.props.closeModal();
 				} else {
 					/** The id of the new monitor differs from the old id */
-					toast.error('Something bad happened, try again later!');
+					toast.error('Something went wrong, try again later!');
 				}
 			} else {
 				/** No changes in the monitor */
@@ -60,37 +80,40 @@ class EditMonitorForm extends React.Component {
 		}
 	}
 
+	// TODO find a way to find value and defaultValue error
 	render() {
 		let formRef;
 
 		return (
-			<Modal onClose={this.props.closeModal} open={this.props.isOpen}>
-				<Modal.Header>Edit an application</Modal.Header>
-				<Modal.Content>
-					<Modal.Description>
-						<AutoForm
-							schema={bridge}
-							model={this.props.monitor}
-							ref={(ref) => (formRef = ref)}
-							onSubmit={this.onSubmit}>
-							<AutoFields omitFields={['versions', 'error']} />
-							<ErrorsField />
-						</AutoForm>
-					</Modal.Description>
-				</Modal.Content>
-				<Modal.Actions>
-					<Button color='black' onClick={this.props.closeModal}>
+			<Dialog onClose={this.props.closeModal} open={this.props.isOpen}>
+				<DialogTitle>
+					{this.props.monitor && this.props.monitor.name
+						? 'Edit ' + this.props.monitor.name
+						: 'Add an application'}
+				</DialogTitle>
+				<DialogContent>
+					<AutoForm
+						schema={bridge}
+						model={this.props.monitor}
+						ref={(ref) => (formRef = ref)}
+						onSubmit={this.onSubmit}>
+						<AutoFields omitFields={['versions', 'error']} />
+						<ErrorsField />
+					</AutoForm>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={this.props.closeModal} variant='contained'>
 						Cancel
 					</Button>
 					<Button
-						content='Save'
-						labelPosition='right'
-						icon='checkmark'
 						onClick={() => formRef.submit()}
-						positive
-					/>
-				</Modal.Actions>
-			</Modal>
+						variant='contained'
+						color='primary'
+						startIcon={<SaveIcon />}>
+						Submit
+					</Button>
+				</DialogActions>
+			</Dialog>
 		);
 	}
 }

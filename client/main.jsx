@@ -5,16 +5,30 @@ import { Router } from '@reach/router';
 import AppContainer from '/imports/ui/App';
 import LoginContainer from '/imports/ui/forms/LoginForm.jsx';
 import GroupsContainer from '/imports/ui/Groups.jsx';
-import 'semantic-ui-css/semantic.min.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { ThemeProvider } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+
+const darkTheme = createMuiTheme({
+	palette: {
+		type: 'dark',
+		primary: {
+			light: '#a6d4fa',
+			main: '#90caf9',
+			dark: '#648dae',
+		},
+	},
+});
 
 Meteor.startup(() => {
 	render(
-		<Router>
-			<AppContainer path='/' />
-			<LoginContainer path='/login' />
-			<GroupsContainer path='/groups' />
-		</Router>,
+		<ThemeProvider theme={darkTheme}>
+			<Router>
+				<AppContainer path='/' />
+				<LoginContainer path='/login' />
+				<GroupsContainer path='/groups' />
+			</Router>
+		</ThemeProvider>,
 		document.getElementById('react-target')
 	);
 });

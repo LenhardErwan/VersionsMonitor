@@ -1,6 +1,16 @@
 import React from 'react';
 import { Img } from 'react-image';
-import { Button, Loader, Image, Table } from 'semantic-ui-react';
+import {
+	Avatar,
+	CircularProgress,
+	IconButton,
+	Link,
+	TableCell,
+	TableRow,
+} from '@material-ui/core';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default class MonitorItem extends React.Component {
 	constructor(props) {
@@ -70,47 +80,47 @@ export default class MonitorItem extends React.Component {
 
 	render() {
 		return (
-			<Table.Row
+			<TableRow
 				key={this.state._id}
 				{...(this.state.error === null ? {} : { negative: true })}>
-				<Table.Cell collapsing>
-					<Image className='icon-list'>
+				<TableCell component='th' scope='row'>
+					<Avatar>
 						<Img
 							src={[
 								this.state.icon_url,
 								this.state.alternate_icon,
 								'./images/no_image.svg',
 							]}
-							loader={<Loader active inline='centered' />}
+							loader={<CircularProgress />}
 						/>
-					</Image>
-				</Table.Cell>
-				<Table.Cell>{this.state.name}</Table.Cell>
-				<Table.Cell>{this.getVersionString()}</Table.Cell>
-				<Table.Cell>{this.getDateString()}</Table.Cell>
-				<Table.Cell>
-					<a href={this.state.url} target='_blank'>
+					</Avatar>
+				</TableCell>
+				<TableCell>{this.state.name}</TableCell>
+				<TableCell>{this.getVersionString()}</TableCell>
+				<TableCell>{this.getDateString()}</TableCell>
+				<TableCell>
+					<Link href={this.state.url} target='_blank'>
 						Link
-					</a>
-				</Table.Cell>
-				<Table.Cell>
-					<Button
-						className='action-button'
-						icon='eye'
-						onClick={() => this.props.onView(this.state)}
-					/>
-					<Button
-						className='action-button'
-						icon='edit'
-						onClick={() => this.props.handleEdit(this.state)}
-					/>
-					<Button
-						className='action-button'
-						icon='trash alternate outline'
-						onClick={() => this.props.handleDelete(this.state)}
-					/>
-				</Table.Cell>
-			</Table.Row>
+					</Link>
+				</TableCell>
+				<TableCell>
+					<IconButton
+						size='small'
+						onClick={() => this.props.onView(this.state)}>
+						<VisibilityIcon />
+					</IconButton>
+					<IconButton
+						size='small'
+						onClick={() => this.props.handleEdit(this.state)}>
+						<EditIcon />
+					</IconButton>
+					<IconButton
+						size='small'
+						onClick={() => this.props.handleDelete(this.state)}>
+						<DeleteIcon />
+					</IconButton>
+				</TableCell>
+			</TableRow>
 		);
 	}
 }
