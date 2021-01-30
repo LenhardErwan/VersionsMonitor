@@ -46,6 +46,12 @@ export default class Menu extends React.Component {
 	checkUserIsAdmin(err, res) {
 		if (!err) {
 			if (this._isMounted) {
+				/**
+				 * This will throw unstable_flushDiscreteUpdates if the user
+				 * manually go to `/admin` while `/` is rendering.
+				 *
+				 * https://stackoverflow.com/questions/58123011/cryptic-react-error-unstable-flushdiscreteupdates-cannot-flush-updates-when-re
+				 */
 				this.setState({ user_is_admin: res });
 			}
 		}
