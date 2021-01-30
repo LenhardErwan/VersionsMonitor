@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ToastContainer } from 'react-toastify';
 import HomeContainer from '/imports/ui/Home';
-import LoginContainer from '/imports/ui/forms/LoginForm';
+import LoginContainer from '/imports/ui/Login';
 
 const darkTheme = createMuiTheme({
 	palette: {

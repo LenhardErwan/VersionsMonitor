@@ -20,7 +20,7 @@ const styles = (theme) => ({
 	},
 });
 
-class LoginForm extends React.Component {
+class Login extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -91,6 +91,6 @@ const LoginContainer = withTracker(() => {
 	return {
 		user: Meteor.user(),
 	};
-})(withStyles(styles)(LoginForm));
+})(withStyles(styles)(Login));
 
 export default LoginContainer;
