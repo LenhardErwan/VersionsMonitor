@@ -35,7 +35,7 @@ Meteor.startup(() => {
 			multi: false,
 			canCreate: true,
 		});
-		user.groups = ['everyone', user._id];
+		user.groups = [user._id, 'everyone'];
 
 		if (options.profile) {
 			user.profile = options.profile;
