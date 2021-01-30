@@ -2,20 +2,20 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
-class Groups extends React.Component {
+class Admin extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 
 	render() {
-		return <div>Groups</div>;
+		return null;
 	}
 }
 
-const GroupsContainer = withTracker(() => {
+const AdminContainer = withTracker(() => {
 	return {
 		user: Meteor.user(),
 	};
-})(Groups);
+})(Admin);
 
-export default GroupsContainer;
+export default AdminContainer;
