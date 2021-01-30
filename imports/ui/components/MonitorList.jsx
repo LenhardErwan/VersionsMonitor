@@ -9,9 +9,8 @@ import {
 	TableHead,
 	TableRow,
 } from '@material-ui/core';
-
-import MonitorItem from '/imports/ui/MonitorItem.jsx';
-import ViewMonitorModal from '/imports/ui/ViewMonitorModal.jsx';
+import MonitorItem from '/imports/ui/components/MonitorItem';
+import ViewMonitorModal from '/imports/ui/components/ViewMonitorModal';
 
 export default class MonitorList extends React.Component {
 	constructor(props) {
