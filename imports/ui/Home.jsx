@@ -25,7 +25,7 @@ class Home extends React.Component {
 		this.openFormModal = this.openFormModal.bind(this);
 	}
 
-	async componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps) {
 		/**
 		 * Avoids memory leak while filtering when the component is not
 		 * mounted.
