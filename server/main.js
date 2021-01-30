@@ -9,6 +9,8 @@ import '/imports/api/monitorsPublications';
 import '/imports/api/monitorsMethods';
 import '/imports/api/usersPublications';
 import '/imports/api/usersMethods';
+import '/imports/api/groupsPublications';
+import '/imports/api/groupsMethods';
 import App from '/server/app.js';
 
 Meteor.startup(() => {
