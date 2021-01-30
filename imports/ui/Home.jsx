@@ -2,11 +2,10 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { navigate } from '@reach/router';
 import { withTracker } from 'meteor/react-meteor-data';
-
-import Menu from '/imports/ui/Menu.jsx';
-import MonitorList from '/imports/ui/MonitorList.jsx';
 import MonitorsCollection from '/imports/db/MonitorsCollection';
-import FormModal from '/imports/ui/FormModal.jsx';
+import Menu from '/imports/ui/components/Menu';
+import MonitorList from '/imports/ui/components/MonitorList';
+import FormModal from '/imports/ui/components/FormModal';
 
 class Home extends React.Component {
 	constructor(props) {
