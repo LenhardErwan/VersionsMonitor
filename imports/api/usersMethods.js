@@ -9,7 +9,7 @@ Meteor.methods({
 			{ fields: { _id: 0, groups: 1 } }
 		);
 
-		if (!group_names.groups) {
+		if (!group_names) {
 			throw new Meteor.Error('user.connected', 'You are not connected');
 		}
 
