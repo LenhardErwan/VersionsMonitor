@@ -32,11 +32,16 @@ class EditMonitorForm extends React.Component {
 	onSubmit(new_monitor) {
 		if (this.props.monitor.id == null) {
 			/** We are creating a new monitor */
-			Meteor.call('monitors.insert', new_monitor, this.props.user, (error) => {
-				if (error) {
-					toast.error('Something went wrong, try again later!');
+			Meteor.call('monitors.insert', new_monitor, (err, res) => {
+				if (err) {
+					console.log(err);
+					if (err.error === 'create.perms') {
+						toast.error(err.reason);
+					} else {
+						toast.error('Something went wrong, try again later!');
+					}
 				} else {
-					toast.success(new_monitor.name + ' was successfully created!');
+					toast.success(new_monitor.name + ' was successfully updated!');
 				}
 			});
 			this.props.closeModal();
@@ -58,10 +63,14 @@ class EditMonitorForm extends React.Component {
 						'monitors.update',
 						old_monitor.id,
 						updated_monitor,
-						this.props.user,
-						(error) => {
-							if (error) {
-								toast.error('Something went wrong, try again later!');
+						(err, res) => {
+							if (err) {
+								console.log(err);
+								if (err.error === 'update.perms') {
+									toast.error(err.reason);
+								} else {
+									toast.error('Something went wrong, try again later!');
+								}
 							} else {
 								toast.success(new_monitor.name + ' was successfully updated!');
 							}

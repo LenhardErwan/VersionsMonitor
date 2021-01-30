@@ -99,7 +99,6 @@ class App extends React.Component {
 					closeModal={() => this.setState({ is_fmodal_open: false })}
 					name={this.state.fmodal_name}
 					param={this.state.fmodal_param}
-					user={this.props.user}
 				/>
 				<ToastContainer
 					position='top-right'
