@@ -26,10 +26,6 @@ class Home extends React.Component {
 	}
 
 	async componentDidUpdate(prevProps) {
-		if (!this.props.user) {
-			await navigate('/login');
-		}
-
 		/**
 		 * Avoids memory leak while filtering when the component is not
 		 * mounted.
@@ -105,6 +101,10 @@ class Home extends React.Component {
 
 const HomeContainer = withTracker(() => {
 	const user = Meteor.user();
+
+	if (user === null) {
+		navigate('/login');
+	}
 
 	if (user !== undefined && user !== null) {
 		Meteor.subscribe('Meteor.users.groups', user._id);
