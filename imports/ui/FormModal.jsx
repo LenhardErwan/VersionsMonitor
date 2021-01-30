@@ -1,7 +1,7 @@
 import React from 'react';
 
-import EditMonitorForm from './forms/EditMonitorForm';
-import DeleteMonitorForm from './forms/DeleteMonitorForm';
+import EditMonitorForm from './components/Form/EditMonitorForm';
+import DeleteMonitorForm from './components/Form/DeleteMonitorForm';
 
 class FormModal extends React.Component {
 	constructor(props) {
