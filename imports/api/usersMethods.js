@@ -5,6 +5,17 @@ import { check } from 'meteor/check';
 import GroupsCollection from '/imports/db/GroupsCollection';
 
 Meteor.methods({
+	'user.insert'(user) {
+		Accounts.createUser(user);
+	},
+	'user.update'(userId, user) {
+		Meteor.users.update(userId, {
+			$set: user,
+		});
+	},
+	'user.delete'(userId) {
+		Meteor.users.remove(userId);
+	},
 	'user.add.group'(username, group_names) {
 		check(username, String);
 		check(group_name, [String]);
