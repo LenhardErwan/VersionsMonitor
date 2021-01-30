@@ -104,11 +104,21 @@ class Home extends React.Component {
 }
 
 const HomeContainer = withTracker(() => {
-	const monitorsHandle = Meteor.subscribe('monitors.list');
+	const user = Meteor.user();
+
+	if (user !== undefined && user !== null) {
+		Meteor.subscribe('Meteor.users.groups', user._id);
+	}
+
+	const monitorsHandle = Meteor.subscribe(
+		'monitors.list',
+		user && user.groups ? user.groups : ['everyone']
+	);
+
 	const loading = !monitorsHandle.ready();
 
 	return {
-		user: Meteor.user(),
+		user: user,
 		monitors: MonitorsCollection.find().fetch(),
 		loading: loading,
 	};
