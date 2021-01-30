@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import { Random } from 'meteor/random';
 
 import MonitorsCollection from '/imports/db/MonitorsCollection';
 import GroupsCollection from '/imports/db/GroupsCollection';
@@ -23,7 +24,15 @@ Meteor.startup(() => {
 	});
 
 	Accounts.onCreateUser((options, user) => {
-		user.groups = ['everyone'];
+		user._id = Random.id();
+
+		GroupsCollection.insert({
+			name: user._id,
+			priority: 0,
+			multi: false,
+			canCreate: true,
+		});
+		user.groups = ['everyone', user._id];
 
 		if (options.profile) {
 			user.profile = options.profile;
