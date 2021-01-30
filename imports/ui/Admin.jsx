@@ -14,12 +14,20 @@ class Admin extends React.Component {
 
 	render() {
 		return (
-			<Grid direction='row'>
-				<UserList loading={this.props.usersLoading} users={this.props.users} />
-				<GroupList
-					loading={this.props.groupLoading}
-					groups={this.props.groups}
-				/>
+			<Grid container spacing={2}>
+				<Grid item>
+					<UserList
+						loading={this.props.usersLoading}
+						users={this.props.users}
+					/>
+				</Grid>
+
+				<Grid item>
+					<GroupList
+						loading={this.props.groupLoading}
+						groups={this.props.groups}
+					/>
+				</Grid>
 			</Grid>
 		);
 	}
