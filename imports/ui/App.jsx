@@ -5,7 +5,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ToastContainer } from 'react-toastify';
 import HomeContainer from '/imports/ui/Home';
 import LoginContainer from '/imports/ui/Login';
-import GroupsContainer from '/imports/ui/Groups';
+import AdminContainer from '/imports/ui/Admin';
 
 const darkTheme = createMuiTheme({
 	palette: {
@@ -29,7 +29,7 @@ class App extends React.Component {
 				<Router>
 					<HomeContainer path='/' />
 					<LoginContainer path='/login' />
-					<GroupsContainer path='/groups' />
+					<AdminContainer path='/admin' />
 				</Router>
 				<ToastContainer
 					position='top-right'

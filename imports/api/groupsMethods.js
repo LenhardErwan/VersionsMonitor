@@ -67,7 +67,7 @@ Meteor.methods({
 		}
 	},
 	'groups.delete.usergroup'(userId) {
-		const group = GroupsCollection.findOne({ name: groupId });
+		const group = GroupsCollection.findOne({ name: userId });
 		if (group) {
 			if (Meteor.call('user.isAdmin', this.userId)) {
 				GroupsCollection.remove(group._id);

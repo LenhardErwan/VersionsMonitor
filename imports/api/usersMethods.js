@@ -54,12 +54,18 @@ Meteor.methods({
 	},
 	'users.update'(userId, user) {
 		//TODO define permission to update User
-		Meteor.users.update(userId, {
-			$set: user,
-		});
+		if (user.username) {
+			Accounts.setUsername(userId, user.username);
+		}
+
+		if (user.password) {
+			Accounts.setPassword(userId, user.password);
+		}
 	},
 	'users.delete'(userId) {
-		//TODO define permission to delete User
+		/* TODO define permission to delete User and make sure the current user
+		 * can also delete the usergroup
+		 */
 		Meteor.users.remove(userId);
 		Meteor.call('groups.delete.usergroup', userId);
 	},

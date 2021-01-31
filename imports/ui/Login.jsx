@@ -32,12 +32,6 @@ class Login extends React.Component {
 		this.submit = this.submit.bind(this);
 	}
 
-	async componentDidUpdate() {
-		if (this.props.user) {
-			await navigate('/');
-		}
-	}
-
 	submit(event) {
 		event.preventDefault();
 
@@ -88,6 +82,12 @@ class Login extends React.Component {
 }
 
 const LoginContainer = withTracker(() => {
+	const user = Meteor.user();
+
+	if (user) {
+		navigate('/');
+	}
+
 	return {
 		user: Meteor.user(),
 	};

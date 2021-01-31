@@ -44,6 +44,19 @@ Meteor.startup(() => {
 		return user;
 	});
 
+	if (GroupsCollection.find({}).count() <= 0) {
+		GroupsCollection.insert({
+			name: 'everyone',
+			priority: -1,
+		});
+
+		GroupsCollection.insert({
+			name: 'admin',
+			priority: 1,
+			administrator: true,
+		});
+	}
+
 	if (!Accounts.findUserByUsername('meteorite')) {
 		Accounts.createUser({
 			username: 'meteorite',
@@ -51,11 +64,13 @@ Meteor.startup(() => {
 		});
 	}
 
-	if (GroupsCollection.find({ name: 'everyone' }).count() <= 0) {
-		GroupsCollection.insert({
-			name: 'everyone',
-			priority: -1,
+	if (!Accounts.findUserByUsername('admin')) {
+		const adminId = Accounts.createUser({
+			username: 'admin',
+			password: 'admin',
 		});
+
+		Meteor.users.update({ _id: adminId }, { $push: { groups: 'admin' } });
 	}
 
 	if (MonitorsCollection.find().count() <= 0) {
