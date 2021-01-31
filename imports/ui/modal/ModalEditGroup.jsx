@@ -6,6 +6,9 @@ import {
 	DialogTitle,
 	DialogContent,
 	DialogActions,
+	InputLabel,
+	MenuItem,
+	Select,
 } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import { group } from '/imports/db/schemas/group';
@@ -15,14 +18,26 @@ import { toast } from 'react-toastify';
 
 const bridge = new SimpleSchema2Bridge(group);
 
+const TESTmonitors = new Array();
+TESTmonitors.push({ id: 'E3EP7FxaFuwcYa4RW', name: 'VersionsMonitor' });
+TESTmonitors.push({ id: 'jxcQmZaqTaqaKh9qA', name: 'BeerBrowser' });
+
 class ModalEditGroup extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			selectedMonitor: this.props.monitors
+				? this.props.monitors
+				: TESTmonitors[0].id,
+		};
+
 		this.onSubmit = this.onSubmit.bind(this);
+		this.handleSelectChange = this.handleSelectChange.bind(this);
 	}
 
 	onSubmit(newGroup) {
+		//TODO get modified field
 		if (this.props.group._id == null) {
 			Meteor.call('groups.insert', newGroup, (err, res) => {
 				if (err) {
@@ -77,8 +92,15 @@ class ModalEditGroup extends React.Component {
 		}
 	}
 
+	handleSelectChange(event) {
+		this.setState({
+			selectedMonitor: event.target.value,
+		});
+	}
+
 	render() {
 		let formRef;
+		const monitors = this.props.monitor ? this.props.monitor : TESTmonitors;
 
 		return (
 			<Dialog onClose={this.props.closeModal} open={this.props.isOpen}>
@@ -95,6 +117,17 @@ class ModalEditGroup extends React.Component {
 						onSubmit={this.onSubmit}>
 						<AutoFields omitFields={['multi']} />
 						<ErrorsField />
+						<InputLabel id='monitors-select-label'>Monitor</InputLabel>
+						<Select
+							labelId='monitors-select-label'
+							id='monitors-select'
+							onChange={this.handleSelectChange}
+							value={this.state.selectedMonitor}>
+							{monitors.map((monitor) => (
+								<MenuItem value={monitor.id}>{monitor.name}</MenuItem>
+							))}
+						</Select>
+						{/* Show monitor permissions and omit field in AutoForm */}
 					</AutoForm>
 				</DialogContent>
 				<DialogActions>
