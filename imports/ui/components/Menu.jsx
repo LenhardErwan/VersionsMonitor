@@ -7,23 +7,38 @@ import {
 	InputBase,
 	Grid,
 	CircularProgress,
+	Popover,
+	withStyles,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import BuildIcon from '@material-ui/icons/Build';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-export default class Menu extends React.Component {
+const useStyles = (theme) => ({
+	popover: {
+		pointerEvents: 'none',
+	},
+	paper: {
+		padding: theme.spacing(1),
+	},
+});
+
+class Menu extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			input_filter: '',
 			user_is_admin: false,
+			anchorEl: null,
+			popoverText: '',
 		};
 
 		this.checkUserIsAdmin = this.checkUserIsAdmin.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handlePopoverClose = this.handlePopoverClose.bind(this);
+		this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
 	}
 
 	/**
@@ -65,7 +80,20 @@ export default class Menu extends React.Component {
 		this.props.setFilter(event.target.value);
 	}
 
+	handlePopoverOpen = (event) => {
+		this.setState({
+			anchorEl: event.currentTarget,
+			popoverText: event.currentTarget.dataset.popover,
+		});
+	};
+
+	handlePopoverClose = () => {
+		this.setState({ anchorEl: null });
+	};
+
 	render() {
+		const open = Boolean(this.state.anchorEl);
+
 		return (
 			<Grid container direction='row' justify='flex-start' alignItems='center'>
 				<Paper>
@@ -79,18 +107,50 @@ export default class Menu extends React.Component {
 					/>
 				</Paper>
 				<IconButton
-					onClick={() => this.props.openFormModal('edit_monitor', {})}>
+					onClick={() => this.props.openFormModal('edit_monitor', {})}
+					data-popover='Create'
+					onMouseEnter={this.handlePopoverOpen}
+					onMouseLeave={this.handlePopoverClose}>
 					<AddBoxIcon />
 				</IconButton>
 				{this.state.user_is_admin && (
-					<IconButton onClick={async () => await navigate('/admin')}>
+					<IconButton
+						onClick={async () => await navigate('/admin')}
+						data-popover='Administration'
+						onMouseEnter={this.handlePopoverOpen}
+						onMouseLeave={this.handlePopoverClose}>
 						<BuildIcon />
 					</IconButton>
 				)}
-				<IconButton onClick={() => Meteor.logout()}>
+				<IconButton
+					onClick={() => Meteor.logout()}
+					data-popover='Logout'
+					onMouseEnter={this.handlePopoverOpen}
+					onMouseLeave={this.handlePopoverClose}>
 					<ExitToAppIcon />
 				</IconButton>
+				<Popover
+					className={this.props.classes.popover}
+					classes={{
+						paper: this.props.classes.paper,
+					}}
+					open={open}
+					anchorEl={this.state.anchorEl}
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'center',
+					}}
+					transformOrigin={{
+						vertical: 'top',
+						horizontal: 'center',
+					}}
+					onClose={this.handlePopoverClose}
+					disableRestoreFocus>
+					{this.state.popoverText}
+				</Popover>
 			</Grid>
 		);
 	}
 }
+
+export default withStyles(useStyles)(Menu);
