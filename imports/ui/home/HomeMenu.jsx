@@ -15,7 +15,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import BuildIcon from '@material-ui/icons/Build';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-const useStyles = (theme) => ({
+const styles = (theme) => ({
 	popover: {
 		pointerEvents: 'none',
 	},
@@ -24,7 +24,7 @@ const useStyles = (theme) => ({
 	},
 });
 
-class Menu extends React.Component {
+class HomeMenu extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -129,4 +129,4 @@ class Menu extends React.Component {
 	}
 }
 
-export default withStyles(useStyles)(Menu);
+export default withStyles(styles)(HomeMenu);

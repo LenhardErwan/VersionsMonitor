@@ -24,7 +24,7 @@ const bridge = new SimpleSchema2Bridge(monitor);
  * @param {Boolean} props.isOpen - Check if the modal is open
  * @param {Function} props.clodeModal - JS function to close the modal
  */
-class EditMonitorForm extends React.Component {
+class ModalEditMonitor extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -176,4 +176,4 @@ class EditMonitorForm extends React.Component {
 	}
 }
 
-export default EditMonitorForm;
+export default ModalEditMonitor;

@@ -49,7 +49,7 @@ const styles = (theme) => ({
 	},
 });
 
-class ViewMonitorModal extends React.Component {
+class ModalViewMonitor extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -196,4 +196,4 @@ class ViewMonitorModal extends React.Component {
 	}
 }
 
-export default withStyles(styles)(ViewMonitorModal);
+export default withStyles(styles)(ModalViewMonitor);

@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 
 const bridge = new SimpleSchema2Bridge(group);
 
-class EditGroupForm extends React.Component {
+class ModalEditGroup extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -114,4 +114,4 @@ class EditGroupForm extends React.Component {
 	}
 }
 
-export default EditGroupForm;
+export default ModalEditGroup;

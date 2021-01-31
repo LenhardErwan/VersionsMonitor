@@ -11,7 +11,7 @@ import {
 import CheckIcon from '@material-ui/icons/Check';
 import { toast } from 'react-toastify';
 
-class DeleteGroupForm extends React.Component {
+class ModalDeleteUser extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -19,15 +19,11 @@ class DeleteGroupForm extends React.Component {
 	}
 
 	onConfirm() {
-		Meteor.call('groups.delete', this.props.group._id, (err, res) => {
+		Meteor.call('users.delete', this.props.user._id, (err, res) => {
 			if (err) {
-				if (err.error === 'perms.groups.delete') {
-					toast.error(err.reason);
-				} else {
-					toast.error('Something went wrong, try again later!');
-				}
+				toast.error('Something went wrong, try again later!');
 			} else {
-				toast.success(this.props.group.name + ' was successfully delete!');
+				toast.success(this.props.user.username + ' was successfully deleted!');
 			}
 		});
 
@@ -37,11 +33,11 @@ class DeleteGroupForm extends React.Component {
 	render() {
 		return (
 			<Dialog onClose={this.props.closeModal} open={this.props.isOpen}>
-				<DialogTitle>Delete {this.props.group.name} ?</DialogTitle>
+				<DialogTitle>Delete {this.props.user.username} ?</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
-						Your are going to delete {this.props.group.name}, are you sure you
-						want to do this ?
+						Your are going to delete {this.props.user.username}, are you sure
+						you want to do this ?
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
@@ -61,4 +57,4 @@ class DeleteGroupForm extends React.Component {
 	}
 }
 
-export default DeleteGroupForm;
+export default ModalDeleteUser;

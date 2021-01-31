@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { navigate } from '@reach/router';
 import { withTracker } from 'meteor/react-meteor-data';
 import MonitorsCollection from '/imports/db/MonitorsCollection';
-import Menu from '/imports/ui/components/Menu';
-import MonitorList from '/imports/ui/components/MonitorList';
-import ModalContainer from '/imports/ui/components/ModalContainer';
+import HomeMenu from '/imports/ui/home/HomeMenu';
+import HomeListMonitor from '/imports/ui/home/HomeListMonitor';
 
 class Home extends React.Component {
 	constructor(props) {
@@ -58,25 +57,26 @@ class Home extends React.Component {
 		);
 
 		this.setState({
-			monitor_list: mlist,
+			monitors: mlist,
 			loading_filter: false,
 		});
 	}
 
 	render() {
 		return (
-			<div>
-				<Menu
+			<Fragment>
+				<HomeMenu
 					loading={this.state.loading_filter}
 					setFilter={this.setFilter}
 					handleOpenModal={this.props.handleOpenModal}
 				/>
-				<MonitorList
-					monitors={this.state.monitor_list}
+
+				<HomeListMonitor
+					monitors={this.state.monitors}
 					loading={this.props.loading}
 					handleOpenModal={this.props.handleOpenModal}
 				/>
-			</div>
+			</Fragment>
 		);
 	}
 }

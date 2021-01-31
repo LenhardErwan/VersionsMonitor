@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 
 const bridge = new SimpleSchema2Bridge(user);
 
-class EditUserForm extends React.Component {
+class ModalEditUser extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -101,4 +101,4 @@ class EditUserForm extends React.Component {
 	}
 }
 
-export default EditUserForm;
+export default ModalEditUser;

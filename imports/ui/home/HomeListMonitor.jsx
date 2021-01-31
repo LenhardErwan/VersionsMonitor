@@ -9,10 +9,9 @@ import {
 	TableHead,
 	TableRow,
 } from '@material-ui/core';
-import MonitorItem from '/imports/ui/components/MonitorItem';
-import ViewMonitorModal from '/imports/ui/components/ViewMonitorModal';
+import HomeItemMonitor from '/imports/ui/home/HomeItemMonitor';
 
-export default class MonitorList extends React.Component {
+class HomeListMonitor extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -68,7 +67,7 @@ export default class MonitorList extends React.Component {
 							</TableRow>
 						) : this.props.monitors.length > 0 ? (
 							this.props.monitors.map((monitor, index) => (
-								<MonitorItem
+								<HomeItemMonitor
 									key={index}
 									monitor={monitor}
 									handleEdit={(monitor) =>
@@ -95,3 +94,5 @@ export default class MonitorList extends React.Component {
 		);
 	}
 }
+
+export default HomeListMonitor;

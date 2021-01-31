@@ -3,7 +3,7 @@ import { IconButton, TableCell, TableRow } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-class GroupItem extends React.Component {
+class AdminItemUser extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -11,11 +11,11 @@ class GroupItem extends React.Component {
 	render() {
 		return (
 			<TableRow>
-				<TableCell>{this.props.group.name}</TableCell>
+				<TableCell>{this.props.user.username}</TableCell>
 				<TableCell>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleEdit(this.props.group)}
+						onClick={() => this.props.handleEdit(this.props.user)}
 						data-popover='Edit'
 						onMouseEnter={this.props.handlePopoverOpen}
 						onMouseLeave={this.props.handlePopoverClose}>
@@ -23,7 +23,7 @@ class GroupItem extends React.Component {
 					</IconButton>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleDelete(this.props.group)}
+						onClick={() => this.props.handleDelete(this.props.user)}
 						data-popover='Delete'
 						onMouseEnter={this.props.handlePopoverOpen}
 						onMouseLeave={this.props.handlePopoverClose}>
@@ -35,4 +35,4 @@ class GroupItem extends React.Component {
 	}
 }
 
-export default GroupItem;
+export default AdminItemUser;

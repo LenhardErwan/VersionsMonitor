@@ -16,7 +16,7 @@ import { toast } from 'react-toastify';
  * @param {Boolean} props.isOpen - Check if the modal is open
  * @param {Function} props.closeModal - Method to close the modal
  */
-class DeleteMonitorForm extends React.Component {
+class ModalDeleteMonitor extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -65,4 +65,4 @@ class DeleteMonitorForm extends React.Component {
 	}
 }
 
-export default DeleteMonitorForm;
+export default ModalDeleteMonitor;

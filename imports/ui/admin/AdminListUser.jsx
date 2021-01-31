@@ -9,9 +9,9 @@ import {
 	TableRow,
 	Paper,
 } from '@material-ui/core';
-import UserItem from '/imports/ui/components/UserItem';
+import AdminItemUser from '/imports/ui/admin/AdminItemUser';
 
-class UserList extends React.Component {
+class AdminListUser extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -35,7 +35,7 @@ class UserList extends React.Component {
 							</TableRow>
 						) : this.props.users.length > 0 ? (
 							this.props.users.map((user, index) => (
-								<UserItem
+								<AdminItemUser
 									key={index}
 									user={user}
 									handleEdit={(user) =>
@@ -62,4 +62,4 @@ class UserList extends React.Component {
 	}
 }
 
-export default UserList;
+export default AdminListUser;

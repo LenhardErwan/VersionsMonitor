@@ -9,9 +9,9 @@ import {
 	TableHead,
 	TableRow,
 } from '@material-ui/core';
-import GroupItem from '/imports/ui/components/GroupItem';
+import AdminItemGroup from '/imports/ui/admin/AdminItemGroup';
 
-class GroupList extends React.Component {
+class AdminListGroup extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -35,7 +35,7 @@ class GroupList extends React.Component {
 							</TableRow>
 						) : this.props.groups.length > 0 ? (
 							this.props.groups.map((group, index) => (
-								<GroupItem
+								<AdminItemGroup
 									key={index}
 									group={group}
 									handleEdit={(group) =>
@@ -62,4 +62,4 @@ class GroupList extends React.Component {
 	}
 }
 
-export default GroupList;
+export default AdminListGroup;

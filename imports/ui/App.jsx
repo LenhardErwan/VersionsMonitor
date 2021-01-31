@@ -3,10 +3,10 @@ import { Router } from '@reach/router';
 import { ThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ToastContainer } from 'react-toastify';
-import HomeContainer from '/imports/ui/Home';
-import LoginContainer from '/imports/ui/Login';
-import AdminContainer from '/imports/ui/Admin';
-import ModalContainer from '/imports/ui/components/ModalContainer';
+import HomeContainer from '/imports/ui/home/Home';
+import LoginContainer from '/imports/ui/login/Login';
+import AdminContainer from '/imports/ui/admin/Admin';
+import ModalContainer from '/imports/ui/modal/ModalContainer';
 
 const darkTheme = createMuiTheme({
 	palette: {

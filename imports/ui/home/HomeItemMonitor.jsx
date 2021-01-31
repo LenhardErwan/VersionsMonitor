@@ -14,7 +14,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const useStyles = (theme) => ({
+const styles = (theme) => ({
 	popover: {
 		pointerEvents: 'none',
 	},
@@ -23,7 +23,7 @@ const useStyles = (theme) => ({
 	},
 });
 
-class MonitorItem extends React.Component {
+class HomeItemMonitor extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -155,4 +155,4 @@ class MonitorItem extends React.Component {
 	}
 }
 
-export default withStyles(useStyles)(MonitorItem);
+export default withStyles(styles)(HomeItemMonitor);

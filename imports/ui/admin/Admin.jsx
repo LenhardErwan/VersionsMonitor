@@ -13,8 +13,8 @@ import {
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
-import UserList from '/imports/ui/components/UserList';
-import GroupList from '/imports/ui/components/GroupList';
+import UserList from '/imports/ui/admin/AdminListUser';
+import GroupList from '/imports/ui/admin/AdminListGroup';
 import GroupsCollection from '/imports/db/GroupsCollection';
 
 const styles = (theme) => ({
