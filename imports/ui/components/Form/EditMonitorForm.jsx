@@ -35,7 +35,7 @@ class EditMonitorForm extends React.Component {
 			Meteor.call('monitors.insert', new_monitor, (err, res) => {
 				if (err) {
 					console.log(err);
-					if (err.error === 'perms.monitor.insert') {
+					if (err.error === 'perms.monitors.insert') {
 						toast.error(err.reason);
 					} else {
 						toast.error('Something went wrong, try again later!');
@@ -65,8 +65,7 @@ class EditMonitorForm extends React.Component {
 						updated_monitor,
 						(err, res) => {
 							if (err) {
-								console.log(err);
-								if (err.error === 'perms.monitor.update') {
+								if (err.error === 'perms.monitors.update') {
 									toast.error(err.reason);
 								} else {
 									toast.error('Something went wrong, try again later!');

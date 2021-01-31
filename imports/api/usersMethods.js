@@ -47,23 +47,23 @@ function isValidUserAndGroups(username, group_names) {
 }
 
 Meteor.methods({
-	'user.insert'(user) {
+	'users.insert'(user) {
 		//TODO define permission to create User
 		Accounts.createUser(user);
 		// Automaticaly create group only for this user (see server/main.js#Account.onCreateUser)
 	},
-	'user.update'(userId, user) {
+	'users.update'(userId, user) {
 		//TODO define permission to update User
 		Meteor.users.update(userId, {
 			$set: user,
 		});
 	},
-	'user.delete'(userId) {
+	'users.delete'(userId) {
 		//TODO define permission to delete User
 		Meteor.users.remove(userId);
-		Meteor.call('group.delete', userId);
+		Meteor.call('groups.delete', userId);
 	},
-	'user.group.add'(username, group_names) {
+	'user.groups.add'(username, group_names) {
 		check(username, String);
 		check(group_name, [String]);
 
@@ -75,7 +75,7 @@ Meteor.methods({
 			return true;
 		}
 	},
-	'user.group.delete'(username, group_name) {
+	'user.groups.remove'(username, group_name) {
 		check(username, String);
 		check(group_name, [String]);
 
@@ -92,7 +92,7 @@ Meteor.methods({
 	 * @param {string} userId id of the user
 	 * @returns {number | null} priority of higher or null if user doesn't have public group assigned
 	 */
-	'user.group.higher.priority'(userId) {
+	'user.groups.highestPriority'(userId) {
 		const groups = getGroups(userId);
 
 		// Reduce array to have the lowest priority (highest group) (Ex: admin group should be at 1)

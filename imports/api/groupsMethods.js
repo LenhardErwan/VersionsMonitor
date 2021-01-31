@@ -3,20 +3,20 @@ import { Meteor } from 'meteor/meteor';
 import GroupsCollection from '/imports/db/GroupsCollection';
 
 Meteor.methods({
-	'group.insert'(group) {
+	'groups.insert'(group) {
 		//TODO create canCreateRole permisison ? Create if canManage permission ?
 		if (Meteor.call('user.isAdmin', this.userId)) {
 			GroupsCollection.insert(group);
 		} else {
 			throw new Meteor.Error(
-				'perms.group.insert',
+				'perms.groups.insert',
 				"You don't have permission to create a group!"
 			);
 		}
 	},
-	'group.update'(groupId, groupParams) {
+	'groups.update'(groupId, groupParams) {
 		const user_priority = Meteor.call(
-			'user.group.higher.priority',
+			'user.groups.highestPriority',
 			this.userId
 		);
 		const group = GroupsCollection.findOne({ _id: groupId });
@@ -30,7 +30,7 @@ Meteor.methods({
 				});
 			} else {
 				throw new Meteor.Error(
-					'perms.group.insert',
+					'perms.groups.insert',
 					"You don't have permission to create a group!"
 				);
 			}
@@ -41,9 +41,9 @@ Meteor.methods({
 			);
 		}
 	},
-	'group.delete'(groupId) {
+	'groups.delete'(groupId) {
 		const user_priority = Meteor.call(
-			'user.group.higher.priority',
+			'user.groups.highestPriority',
 			this.userId
 		);
 		const group = GroupsCollection.findOne({ _id: groupId });
@@ -55,7 +55,7 @@ Meteor.methods({
 				GroupsCollection.remove(groupId);
 			} else {
 				throw new Meteor.Error(
-					'perms.group.insert',
+					'perms.groups.insert',
 					"You don't have permission to create a group!"
 				);
 			}

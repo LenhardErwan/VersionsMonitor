@@ -24,7 +24,7 @@ Meteor.methods({
 			return true;
 		} else {
 			throw new Meteor.Error(
-				'perms.monitor.insert',
+				'perms.monitors.insert',
 				"You don't have permission to create a monitor!"
 			);
 		}
@@ -38,7 +38,7 @@ Meteor.methods({
 			});
 		} else {
 			throw new Meteor.Error(
-				'perms.monitor.update',
+				'perms.monitors.update',
 				"You don't have permission to update this monitor!"
 			);
 		}
@@ -55,7 +55,7 @@ Meteor.methods({
 			);
 		} else {
 			throw new Meteor.Error(
-				'perms.monitor.delete',
+				'perms.monitors.delete',
 				"You don't have permission to delete this monitor!"
 			);
 		}

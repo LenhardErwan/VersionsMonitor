@@ -107,7 +107,7 @@ const HomeContainer = withTracker(() => {
 	const user = Meteor.user();
 
 	if (user !== undefined && user !== null) {
-		Meteor.subscribe('Meteor.users.groups', user._id);
+		Meteor.subscribe('user.groups', user._id);
 	}
 
 	const monitorsHandle = Meteor.subscribe(
