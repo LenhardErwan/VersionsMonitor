@@ -63,7 +63,9 @@ Meteor.methods({
 		}
 	},
 	'users.delete'(userId) {
-		//TODO define permission to delete User
+		/* TODO define permission to delete User and make sure the current user
+		 * can also delete the usergroup
+		 */
 		Meteor.users.remove(userId);
 		Meteor.call('groups.delete.usergroup', userId);
 	},
