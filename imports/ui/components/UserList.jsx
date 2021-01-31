@@ -44,6 +44,8 @@ class UserList extends React.Component {
 									handleDelete={(user) =>
 										this.props.openFormModal('delete_user', user)
 									}
+									handlePopoverOpen={this.props.handlePopoverOpen}
+									handlePopoverClose={this.props.handlePopoverClose}
 								/>
 							))
 						) : (

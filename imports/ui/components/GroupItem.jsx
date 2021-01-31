@@ -15,12 +15,18 @@ class GroupItem extends React.Component {
 				<TableCell>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleEdit(this.props.group)}>
+						onClick={() => this.props.handleEdit(this.props.group)}
+						data-popover='Edit'
+						onMouseEnter={this.props.handlePopoverOpen}
+						onMouseLeave={this.props.handlePopoverClose}>
 						<EditIcon />
 					</IconButton>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleDelete(this.props.group)}>
+						onClick={() => this.props.handleDelete(this.props.group)}
+						data-popover='Delete'
+						onMouseEnter={this.props.handlePopoverOpen}
+						onMouseLeave={this.props.handlePopoverClose}>
 						<DeleteIcon />
 					</IconButton>
 				</TableCell>

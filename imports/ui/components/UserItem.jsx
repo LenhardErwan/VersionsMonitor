@@ -15,12 +15,18 @@ class UserItem extends React.Component {
 				<TableCell>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleEdit(this.props.user)}>
+						onClick={() => this.props.handleEdit(this.props.user)}
+						data-popover='Edit'
+						onMouseEnter={this.props.handlePopoverOpen}
+						onMouseLeave={this.props.handlePopoverClose}>
 						<EditIcon />
 					</IconButton>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleDelete(this.props.user)}>
+						onClick={() => this.props.handleDelete(this.props.user)}
+						data-popover='Delete'
+						onMouseEnter={this.props.handlePopoverOpen}
+						onMouseLeave={this.props.handlePopoverClose}>
 						<DeleteIcon />
 					</IconButton>
 				</TableCell>

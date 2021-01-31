@@ -44,6 +44,8 @@ class GroupList extends React.Component {
 									handleDelete={(group) =>
 										this.props.openFormModal('delete_group', group)
 									}
+									handlePopoverClose={this.props.handlePopoverClose}
+									handlePopoverOpen={this.props.handlePopoverOpen}
 								/>
 							))
 						) : (
