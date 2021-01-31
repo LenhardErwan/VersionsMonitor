@@ -16,7 +16,6 @@ import HomeIcon from '@material-ui/icons/Home';
 import UserList from '/imports/ui/components/UserList';
 import GroupList from '/imports/ui/components/GroupList';
 import GroupsCollection from '/imports/db/GroupsCollection';
-import FormModal from '/imports/ui/components/FormModal';
 
 const styles = (theme) => ({
 	popover: {
@@ -35,12 +34,8 @@ class Admin extends React.Component {
 			menuAnchor: null,
 			popoverAnchor: null,
 			popoverText: '',
-			is_fmodal_open: false,
-			fmodal_name: null,
-			fmodal_param: null,
 		};
 
-		this.openFormModal = this.openFormModal.bind(this);
 		this.handleMenuOpen = this.handleMenuOpen.bind(this);
 		this.handleMenuClose = this.handleMenuClose.bind(this);
 		this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
@@ -69,14 +64,6 @@ class Admin extends React.Component {
 	handlePopoverClose() {
 		this.setState({
 			popoverAnchor: null,
-		});
-	}
-
-	openFormModal(name, param) {
-		this.setState({
-			is_fmodal_open: true,
-			fmodal_name: name,
-			fmodal_param: param,
 		});
 	}
 
@@ -114,7 +101,7 @@ class Admin extends React.Component {
 						<UserList
 							loading={this.props.usersLoading}
 							users={this.props.users}
-							openFormModal={this.openFormModal}
+							openFormModal={this.props.handleOpenModal}
 							handlePopoverClose={this.handlePopoverClose}
 							handlePopoverOpen={this.handlePopoverOpen}
 						/>
@@ -124,18 +111,11 @@ class Admin extends React.Component {
 						<GroupList
 							loading={this.props.groupsLoading}
 							groups={this.props.groups}
-							openFormModal={this.openFormModal}
+							openFormModal={this.props.handleOpenModal}
 							handlePopoverClose={this.handlePopoverClose}
 							handlePopoverOpen={this.handlePopoverOpen}
 						/>
 					</Grid>
-
-					<FormModal
-						isOpen={this.state.is_fmodal_open}
-						closeModal={() => this.setState({ is_fmodal_open: false })}
-						name={this.state.fmodal_name}
-						param={this.state.fmodal_param}
-					/>
 				</Grid>
 
 				<Menu
@@ -146,7 +126,7 @@ class Admin extends React.Component {
 					<MenuItem
 						onClick={() => {
 							this.handleMenuClose();
-							this.openFormModal('edit_user', {});
+							this.props.handleOpenModal('edit_user', {});
 						}}>
 						User
 					</MenuItem>
@@ -154,7 +134,7 @@ class Admin extends React.Component {
 					<MenuItem
 						onClick={() => {
 							this.handleMenuClose();
-							this.openFormModal('edit_group', {});
+							this.props.handleOpenModal('edit_group', {});
 						}}>
 						Group
 					</MenuItem>

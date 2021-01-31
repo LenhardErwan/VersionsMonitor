@@ -15,11 +15,6 @@ import ViewMonitorModal from '/imports/ui/components/ViewMonitorModal';
 export default class MonitorList extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			selected_monitor: null,
-			modal_view_monitor_open: false,
-		};
 	}
 
 	getDateFormatString() {
@@ -77,34 +72,25 @@ export default class MonitorList extends React.Component {
 									key={index}
 									monitor={monitor}
 									handleEdit={(monitor) =>
-										this.props.openFormModal('edit_monitor', monitor)
+										this.props.handleOpenModal('edit_monitor', monitor)
 									}
 									handleDelete={(monitor) =>
-										this.props.openFormModal('delete_monitor', monitor)
+										this.props.handleOpenModal('delete_monitor', monitor)
 									}
 									onView={(monitor) =>
-										this.setState({
-											selected_monitor: monitor,
-											modal_view_monitor_open: true,
-										})
+										this.props.handleOpenModal('view_monitor', monitor)
 									}
 								/>
 							))
 						) : (
 							<TableRow>
-								<TableCell colSpan='2' align='center'>
+								<TableCell colSpan='6' align='center'>
 									No monitor found
 								</TableCell>
 							</TableRow>
 						)}
 					</TableBody>
 				</Table>
-				<ViewMonitorModal
-					monitor={this.state.selected_monitor}
-					date_format={this.getDateFormatString()}
-					open={this.state.modal_view_monitor_open}
-					onClose={() => this.setState({ modal_view_monitor_open: false })}
-				/>
 			</TableContainer>
 		);
 	}

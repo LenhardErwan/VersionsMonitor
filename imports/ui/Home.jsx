@@ -5,7 +5,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import MonitorsCollection from '/imports/db/MonitorsCollection';
 import Menu from '/imports/ui/components/Menu';
 import MonitorList from '/imports/ui/components/MonitorList';
-import FormModal from '/imports/ui/components/FormModal';
+import ModalContainer from '/imports/ui/components/ModalContainer';
 
 class Home extends React.Component {
 	constructor(props) {
@@ -14,15 +14,11 @@ class Home extends React.Component {
 		this.state = {
 			filter: '',
 			loading_filter: false,
-			monitor_list: new Array(),
-			fmodal_name: null,
-			fmodal_param: null,
-			is_fmodal_open: false,
+			monitors: new Array(),
 		};
 
 		this.setFilter = this.setFilter.bind(this);
 		this.filter = this.filter.bind(this);
-		this.openFormModal = this.openFormModal.bind(this);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -67,32 +63,18 @@ class Home extends React.Component {
 		});
 	}
 
-	openFormModal(name, param) {
-		this.setState({
-			fmodal_name: name,
-			fmodal_param: param,
-			is_fmodal_open: true,
-		});
-	}
-
 	render() {
 		return (
 			<div>
 				<Menu
 					loading={this.state.loading_filter}
 					setFilter={this.setFilter}
-					openFormModal={this.openFormModal}
+					handleOpenModal={this.props.handleOpenModal}
 				/>
 				<MonitorList
 					monitors={this.state.monitor_list}
 					loading={this.props.loading}
-					openFormModal={this.openFormModal}
-				/>
-				<FormModal
-					isOpen={this.state.is_fmodal_open}
-					closeModal={() => this.setState({ is_fmodal_open: false })}
-					name={this.state.fmodal_name}
-					param={this.state.fmodal_param}
+					handleOpenModal={this.props.handleOpenModal}
 				/>
 			</div>
 		);

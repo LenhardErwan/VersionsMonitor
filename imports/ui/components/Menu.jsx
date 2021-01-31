@@ -83,7 +83,7 @@ class Menu extends React.Component {
 					/>
 				</Paper>
 				<IconButton
-					onClick={() => this.props.openFormModal('edit_monitor', {})}
+					onClick={() => this.props.handleOpenModal('edit_monitor', {})}
 					data-popover='Create'
 					onMouseEnter={this.handlePopoverOpen}
 					onMouseLeave={this.handlePopoverClose}>
