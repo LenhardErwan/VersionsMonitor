@@ -20,39 +20,6 @@ export default class MonitorList extends React.Component {
 			selected_monitor: null,
 			modal_view_monitor_open: false,
 		};
-
-		this.getMonitorList = this.getMonitorList.bind(this);
-	}
-
-	getMonitorList() {
-		if (this.props.monitor_list.length > 0) {
-			return this.props.monitor_list.map((monitor) => {
-				return (
-					<MonitorItem
-						{...monitor}
-						key={monitor._id}
-						handleEdit={(monitor) =>
-							this.props.openFormModal('edit_monitor', monitor)
-						}
-						handleDelete={(monitor) =>
-							this.props.openFormModal('delete_monitor', monitor)
-						}
-						onView={(monitor) =>
-							this.setState({
-								selected_monitor: monitor,
-								modal_view_monitor_open: true,
-							})
-						}
-					/>
-				);
-			});
-		} else {
-			return (
-				<tr>
-					<td colSpan='6'>No monitors found</td>
-				</tr>
-			);
-		}
 	}
 
 	getDateFormatString() {
@@ -104,8 +71,31 @@ export default class MonitorList extends React.Component {
 									<CircularProgress />
 								</TableCell>
 							</TableRow>
+						) : this.props.monitors.length > 0 ? (
+							this.props.monitors.map((monitor, index) => (
+								<MonitorItem
+									{...monitor}
+									key={index}
+									handleEdit={(monitor) =>
+										this.props.openFormModal('edit_monitor', monitor)
+									}
+									handleDelete={(monitor) =>
+										this.props.openFormModal('delete_monitor', monitor)
+									}
+									onView={(monitor) =>
+										this.setState({
+											selected_monitor: monitor,
+											modal_view_monitor_open: true,
+										})
+									}
+								/>
+							))
 						) : (
-							this.getMonitorList()
+							<TableRow>
+								<TableCell colSpan='2' align='center'>
+									No monitor found
+								</TableCell>
+							</TableRow>
 						)}
 					</TableBody>
 				</Table>

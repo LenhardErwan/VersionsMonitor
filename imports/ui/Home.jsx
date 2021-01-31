@@ -84,7 +84,7 @@ class Home extends React.Component {
 					openFormModal={this.openFormModal}
 				/>
 				<MonitorList
-					monitor_list={this.state.monitor_list}
+					monitors={this.state.monitor_list}
 					loading={this.props.loading}
 					openFormModal={this.openFormModal}
 				/>
