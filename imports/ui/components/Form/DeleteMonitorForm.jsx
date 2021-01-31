@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
 	Dialog,
 	DialogTitle,
@@ -25,7 +24,7 @@ class DeleteMonitorForm extends React.Component {
 	}
 
 	onConfirm() {
-		Meteor.call('monitors.delete', this.props.monitor.id, (err, res) => {
+		Meteor.call('monitors.delete', this.props.monitor._id, (err, res) => {
 			if (err) {
 				console.log(err);
 				if (err.error === 'perms.monitor.delete') {

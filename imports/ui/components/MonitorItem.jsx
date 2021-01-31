@@ -7,43 +7,50 @@ import {
 	Link,
 	TableCell,
 	TableRow,
+	Popover,
+	withStyles,
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-export default class MonitorItem extends React.Component {
+const useStyles = (theme) => ({
+	popover: {
+		pointerEvents: 'none',
+	},
+	paper: {
+		padding: theme.spacing(1),
+	},
+});
+
+class MonitorItem extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			id: this.props._id,
-			name: this.props.name,
-			url: this.props.url,
-			selector: this.props.selector,
-			regex: this.props.regex,
-			icon_url: this.props.image,
-			headers: this.props.headers,
-			versions: this.props.versions,
-			error: this.props.error ? this.props.error : null,
+			anchorEl: null,
+			popoverText: '',
 		};
 
-		if (this.state.error !== null)
-			console.error(this.state.name, ': ', this.state.error);
+		if (this.props.error !== null)
+			console.error(this.props.name, ': ', this.props.error);
 
 		try {
 			this.state.alternate_icon = `${
-				new URL(this.state.url).origin
+				new URL(this.props.url).origin
 			}/favicon.ico`;
 		} catch (err) {
 			console.error(err);
 		}
+
+		this.handlePopoverClose = this.handlePopoverClose.bind(this);
+		this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
 	}
 
 	getVersionString() {
 		let str;
-		if (this.state.versions.length > 0) {
-			str = this.state.versions[0].label;
+		if (this.props.versions.length > 0) {
+			str = this.props.versions[0].label;
 		} else {
 			str = 'No version';
 		}
@@ -52,42 +59,37 @@ export default class MonitorItem extends React.Component {
 
 	getDateString() {
 		let str;
-		if (this.state.versions.length > 0) {
-			str = new Date(this.state.versions[0].date).toLocaleString();
+		if (this.props.versions.length > 0) {
+			str = new Date(this.props.versions[0].date).toLocaleString();
 		} else {
 			str = 'No version';
 		}
 		return str;
 	}
 
-	componentDidUpdate(prevProps) {
-		if (this.props !== prevProps) {
-			this.setState({
-				id: this.props._id,
-				name: this.props.name,
-				url: this.props.url,
-				selector: this.props.selector,
-				regex: this.props.regex,
-				icon_url: this.props.image,
-				headers: this.props.headers,
-				versions: this.props.versions,
-				error: this.props.error ? this.props.error : null,
-			});
-		}
+	handlePopoverOpen = (event) => {
+		this.setState({
+			anchorEl: event.currentTarget,
+			popoverText: event.currentTarget.dataset.popover,
+		});
+	};
 
-		return null;
-	}
+	handlePopoverClose = () => {
+		this.setState({ anchorEl: null });
+	};
 
 	render() {
+		const open = Boolean(this.state.anchorEl);
+
 		return (
 			<TableRow
-				key={this.state._id}
-				{...(this.state.error === null ? {} : { negative: true })}>
+				key={this.props._id}
+				{...(this.props.error === null ? {} : { negative: true })}>
 				<TableCell component='th' scope='row'>
 					<Avatar>
 						<Img
 							src={[
-								this.state.icon_url,
+								this.props.icon_url,
 								this.state.alternate_icon,
 								'./images/no_image.svg',
 							]}
@@ -95,32 +97,62 @@ export default class MonitorItem extends React.Component {
 						/>
 					</Avatar>
 				</TableCell>
-				<TableCell>{this.state.name}</TableCell>
+				<TableCell>{this.props.name}</TableCell>
 				<TableCell>{this.getVersionString()}</TableCell>
 				<TableCell>{this.getDateString()}</TableCell>
 				<TableCell>
-					<Link href={this.state.url} target='_blank'>
+					<Link href={this.props.url} target='_blank'>
 						Link
 					</Link>
 				</TableCell>
 				<TableCell>
 					<IconButton
 						size='small'
-						onClick={() => this.props.onView(this.state)}>
+						onClick={() => this.props.onView(this.props)}
+						data-popover='View'
+						onMouseEnter={this.handlePopoverOpen}
+						onMouseLeave={this.handlePopoverClose}>
 						<VisibilityIcon />
 					</IconButton>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleEdit(this.state)}>
+						onClick={() => this.props.handleEdit(this.props)}
+						data-popover='Edit'
+						onMouseEnter={this.handlePopoverOpen}
+						onMouseLeave={this.handlePopoverClose}>
 						<EditIcon />
 					</IconButton>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleDelete(this.state)}>
+						onClick={() => this.props.handleDelete(this.props)}
+						data-popover='Delete'
+						onMouseEnter={this.handlePopoverOpen}
+						onMouseLeave={this.handlePopoverClose}>
 						<DeleteIcon />
 					</IconButton>
+					<Popover
+						className={this.props.classes.popover}
+						classes={{
+							paper: this.props.classes.paper,
+						}}
+						open={open}
+						anchorEl={this.state.anchorEl}
+						anchorOrigin={{
+							vertical: 'bottom',
+							horizontal: 'center',
+						}}
+						transformOrigin={{
+							vertical: 'top',
+							horizontal: 'center',
+						}}
+						onClose={this.handlePopoverClose}
+						disableRestoreFocus>
+						{this.state.popoverText}
+					</Popover>
 				</TableCell>
 			</TableRow>
 		);
 	}
 }
+
+export default withStyles(useStyles)(MonitorItem);

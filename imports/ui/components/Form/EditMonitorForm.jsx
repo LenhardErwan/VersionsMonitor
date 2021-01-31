@@ -30,7 +30,7 @@ class EditMonitorForm extends React.Component {
 	}
 
 	onSubmit(new_monitor) {
-		if (this.props.monitor.id == null) {
+		if (this.props.monitor._id == null) {
 			/** We are creating a new monitor */
 			Meteor.call('monitors.insert', new_monitor, (err, res) => {
 				if (err) {
@@ -41,7 +41,7 @@ class EditMonitorForm extends React.Component {
 						toast.error('Something went wrong, try again later!');
 					}
 				} else {
-					toast.success(new_monitor.name + ' was successfully updated!');
+					toast.success(new_monitor.name + ' was successfully created!');
 				}
 			});
 			this.props.closeModal();
@@ -50,7 +50,7 @@ class EditMonitorForm extends React.Component {
 			let old_monitor = this.props.monitor;
 
 			if (old_monitor !== new_monitor) {
-				if (old_monitor.id === new_monitor.id) {
+				if (old_monitor._id === new_monitor._id) {
 					let updated_monitor = {};
 
 					for (let key of Object.keys(new_monitor)) {
@@ -61,7 +61,7 @@ class EditMonitorForm extends React.Component {
 
 					Meteor.call(
 						'monitors.update',
-						old_monitor.id,
+						old_monitor._id,
 						updated_monitor,
 						(err, res) => {
 							if (err) {
