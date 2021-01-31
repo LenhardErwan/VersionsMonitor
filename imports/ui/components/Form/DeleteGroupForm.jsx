@@ -1,4 +1,5 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import {
 	Dialog,
 	DialogTitle,
@@ -8,10 +9,29 @@ import {
 	Button,
 } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
+import { toast } from 'react-toastify';
 
 class DeleteGroupForm extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.onConfirm = this.onConfirm.bind(this);
+	}
+
+	onConfirm() {
+		Meteor.call('groups.delete', this.props.group._id, (err, res) => {
+			if (err) {
+				if (err.error === 'perms.groups.delete') {
+					toast.error(err.reason);
+				} else {
+					toast.error('Something went wrong, try again later!');
+				}
+			} else {
+				toast.success(this.props.group.name + ' was successfully delete!');
+			}
+		});
+
+		this.props.closeModal();
 	}
 
 	render() {
