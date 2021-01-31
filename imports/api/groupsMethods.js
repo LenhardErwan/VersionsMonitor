@@ -30,8 +30,8 @@ Meteor.methods({
 				});
 			} else {
 				throw new Meteor.Error(
-					'perms.groups.insert',
-					"You don't have permission to create a group!"
+					'perms.groups.update',
+					"You don't have permission to update this group!"
 				);
 			}
 		} else {
@@ -55,14 +55,32 @@ Meteor.methods({
 				GroupsCollection.remove(groupId);
 			} else {
 				throw new Meteor.Error(
-					'perms.groups.insert',
-					"You don't have permission to create a group!"
+					'perms.groups.delete',
+					"You don't have permission to delete this group!"
 				);
 			}
 		} else {
 			throw new Meteor.Error(
 				'group.exist',
 				`Group with id '${groupId} does not exist'!`
+			);
+		}
+	},
+	'groups.delete.usergroup'(userId) {
+		const group = GroupsCollection.findOne({ name: groupId });
+		if (group) {
+			if (Meteor.call('user.isAdmin', this.userId)) {
+				GroupsCollection.remove(group._id);
+			} else {
+				throw new Meteor.Error(
+					'perms.groups.delete',
+					"You don't have permission to delete this group!"
+				);
+			}
+		} else {
+			throw new Meteor.Error(
+				'group.exist',
+				`Group with name '${userId} does not exist'!`
 			);
 		}
 	},
