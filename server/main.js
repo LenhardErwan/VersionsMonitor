@@ -44,7 +44,7 @@ Meteor.startup(() => {
 		return user;
 	});
 
-	if (GroupsCollection.find({  }).count() <= 0) {
+	if (GroupsCollection.find({}).count() <= 0) {
 		GroupsCollection.insert({
 			name: 'everyone',
 			priority: -1,
@@ -53,6 +53,7 @@ Meteor.startup(() => {
 		GroupsCollection.insert({
 			name: 'admin',
 			priority: 1,
+			administrator: true,
 		});
 	}
 
@@ -69,10 +70,7 @@ Meteor.startup(() => {
 			password: 'admin',
 		});
 
-		Meteor.users.update(
-			{ _id: adminId },
-			{ $push: { groups: 'admin' } }
-		);
+		Meteor.users.update({ _id: adminId }, { $push: { groups: 'admin' } });
 	}
 
 	if (MonitorsCollection.find().count() <= 0) {

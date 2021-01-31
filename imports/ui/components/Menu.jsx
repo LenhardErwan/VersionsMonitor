@@ -35,41 +35,17 @@ class Menu extends React.Component {
 			popoverText: '',
 		};
 
-		this.checkUserIsAdmin = this.checkUserIsAdmin.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handlePopoverClose = this.handlePopoverClose.bind(this);
 		this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
 	}
 
-	/**
-	 * Because Meteor.call is async, if we don't assign _isMounted and check
-	 * it's value, this.setState might be called after the component is set as
-	 * Unmounted which will result in a Memory Leak.
-	 */
 	componentDidMount() {
-		this._isMounted = true;
-	}
-
-	componentDidUpdate() {
-		Meteor.call('user.isAdmin', this.checkUserIsAdmin);
-	}
-
-	componentWillUnmount() {
-		this._isMounted = false;
-	}
-
-	checkUserIsAdmin(err, res) {
-		if (!err) {
-			if (this._isMounted) {
-				/**
-				 * This will throw unstable_flushDiscreteUpdates if the user
-				 * manually go to `/admin` while `/` is rendering.
-				 *
-				 * https://stackoverflow.com/questions/58123011/cryptic-react-error-unstable-flushdiscreteupdates-cannot-flush-updates-when-re
-				 */
+		Meteor.call('user.isAdmin', (err, res) => {
+			if (!err) {
 				this.setState({ user_is_admin: res });
 			}
-		}
+		});
 	}
 
 	handleInputChange(event) {
