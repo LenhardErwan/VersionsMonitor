@@ -26,8 +26,7 @@ class DeleteMonitorForm extends React.Component {
 	onConfirm() {
 		Meteor.call('monitors.delete', this.props.monitor._id, (err, res) => {
 			if (err) {
-				console.log(err);
-				if (err.error === 'perms.monitor.delete') {
+				if (err.error === 'perms.monitors.delete') {
 					toast.error(err.reason);
 				} else {
 					toast.error('Something went wrong, try again later!');
