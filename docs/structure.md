@@ -45,4 +45,10 @@ TODO - to be continued
 
 ## Client
 
-TODO - Explain client part
+On the client side of our application, we use four different node packages to render the user interface, React, Uniforms, Material-UI and Reach Router. 
+
+React is the main rendering library of this project. With it we can create interactive components and easily fetch and render data. We chose React because of it's simplicity, also we've been using it for all our latest JS project and we really like the way it works.
+
+Uniforms is a powerfull react library able to generate and validate forms. It is also compatible with SimpleSchema-2 and Material-UI which are also used in this project.
+
+TODO - Material-UI vs Semantic-UI, Reach Router
