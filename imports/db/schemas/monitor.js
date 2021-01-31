@@ -9,12 +9,12 @@ export const monitor = new SimpleSchema({
 	'regex': {
 		type: String,
 		optional: true,
-		defaultValue: null,
+		defaultValue: undefined,
 	},
 	'icon_url': {
 		type: String,
 		optional: true,
-		defaultValue: null,
+		defaultValue: undefined,
 	},
 	'headers': {
 		type: Array,
@@ -35,6 +35,6 @@ export const monitor = new SimpleSchema({
 	'error': {
 		type: String,
 		optional: true,
-		defaultValue: null,
+		defaultValue: undefined,
 	},
 });
