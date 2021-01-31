@@ -32,7 +32,7 @@ class MonitorItem extends React.Component {
 			popoverText: '',
 		};
 
-		if (this.props.error !== null)
+		if (this.props.error)
 			console.error(this.props.name, ': ', this.props.error);
 
 		try {
@@ -84,7 +84,7 @@ class MonitorItem extends React.Component {
 		return (
 			<TableRow
 				key={this.props._id}
-				{...(this.props.error === null ? {} : { negative: true })}>
+				className={this.props.error ? 'negative' : ''}>
 				<TableCell component='th' scope='row'>
 					<Avatar>
 						<Img
