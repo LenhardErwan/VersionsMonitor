@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+import { Promise } from 'meteor/promise';
 
+import { getNewestVersion } from '/server/app.js';
 import MonitorsCollection from '/imports/db/MonitorsCollection';
 import GroupsCollection from '/imports/db/GroupsCollection';
 
@@ -58,6 +60,17 @@ Meteor.methods({
 				'perms.monitors.delete',
 				"You don't have permission to delete this monitor!"
 			);
+		}
+	},
+	'monitors.preview'(monitor) {
+		try {
+			return Promise.await(getNewestVersion(monitor));
+		} catch (err) {
+			if (err instanceof TypeError) {
+				throw new Meteor.Error('monitors.preview', err.message);
+			} else {
+				throw new Meteor.Error('monitors.preview.error', err);
+			}
 		}
 	},
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+	Chip,
 	Button,
 	Dialog,
 	DialogTitle,
@@ -8,6 +9,7 @@ import {
 	DialogActions,
 } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import { monitor } from '/imports/db/schemas/monitor';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { AutoFields, AutoForm, ErrorsField } from 'uniforms-material';
@@ -26,7 +28,13 @@ class EditMonitorForm extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			preview: undefined,
+		};
+
 		this.onSubmit = this.onSubmit.bind(this);
+		this.handlePreview = this.handlePreview.bind(this);
+		this.handleCloseChip = this.handleCloseChip.bind(this);
 	}
 
 	onSubmit(new_monitor) {
@@ -88,6 +96,35 @@ class EditMonitorForm extends React.Component {
 		}
 	}
 
+	handlePreview(ref) {
+		const data = ref.state.model;
+
+		Meteor.call(
+			'monitors.preview',
+			{
+				url: data.url,
+				selector: data.selector,
+				regex: data.regex,
+				headers: data.headers,
+			},
+			(err, res) => {
+				if (err) {
+					toast.error(err.reason);
+				} else {
+					this.setState({
+						preview: res,
+					});
+				}
+			}
+		);
+	}
+
+	handleCloseChip() {
+		this.setState({
+			preview: undefined,
+		});
+	}
+
 	// TODO find a way to find value and defaultValue error
 	render() {
 		let formRef;
@@ -110,6 +147,19 @@ class EditMonitorForm extends React.Component {
 					</AutoForm>
 				</DialogContent>
 				<DialogActions>
+					{this.state.preview && (
+						<Chip
+							onDelete={this.handleCloseChip}
+							icon={<LocalOfferIcon />}
+							label={this.state.preview}
+						/>
+					)}
+					<Button
+						onClick={() => this.handlePreview(formRef)}
+						variant='contained'
+						color='secondary'>
+						Preview
+					</Button>
 					<Button onClick={this.props.closeModal} variant='contained'>
 						Cancel
 					</Button>
