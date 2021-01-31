@@ -4,3 +4,4 @@ nav:
   - 'structure.md'
   - 'data_schema.md'
   - 'credits.md'
+theme: readthedocs
