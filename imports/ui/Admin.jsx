@@ -51,7 +51,7 @@ class Admin extends React.Component {
 					</IconButton>
 
 					<GroupList
-						loading={this.props.groupLoading}
+						loading={this.props.groupsLoading}
 						groups={this.props.groups}
 						openFormModal={this.openFormModal}
 					/>
@@ -75,10 +75,10 @@ const AdminContainer = withTracker(() => {
 		navigate('/login');
 	}
 
-	const usersHandle = Meteor.subscribe('Meteor.users.usernames');
+	const usersHandle = Meteor.subscribe('users.listUsername');
 	const usersLoading = !usersHandle.ready();
 
-	const groupsHandle = Meteor.subscribe('group.list');
+	const groupsHandle = Meteor.subscribe('groups.list');
 	const groupsLoading = !groupsHandle.ready();
 
 	return {
