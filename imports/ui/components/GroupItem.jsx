@@ -13,10 +13,14 @@ class GroupItem extends React.Component {
 			<TableRow>
 				<TableCell>{this.props.group.name}</TableCell>
 				<TableCell>
-					<IconButton size='small'>
+					<IconButton
+						size='small'
+						onClick={() => this.props.handleEdit(this.props.group)}>
 						<EditIcon />
 					</IconButton>
-					<IconButton size='small'>
+					<IconButton
+						size='small'
+						onClick={() => this.props.handleDelete(this.props.group)}>
 						<DeleteIcon />
 					</IconButton>
 				</TableCell>

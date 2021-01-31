@@ -13,10 +13,14 @@ class UserItem extends React.Component {
 			<TableRow>
 				<TableCell>{this.props.user.username}</TableCell>
 				<TableCell>
-					<IconButton size='small'>
+					<IconButton
+						size='small'
+						onClick={() => this.props.handleEdit(this.props.user)}>
 						<EditIcon />
 					</IconButton>
-					<IconButton size='small'>
+					<IconButton
+						size='small'
+						onClick={() => this.props.handleDelete(this.props.user)}>
 						<DeleteIcon />
 					</IconButton>
 				</TableCell>

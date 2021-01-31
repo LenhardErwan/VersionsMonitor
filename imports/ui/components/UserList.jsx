@@ -35,7 +35,16 @@ class UserList extends React.Component {
 							</TableRow>
 						) : this.props.users.length > 0 ? (
 							this.props.users.map((user, index) => (
-								<UserItem key={index} user={user} />
+								<UserItem
+									key={index}
+									user={user}
+									handleEdit={(user) =>
+										this.props.openFormModal('edit_user', user)
+									}
+									handleDelete={(user) =>
+										this.props.openFormModal('delete_user', user)
+									}
+								/>
 							))
 						) : (
 							<TableRow>

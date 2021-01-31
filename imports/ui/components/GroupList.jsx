@@ -35,7 +35,16 @@ class GroupList extends React.Component {
 							</TableRow>
 						) : this.props.groups.length > 0 ? (
 							this.props.groups.map((group, index) => (
-								<GroupItem key={index} group={group} />
+								<GroupItem
+									key={index}
+									group={group}
+									handleEdit={(group) =>
+										this.props.openFormModal('edit_group', group)
+									}
+									handleDelete={(group) =>
+										this.props.openFormModal('delete_group', group)
+									}
+								/>
 							))
 						) : (
 							<TableRow>
