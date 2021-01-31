@@ -1,4 +1,5 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import {
 	Button,
 	Dialog,
@@ -10,12 +11,57 @@ import SaveIcon from '@material-ui/icons/Save';
 import { user } from '/imports/db/schemas/user';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { AutoFields, AutoForm, ErrorsField } from 'uniforms-material';
+import { toast } from 'react-toastify';
 
 const bridge = new SimpleSchema2Bridge(user);
 
 class EditUserForm extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.onSubmit = this.onSubmit.bind(this);
+	}
+
+	onSubmit(newUser) {
+		if (this.props.user._id == null) {
+			Meteor.call('users.insert', newUser, (err, res) => {
+				if (err) {
+					toast.error('Something went wrong, try again later!');
+				} else {
+					toast.success(newUser.username + ' was successfully created!');
+				}
+			});
+
+			this.props.closeModal();
+		} else {
+			let oldUser = this.props.user;
+
+			if (oldUser !== newUser) {
+				if (oldUser._id === newUser._id) {
+					let updatedUser = {};
+
+					for (let key of Object.keys(newUser)) {
+						if (oldUser[key] !== newUser[key]) {
+							updatedUser[key] = newUser[key];
+						}
+					}
+					
+					Meteor.call('users.update', oldUser._id, updatedUser, (err, res) => {
+						if (err) {
+							toast.error('Something went wrong, try again later!');
+						} else {
+							toast.success(newUser.username + ' was successfully updated!');
+						}
+					});
+
+					this.props.closeModal();
+				} else {
+					toast.error('Something went wrong, try again later!');
+				}
+			} else {
+				toast.error('Nothing to save!');
+			}
+		}
 	}
 
 	render() {
@@ -32,7 +78,8 @@ class EditUserForm extends React.Component {
 					<AutoForm
 						schema={bridge}
 						model={this.props.user}
-						ref={(ref) => (formRef = ref)}>
+						ref={(ref) => (formRef = ref)}
+						onSubmit={this.onSubmit}>
 						<AutoFields />
 						<ErrorsField />
 					</AutoForm>
