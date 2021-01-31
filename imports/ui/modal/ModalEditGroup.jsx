@@ -93,7 +93,7 @@ class ModalEditGroup extends React.Component {
 						model={this.props.group}
 						ref={(ref) => (formRef = ref)}
 						onSubmit={this.onSubmit}>
-						<AutoFields />
+						<AutoFields omitFields={['multi']} />
 						<ErrorsField />
 					</AutoForm>
 				</DialogContent>

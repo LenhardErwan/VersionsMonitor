@@ -7,6 +7,8 @@ import {
 	IconButton,
 	Menu,
 	MenuItem,
+	Typography,
+	Divider,
 	Popover,
 	withStyles,
 } from '@material-ui/core';
@@ -97,7 +99,14 @@ class Admin extends React.Component {
 				</Grid>
 
 				<Grid container spacing={2}>
-					<Grid item>
+					<Grid item xs={4}>
+						<Typography
+							variant='h4'
+							align='center'
+							gutterBottom
+							color='textSecondary'>
+							Manage accounts
+						</Typography>
 						<UserList
 							loading={this.props.usersLoading}
 							users={this.props.users}
@@ -107,14 +116,52 @@ class Admin extends React.Component {
 						/>
 					</Grid>
 
-					<Grid item>
-						<GroupList
-							loading={this.props.groupsLoading}
-							groups={this.props.groups}
-							openFormModal={this.props.handleOpenModal}
-							handlePopoverClose={this.handlePopoverClose}
-							handlePopoverOpen={this.handlePopoverOpen}
-						/>
+					<Divider orientation='vertical' flexItem />
+
+					<Grid item container justify='center' spacing={2} xs={8}>
+						<Typography
+							item
+							variant='h4'
+							gutterBottom
+							align='center'
+							color='textSecondary'>
+							Manage permission
+						</Typography>
+						<Grid item container spacing={2} xs={12}>
+							<Grid item justify='center' xs={6}>
+								<Typography
+									variant='h5'
+									align='center'
+									gutterBottom
+									color='textSecondary'>
+									Groups
+								</Typography>
+								<GroupList
+									loading={this.props.groupsLoading}
+									groups={this.props.groups}
+									openFormModal={this.props.handleOpenModal}
+									handlePopoverClose={this.handlePopoverClose}
+									handlePopoverOpen={this.handlePopoverOpen}
+								/>
+							</Grid>
+
+							<Grid justify='center' item xs={6}>
+								<Typography
+									variant='h5'
+									align='center'
+									gutterBottom
+									color='textSecondary'>
+									Users
+								</Typography>
+								<GroupList
+									loading={this.props.groupsLoading}
+									groups={this.props.userGroups}
+									openFormModal={this.props.handleOpenModal}
+									handlePopoverClose={this.handlePopoverClose}
+									handlePopoverOpen={this.handlePopoverOpen}
+								/>
+							</Grid>
+						</Grid>
 					</Grid>
 				</Grid>
 
@@ -177,12 +224,33 @@ const AdminContainer = withTracker(() => {
 	const groupsHandle = Meteor.subscribe('groups.list');
 	const groupsLoading = !groupsHandle.ready();
 
+	const userGroupsHandle = Meteor.subscribe('groups.user.list');
+	const userGroupsLoading = !userGroupsHandle.ready();
+
+	const groups = GroupsCollection.find().fetch();
+
+	const userGroups = groups.filter((group) => {
+		return !group.multi;
+	});
+
+	for (let userGroup of userGroups) {
+		const userFound = Meteor.users.findOne(userGroup.name, { username: 1 });
+		if (userFound) {
+			userGroup.name = userFound.username;
+		} else {
+			console.error(`User with id ${userGroup.name} not found`);
+		}
+	}
+
 	return {
 		user: Meteor.user(),
 		users: Meteor.users.find().fetch(),
 		usersLoading: usersLoading,
-		groups: GroupsCollection.find().fetch(),
-		groupsLoading: groupsLoading,
+		groups: groups.filter((group) => {
+			return group.multi;
+		}),
+		userGroups: userGroups,
+		groupsLoading: groupsLoading && userGroupsLoading,
 	};
 })(withStyles(styles)(Admin));
 
