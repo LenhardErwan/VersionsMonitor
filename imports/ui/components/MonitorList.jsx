@@ -74,8 +74,8 @@ export default class MonitorList extends React.Component {
 						) : this.props.monitors.length > 0 ? (
 							this.props.monitors.map((monitor, index) => (
 								<MonitorItem
-									{...monitor}
 									key={index}
+									monitor={monitor}
 									handleEdit={(monitor) =>
 										this.props.openFormModal('edit_monitor', monitor)
 									}

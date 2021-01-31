@@ -32,12 +32,12 @@ class MonitorItem extends React.Component {
 			popoverText: '',
 		};
 
-		if (this.props.error)
-			console.error(this.props.name, ': ', this.props.error);
+		if (this.props.monitor.error)
+			console.error(this.props.monitor.name, ': ', this.props.monitor.error);
 
 		try {
 			this.state.alternate_icon = `${
-				new URL(this.props.url).origin
+				new URL(this.props.monitor.url).origin
 			}/favicon.ico`;
 		} catch (err) {
 			console.error(err);
@@ -49,8 +49,8 @@ class MonitorItem extends React.Component {
 
 	getVersionString() {
 		let str;
-		if (this.props.versions.length > 0) {
-			str = this.props.versions[0].label;
+		if (this.props.monitor.versions.length > 0) {
+			str = this.props.monitor.versions[0].label;
 		} else {
 			str = 'No version';
 		}
@@ -59,8 +59,8 @@ class MonitorItem extends React.Component {
 
 	getDateString() {
 		let str;
-		if (this.props.versions.length > 0) {
-			str = new Date(this.props.versions[0].date).toLocaleString();
+		if (this.props.monitor.versions.length > 0) {
+			str = new Date(this.props.monitor.versions[0].date).toLocaleString();
 		} else {
 			str = 'No version';
 		}
@@ -83,13 +83,13 @@ class MonitorItem extends React.Component {
 
 		return (
 			<TableRow
-				key={this.props._id}
-				className={this.props.error ? 'negative' : ''}>
+				key={this.props.monitor._id}
+				className={this.props.monitor.error ? 'negative' : ''}>
 				<TableCell component='th' scope='row'>
 					<Avatar>
 						<Img
 							src={[
-								this.props.icon_url,
+								this.props.monitor.icon_url,
 								this.state.alternate_icon,
 								'./images/no_image.svg',
 							]}
@@ -97,18 +97,18 @@ class MonitorItem extends React.Component {
 						/>
 					</Avatar>
 				</TableCell>
-				<TableCell>{this.props.name}</TableCell>
+				<TableCell>{this.props.monitor.name}</TableCell>
 				<TableCell>{this.getVersionString()}</TableCell>
 				<TableCell>{this.getDateString()}</TableCell>
 				<TableCell>
-					<Link href={this.props.url} target='_blank'>
+					<Link href={this.props.monitor.url} target='_blank'>
 						Link
 					</Link>
 				</TableCell>
 				<TableCell>
 					<IconButton
 						size='small'
-						onClick={() => this.props.onView(this.props)}
+						onClick={() => this.props.onView(this.props.monitor)}
 						data-popover='View'
 						onMouseEnter={this.handlePopoverOpen}
 						onMouseLeave={this.handlePopoverClose}>
@@ -116,7 +116,7 @@ class MonitorItem extends React.Component {
 					</IconButton>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleEdit(this.props)}
+						onClick={() => this.props.handleEdit(this.props.monitor)}
 						data-popover='Edit'
 						onMouseEnter={this.handlePopoverOpen}
 						onMouseLeave={this.handlePopoverClose}>
@@ -124,7 +124,7 @@ class MonitorItem extends React.Component {
 					</IconButton>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleDelete(this.props)}
+						onClick={() => this.props.handleDelete(this.props.monitor)}
 						data-popover='Delete'
 						onMouseEnter={this.handlePopoverOpen}
 						onMouseLeave={this.handlePopoverClose}>
