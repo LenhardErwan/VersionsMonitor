@@ -6,16 +6,25 @@ import GroupsCollection from '/imports/db/GroupsCollection';
 
 Meteor.methods({
 	'monitors.insert'(monitor) {
-		const group = GroupsCollection.findOne({ name: this.userId });
-		if (group.canCreate) {
+		if (Meteor.call('user.canCreate.nomulti')) {
 			const id = MonitorsCollection.insert(monitor);
 			GroupsCollection.update(
 				{ name: this.userId },
-				{ $push: { monitorPerms: { monitor_id: id, canView: true } } }
+				{
+					$push: {
+						monitorPerms: {
+							monitor_id: id,
+							canView: true,
+							canEdit: true,
+							canDelete: true,
+						},
+					},
+				}
 			);
+			return true;
 		} else {
 			throw new Meteor.Error(
-				'create.perms',
+				'perms.monitor.insert',
 				"You don't have permission to create a monitor!"
 			);
 		}
@@ -23,16 +32,32 @@ Meteor.methods({
 	'monitors.update'(monitorId, monitor) {
 		check(monitorId, String);
 
-		MonitorsCollection.update(monitorId, {
-			$set: monitor,
-		});
+		if (Meteor.call('user.canEdit', monitorId)) {
+			MonitorsCollection.update(monitorId, {
+				$set: monitor,
+			});
+		} else {
+			throw new Meteor.Error(
+				'perms.monitor.update',
+				"You don't have permission to update this monitor!"
+			);
+		}
 	},
 	'monitors.delete'(monitorId) {
-		MonitorsCollection.remove(monitorId);
-		GroupsCollection.update(
-			{},
-			{ $pull: { monitorPerms: { monitor_id: monitorId } } },
-			{ multi: true }
-		);
+		check(monitorId, String);
+
+		if (Meteor.call('user.canDelete', monitorId)) {
+			MonitorsCollection.remove(monitorId);
+			GroupsCollection.update(
+				{},
+				{ $pull: { monitorPerms: { monitor_id: monitorId } } },
+				{ multi: true }
+			);
+		} else {
+			throw new Meteor.Error(
+				'perms.monitor.delete',
+				"You don't have permission to delete this monitor!"
+			);
+		}
 	},
 });
