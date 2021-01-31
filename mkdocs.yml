@@ -1,0 +1,6 @@
+site_name: VersionsMonitor
+nav:
+  - 'index.md'
+  - 'structure.md'
+  - 'data_schema.md'
+  - 'credits.md'
