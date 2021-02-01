@@ -112,7 +112,6 @@ Meteor.methods({
 
 		const groups = getGroups(_userId);
 
-		// Reduce array to have the lowest priority (highest group) (Ex: admin group should be at 1)
 		return groups.some((grp) => {
 			return (
 				(group.priority > 0 &&
@@ -133,20 +132,28 @@ Meteor.methods({
 
 		return group.canCreate;
 	},
-	'user.canCreate.multi'(userId) {
+	'user.canCreate.multi'(userId, group) {
 		const _userId = userId ? userId : this.userId;
+		if (!group.multi)
+			throw new Meteor.Error(
+				'group.nomulti',
+				'This group is not a public group'
+			);
 		if (!_userId)
 			throw new Meteor.Error('user.connected', 'You are not connected');
 		if (Meteor.call('user.isAdmin', _userId)) return true;
 
 		const groups = getGroups(_userId);
 
-		return groups.filter((group) => {
-			let isValid = false;
-			if (group.multi) {
-				isValid = group.canCreate;
-			}
-			return isValid;
+		return groups.some((grp) => {
+			return (
+				(group.priority > 0 &&
+					grp.priority > 0 &&
+					grp.priority < group.priority &&
+					grp.multi &&
+					grp.canCreate) ||
+				(group._id === grp._id && group.canCreate)
+			);
 		});
 	},
 	'user.canEdit'(idMonitor, userId) {
