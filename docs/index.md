@@ -23,4 +23,4 @@ To retrieve the version, the application needs the following parameters:
 
 Once these parameters have been given to the application, the function follows the following logic:
 
-![Get version - State Machine Diagram](img/getNewestVersion.svg)
+![Get version - State Machine Diagram](img/getNewestVersion.png)

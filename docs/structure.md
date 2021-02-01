@@ -4,7 +4,7 @@
 
 The application is separated in 2 main parts, the FrontEnd side with the Client and the BackEnd side with the Server.
 
-![Application structure](img/structure.svg)
+![Application structure](img/structure.png)
 
 ---
 
