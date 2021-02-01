@@ -13,6 +13,7 @@ import {
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ModalContainer from '/imports/ui/modal/ModalContainer';
 
 const styles = (theme) => ({
 	popover: {
@@ -108,7 +109,9 @@ class HomeItemMonitor extends React.Component {
 				<TableCell>
 					<IconButton
 						size='small'
-						onClick={() => this.props.onView(this.props.monitor)}
+						onClick={() =>
+							ModalContainer.openModal('view_monitor', this.props.monitor)
+						}
 						data-popover='View'
 						onMouseEnter={this.handlePopoverOpen}
 						onMouseLeave={this.handlePopoverClose}>
@@ -116,7 +119,9 @@ class HomeItemMonitor extends React.Component {
 					</IconButton>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleEdit(this.props.monitor)}
+						onClick={() =>
+							ModalContainer.openModal('edit_monitor', this.props.monitor)
+						}
 						data-popover='Edit'
 						onMouseEnter={this.handlePopoverOpen}
 						onMouseLeave={this.handlePopoverClose}>
@@ -124,7 +129,9 @@ class HomeItemMonitor extends React.Component {
 					</IconButton>
 					<IconButton
 						size='small'
-						onClick={() => this.props.handleDelete(this.props.monitor)}
+						onClick={() =>
+							ModalContainer.openModal('delete_monitor', this.props.monitor)
+						}
 						data-popover='Delete'
 						onMouseEnter={this.handlePopoverOpen}
 						onMouseLeave={this.handlePopoverClose}>

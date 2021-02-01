@@ -8,67 +8,110 @@ import ModalEditUser from '/imports/ui/modal/ModalEditUser';
 import ModalViewMonitor from '/imports/ui/modal/ModalViewMonitor';
 
 class ModalContainer extends React.Component {
+	static modalName = null;
+	static param = null;
+	static instance = null;
+
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			name: ModalContainer.modalName,
+			param: ModalContainer.param,
+		};
+
+		ModalContainer.instance = this;
+	}
+
+	static openModal(name, param) {
+		if (ModalContainer.instance !== null) {
+			if (ModalContainer.modalName === null) {
+				ModalContainer.modalName = name;
+				ModalContainer.param = param;
+
+				ModalContainer.instance.setState({
+					name: name,
+					param: param,
+				});
+			} else {
+				console.error('Modal container already open');
+			}
+		} else {
+			console.error('No modal container!');
+		}
+	}
+
+	static closeModal() {
+		if (ModalContainer.instance !== null) {
+			ModalContainer.modalName = null;
+			ModalContainer.param = null;
+
+			ModalContainer.instance.setState({
+				name: null,
+				param: null,
+			});
+		} else {
+			console.error('There are no container!');
+		}
 	}
 
 	render() {
-		if (this.props.name == 'delete_group') {
+		if (this.state.name == 'delete_group') {
 			return (
 				<ModalDeleteGroup
-					isOpen={this.props.open}
-					group={this.props.param}
-					closeModal={this.props.onClose}
+					isOpen={Boolean(this.state.name)}
+					group={this.state.param}
+					closeModal={ModalContainer.closeModal}
 				/>
 			);
-		} else if (this.props.name == 'delete_monitor') {
+		} else if (this.state.name == 'delete_monitor') {
 			return (
 				<ModalDeleteMonitor
-					isOpen={this.props.open}
-					monitor={this.props.param}
-					closeModal={this.props.onClose}
+					isOpen={Boolean(this.state.name)}
+					monitor={this.state.param}
+					closeModal={ModalContainer.closeModal}
 				/>
 			);
-		} else if (this.props.name == 'delete_user') {
+		} else if (this.state.name == 'delete_user') {
 			return (
 				<ModalDeleteUser
-					isOpen={this.props.open}
-					user={this.props.param}
-					closeModal={this.props.onClose}
+					isOpen={Boolean(this.state.name)}
+					user={this.state.param}
+					closeModal={ModalContainer.closeModal}
 				/>
 			);
-		} else if (this.props.name == 'edit_group') {
+		} else if (this.state.name == 'edit_group') {
 			return (
 				<ModalEditGroup
-					isOpen={this.props.open}
-					group={this.props.param}
-					closeModal={this.props.onClose}
+					isOpen={Boolean(this.state.name)}
+					group={this.state.param}
+					closeModal={ModalContainer.closeModal}
 				/>
 			);
-		} else if (this.props.name == 'edit_monitor') {
+		} else if (this.state.name == 'edit_monitor') {
 			return (
 				<ModalEditMonitor
-					isOpen={this.props.open}
-					monitor={this.props.param}
-					closeModal={this.props.onClose}
+					isOpen={Boolean(this.state.name)}
+					monitor={this.state.param}
+					closeModal={ModalContainer.closeModal}
 				/>
 			);
-		} else if (this.props.name == 'edit_user') {
+		} else if (this.state.name == 'edit_user') {
 			return (
 				<ModalEditUser
-					isOpen={this.props.open}
-					user={this.props.param}
-					closeModal={this.props.onClose}
+					isOpen={Boolean(this.state.name)}
+					user={this.state.param}
+					closeModal={ModalContainer.closeModal}
 				/>
 			);
-		} else if (this.props.name == 'view_monitor') {
+		} else if (this.state.name == 'view_monitor') {
 			return (
 				<ModalViewMonitor
-					open={this.props.open}
-					monitor={this.props.param}
-					onClose={this.props.onClose}
+					open={Boolean(this.state.name)}
+					monitor={this.state.param}
+					onClose={ModalContainer.closeModal}
 				/>
-			)
+			);
 		} else {
 			return null;
 		}

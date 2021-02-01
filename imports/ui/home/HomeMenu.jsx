@@ -14,6 +14,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import BuildIcon from '@material-ui/icons/Build';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ModalContainer from '/imports/ui/modal/ModalContainer';
 
 const styles = (theme) => ({
 	popover: {
@@ -83,7 +84,7 @@ class HomeMenu extends React.Component {
 					/>
 				</Paper>
 				<IconButton
-					onClick={() => this.props.handleOpenModal('edit_monitor', {})}
+					onClick={() => ModalContainer.openModal('edit_monitor', {})}
 					data-popover='Create'
 					onMouseEnter={this.handlePopoverOpen}
 					onMouseLeave={this.handlePopoverClose}>

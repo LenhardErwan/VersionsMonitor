@@ -68,13 +68,11 @@ class Home extends React.Component {
 				<HomeMenu
 					loading={this.state.loading_filter}
 					setFilter={this.setFilter}
-					handleOpenModal={this.props.handleOpenModal}
 				/>
 
 				<HomeListMonitor
 					monitors={this.state.monitors}
 					loading={this.props.loading}
-					handleOpenModal={this.props.handleOpenModal}
 				/>
 			</Fragment>
 		);

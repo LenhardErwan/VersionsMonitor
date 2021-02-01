@@ -22,48 +22,18 @@ const darkTheme = createMuiTheme({
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			modalName: null,
-			modalParam: null,
-		};
-
-		this.handleOpenModal = this.handleOpenModal.bind(this);
-		this.handleCloseModal = this.handleCloseModal.bind(this);
-	}
-
-	handleOpenModal(name, param) {
-		this.setState({
-			modalName: name,
-			modalParam: param,
-		});
-	}
-
-	handleCloseModal() {
-		this.setState({
-			modalName: null,
-			modalParam: null,
-		});
 	}
 
 	render() {
 		return (
 			<ThemeProvider theme={darkTheme}>
 				<Router>
-					<HomeContainer path='/' handleOpenModal={this.handleOpenModal} />
+					<HomeContainer path='/' />
 					<LoginContainer path='/login' />
-					<AdminContainer
-						path='/admin'
-						handleOpenModal={this.handleOpenModal}
-					/>
+					<AdminContainer path='/admin' />
 				</Router>
 
-				<ModalContainer
-					open={Boolean(this.state.modalName)}
-					onClose={this.handleCloseModal}
-					name={this.state.modalName}
-					param={this.state.modalParam}
-				/>
+				<ModalContainer />
 
 				<ToastContainer
 					position='top-right'

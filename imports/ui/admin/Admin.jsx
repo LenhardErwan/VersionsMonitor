@@ -18,6 +18,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import UserList from '/imports/ui/admin/AdminListUser';
 import GroupList from '/imports/ui/admin/AdminListGroup';
 import GroupsCollection from '/imports/db/GroupsCollection';
+import ModalContainer from '/imports/ui/modal/ModalContainer';
 
 const styles = (theme) => ({
 	popover: {
@@ -173,7 +174,7 @@ class Admin extends React.Component {
 					<MenuItem
 						onClick={() => {
 							this.handleMenuClose();
-							this.props.handleOpenModal('edit_user', {});
+							ModalContainer.openModal('edit_user', {});
 						}}>
 						User
 					</MenuItem>

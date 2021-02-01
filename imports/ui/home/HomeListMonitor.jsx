@@ -67,19 +67,7 @@ class HomeListMonitor extends React.Component {
 							</TableRow>
 						) : this.props.monitors.length > 0 ? (
 							this.props.monitors.map((monitor, index) => (
-								<HomeItemMonitor
-									key={index}
-									monitor={monitor}
-									handleEdit={(monitor) =>
-										this.props.handleOpenModal('edit_monitor', monitor)
-									}
-									handleDelete={(monitor) =>
-										this.props.handleOpenModal('delete_monitor', monitor)
-									}
-									onView={(monitor) =>
-										this.props.handleOpenModal('view_monitor', monitor)
-									}
-								/>
+								<HomeItemMonitor key={index} monitor={monitor} />
 							))
 						) : (
 							<TableRow>
