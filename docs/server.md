@@ -12,12 +12,123 @@ In our application we use 3 different Collections :
 - Groups
 - Monitors
 
-We use Meteor's Accounts package that allows us to manage users very easily, however we add to each User a `groups` attribute that contains the names of all the groups to which it belongs. (see [User Schema](/data_schema/#user))
+We use Meteor's Accounts package that allows us to manage users very easily, however we add to each User a `groups` attribute that contains the names of all the groups to which it belongs. (see [User Schema](#user))
 
-The `Groups` Collection allows you to group users together to apply a set of permissions, over multiple users, more simply. (see [Groups Schema](/data_schema/#groups))
+The `Groups` Collection allows you to group users together to apply a set of permissions, over multiple users, more simply. (see [Groups Schema](#group))
 
-The latest Collection, `Monitors` allows you to interact with all version monitors of the application. (see [Monitor Schema](/data_schema/#monitors))  
-TODO - Explain in more details how monitorsPublication.js works
+The latest Collection, `Monitors` allows you to interact with all version monitors of the application. (see [Monitor Schema](#monitor))  
+
+The application uses permissions to provide to the client only what he can see. Permissions are managed in the `Groups` Collection and monitors are in the `Monitor` Collection. Therefore it is necessary to create and publish a collection directly from the code (and not directly publish the `Monitors` Collection), otherwise the client will not be able to have both a Hook on `Groups` and `Monitors` at the same time ([Doc](https://docs.meteor.com/api/pubsub.html#Meteor-publish)).  
+To do this it is necessary to not return any value in the publish. And define with the functions added, changed and removed, a Collection.
+
+```js
+const userMonitors = new Map();
+
+const groups = GroupsCollection.find({ name: { $in: group_names } });
+
+for (const group of groups) {
+  if (group.monitorPerms) {
+    for (const perm of group.monitorPerms) {
+      if (perm.canView) {
+        const monitor = MonitorsCollection.findOne({ _id: perm.monitor_id });
+        if (monitor) {
+          this.added('monitors', monitor._id, monitor);
+          userMonitors.set(monitor._id, monitor);
+        }
+      }
+    }
+  }
+}
+```
+
+The code above allows to initialize the collection (here `monitors`) according to the user's permissions. The `userMonitors` variable is a Map, that will allow us to store locally all the user's monitors to make it easier for us to add, modify and remove monitors.
+
+```js
+const handleMonitor = MonitorsCollection.find().observeChanges({
+  changed: (id, monitor) => {
+    if (userMonitors.has(id)) {
+      this.changed('monitors', id, monitor);
+    }
+  },
+});
+```
+
+The preceding code allows you to observe any modification on the `Monitors` Collection. If a monitor, on which the user has viewing permissions, is modified, it will be detected and we modify the local Collection `monitors` accordingly.
+
+```js
+const handleGroups = groups.observe({
+  changed: (newGroup, oldGroup) => {
+    if (newGroup.monitorPerms && oldGroup.monitorPerms) {
+      // Get differences
+      const added = newGroup.monitorPerms.filter(
+        (x) =>
+          !oldGroup.monitorPerms.some((y) => y.monitor_id === x.monitor_id)
+      );
+      const removed = oldGroup.monitorPerms.filter(
+        (x) =>
+          !newGroup.monitorPerms.some((y) => y.monitor_id === x.monitor_id)
+      );
+      const newPerms = newGroup.monitorPerms.filter((x) =>
+        oldGroup.monitorPerms.some(
+          (y) => y.monitor_id === x.monitor_id && y.canView !== x.canView
+        )
+      );
+
+      if (added.length > 0) {
+        for (const perms of added) {
+          if (perms.canView) {
+            const monitor = MonitorsCollection.findOne({
+              _id: perms.monitor_id,
+            });
+            if (monitor) {
+              this.added('monitors', monitor._id, monitor);
+              userMonitors.set(monitor._id, monitor);
+            }
+          }
+        }
+      }
+      if (removed.length > 0) {
+        for (const perms of removed) {
+          this.removed('monitors', perms.monitor_id);
+          userMonitors.delete(perms.monitor_id);
+        }
+      }
+      if (newPerms.length > 0) {
+        for (const perms of newPerms) {
+          if (perms.canView) {
+            const monitor = MonitorsCollection.findOne({
+              _id: perms.monitor_id,
+            });
+            if (monitor) {
+              this.added('monitors', monitor._id, monitor);
+              userMonitors.set(monitor._id, monitor);
+            }
+          } else {
+            this.removed('monitors', perms.monitor_id);
+            userMonitors.delete(perms.monitor_id);
+          }
+        }
+      }
+    }
+  },
+});
+```
+
+Here it is the same but for the `Groups` Collection. We just have to get the added, modified and removed differently because the permissions are within a list.
+
+```js
+this.ready();
+this.onStop(() => {
+  handleGroups.stop();
+  handleMonitor.stop();
+});
+```
+
+This last code snippet simply allows to tell that the Local Collection is ready and that in case of a stop of the subscribe, we stop looking at the modifications on the Collections.
+
+And voilà, we have created a 'Monitors' Collection that adapts to the user's rights.
+
+---
 
 ### [Methods](https://docs.meteor.com/api/methods.html)
 
@@ -30,6 +141,8 @@ In our application we have many methods that can be divided into 3 main families
 If you are an observer you will have noticed that these are the methods for each collection.
 
 TODO - to be continued
+
+---
 
 ## Data Schema
 
