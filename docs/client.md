@@ -18,7 +18,7 @@ This is where React will inject our first component `<App />` by following the *
 
 ```js
 Meteor.startup(() => {
-	render(<App />, document.getElementById('react-target'));
+    render(<App />, document.getElementById('react-target'));
 });
 ```
 
@@ -78,14 +78,14 @@ So we decided to remove Semantic and go with Material. To setup the dark theme w
 imports / ui / App.jsx;
 
 const darkTheme = createMuiTheme({
-	palette: {
-		type: 'dark',
-		primary: {
-			light: '#a6d4fa',
-			main: '#90caf9',
-			dark: '#648dae',
-		},
-	},
+    palette: {
+        type: 'dark',
+        primary: {
+            light: '#a6d4fa',
+            main: '#90caf9',
+            dark: '#648dae',
+        },
+    },
 });
 
 <ThemeProvider theme={darkTheme}></ThemeProvider>;
