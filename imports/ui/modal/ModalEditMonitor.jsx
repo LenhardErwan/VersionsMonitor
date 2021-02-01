@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Meteor } from 'meteor/meteor';
 import {
 	Chip,
 	Button,
@@ -18,11 +18,12 @@ import { toast } from 'react-toastify';
 const bridge = new SimpleSchema2Bridge(monitor);
 
 /**
- * @param {Object} props
- * @param {monitor} props.monitor - Current monitor to be edited or null if we
- * are creating a new monitor
- * @param {Boolean} props.isOpen - Check if the modal is open
- * @param {Function} props.clodeModal - JS function to close the modal
+ * Form to create or edit the given `Monitor`.
+ *
+ * @param {{isOpen: Boolean, monitor: Object, closeModal: Function}} props
+ * @param {Boolean} props.isOpen Know if the modal is open.
+ * @param {Object} props.monitor The `Monitor` we are going to edit.
+ * @param {Function} props.closeModal Callback to close the modal.
  */
 class ModalEditMonitor extends React.Component {
 	constructor(props) {
@@ -52,6 +53,7 @@ class ModalEditMonitor extends React.Component {
 					toast.success(new_monitor.name + ' was successfully created!');
 				}
 			});
+
 			this.props.closeModal();
 		} else {
 			/** We are editing an existing monitor */
@@ -136,6 +138,7 @@ class ModalEditMonitor extends React.Component {
 						? 'Edit ' + this.props.monitor.name
 						: 'Add an application'}
 				</DialogTitle>
+
 				<DialogContent>
 					<AutoForm
 						schema={bridge}
@@ -146,6 +149,7 @@ class ModalEditMonitor extends React.Component {
 						<ErrorsField />
 					</AutoForm>
 				</DialogContent>
+
 				<DialogActions>
 					{this.state.preview && (
 						<Chip
@@ -160,9 +164,11 @@ class ModalEditMonitor extends React.Component {
 						color='secondary'>
 						Preview
 					</Button>
+
 					<Button onClick={this.props.closeModal} variant='contained'>
 						Cancel
 					</Button>
+
 					<Button
 						onClick={() => formRef.submit()}
 						variant='contained'

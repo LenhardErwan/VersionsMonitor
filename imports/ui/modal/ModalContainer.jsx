@@ -7,6 +7,15 @@ import ModalEditMonitor from '/imports/ui/modal/ModalEditMonitor';
 import ModalEditUser from '/imports/ui/modal/ModalEditUser';
 import ModalViewMonitor from '/imports/ui/modal/ModalViewMonitor';
 
+/**
+ * Displays the specified modal on the screen.
+ *
+ * @param {{name: String, param: Object, open: Boolean, onClose: Function}} props
+ * @param {String} props.name The name of the modal currently displayed.
+ * @param {Object} props.param An object to pass to the modal can be: `Group`, `Monitor`, `User`.
+ * @param {Boolean} props.open Know if the modal is open.
+ * @param {Function} props.onClose Callback to close the modal.
+ */
 class ModalContainer extends React.Component {
 	constructor(props) {
 		super(props);
@@ -68,7 +77,7 @@ class ModalContainer extends React.Component {
 					monitor={this.props.param}
 					onClose={this.props.onClose}
 				/>
-			)
+			);
 		} else {
 			return null;
 		}

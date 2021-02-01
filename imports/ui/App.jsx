@@ -19,10 +19,16 @@ const darkTheme = createMuiTheme({
 	},
 });
 
+/**
+ * This is our main class, it contains the router, the theme and components
+ * needed for the app to work correctly (ToastContainer to display toasts and
+ * ModalContainer for modals)
+ */
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 
+		/** @see ModalContainer */
 		this.state = {
 			modalName: null,
 			modalParam: null,

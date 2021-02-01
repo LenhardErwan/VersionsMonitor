@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { Img } from 'react-image';
 import { withStyles } from '@material-ui/core/styles';
 import {
 	Avatar,
-	Button,
 	Grid,
 	CircularProgress,
 	Dialog,
@@ -49,6 +49,14 @@ const styles = (theme) => ({
 	},
 });
 
+/**
+ * Modal to view the given `Monitor`.
+ *
+ * @param {{open: Boolean, monitor: Object, onClose: Function}} props
+ * @param {Boolean} props.open Know if the modal is open.
+ * @param {Object} props.monitor The `Monitor` we are going to view.
+ * @param {Function} props.onClose Callback to close the modal.
+ */
 class ModalViewMonitor extends React.Component {
 	constructor(props) {
 		super(props);
@@ -62,7 +70,7 @@ class ModalViewMonitor extends React.Component {
 			return null;
 		} else {
 			monitor.versions.sort((a, b) => {
-				// Sort version by date (most recent on top)
+				/** Sort versions by date (most recent on top) */
 				return b.date - a.date;
 			});
 
@@ -80,8 +88,10 @@ class ModalViewMonitor extends React.Component {
 									loader={<CircularProgress />}
 								/>
 							</Avatar>
+
 							<Typography variant='h6'>{monitor.name}</Typography>
 						</Grid>
+
 						<IconButton
 							className={this.props.classes.closeButton}
 							onClick={this.props.onClose}>
@@ -93,72 +103,90 @@ class ModalViewMonitor extends React.Component {
 							<Typography variant='h5'>Attributes</Typography>
 							<List>
 								<Divider />
+
 								<ListItem>
 									<ListItemText
 										primary='Name'
 										className={this.props.classes.itemMeTitle}
 									/>
+
 									<ListItemText
 										primary={monitor.name}
 										className={this.props.classes.itemText}
 									/>
 								</ListItem>
+
 								<Divider />
+
 								<ListItem>
 									<ListItemText
 										primary='Url'
 										className={this.props.classes.itemMeTitle}
 									/>
+
 									<ListItemText
 										primary={monitor.url}
 										className={this.props.classes.itemText}
 									/>
 								</ListItem>
+
 								<Divider />
+
 								<ListItem>
 									<ListItemText
 										primary='Selector'
 										className={this.props.classes.itemMeTitle}
 									/>
+
 									<ListItemText
 										primary={monitor.selector}
 										className={this.props.classes.itemText}
 									/>
 								</ListItem>
+
 								<Divider />
+
 								<ListItem>
 									<ListItemText
 										primary='Regex'
 										className={this.props.classes.itemMeTitle}
 									/>
+
 									<ListItemText
 										primary={monitor.regex ? monitor.regex : 'None'}
 										className={this.props.classes.itemText}
 									/>
 								</ListItem>
+
 								<Divider />
+
 								<ListItem>
 									<ListItemText
 										primary='Icon Url'
 										className={this.props.classes.itemMeTitle}
 									/>
+
 									<ListItemText
 										primary={monitor.icon_url ? monitor.icon_url : 'None'}
 										className={this.props.classes.itemText}
 									/>
 								</ListItem>
 							</List>
+
 							<Typography variant='h5'>Headers</Typography>
+
 							<List>
 								{monitor.headers.length > 0 ? (
 									monitor.headers.map((header, index) => (
 										<Fragment key={index}>
 											<Divider />
+
 											<ListItem>
 												<ListItemText
 													primary={header.name}
 													className={this.props.classes.itemLaTitle}
 												/>
+
 												<ListItemText primary={header.value} />
 											</ListItem>
 										</Fragment>
@@ -167,17 +195,21 @@ class ModalViewMonitor extends React.Component {
 									<ListItemText primary='No header' />
 								)}
 							</List>
+
 							<Typography variant='h5'>Versions</Typography>
+
 							<List>
 								{monitor.versions.length > 0 ? (
 									monitor.versions.map((version, index) => (
 										<Fragment key={index}>
 											<Divider />
+
 											<ListItem>
 												<ListItemText
 													primary={version.label}
 													className={this.props.classes.itemSmTitle}
 												/>
+
 												<ListItemText
 													primary={new Date(version.date).toLocaleString()}
 												/>

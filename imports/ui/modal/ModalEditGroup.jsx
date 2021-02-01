@@ -15,6 +15,14 @@ import { toast } from 'react-toastify';
 
 const bridge = new SimpleSchema2Bridge(group);
 
+/**
+ * Form to create or edit the given `Group`.
+ *
+ * @param {{isOpen: Boolean, group: Object, closeModal: Function}} props
+ * @param {Boolean} props.isOpen Know if the modal is open.
+ * @param {Object} props.group The `Group` we are going to edit.
+ * @param {Function} props.closeModal Callback to close the modal.
+ */
 class ModalEditGroup extends React.Component {
 	constructor(props) {
 		super(props);
@@ -87,6 +95,7 @@ class ModalEditGroup extends React.Component {
 						? 'Edit ' + this.props.group.name
 						: 'Create a group'}
 				</DialogTitle>
+
 				<DialogContent>
 					<AutoForm
 						schema={bridge}
@@ -97,10 +106,12 @@ class ModalEditGroup extends React.Component {
 						<ErrorsField />
 					</AutoForm>
 				</DialogContent>
+
 				<DialogActions>
 					<Button onClick={this.props.closeModal} variant='contained'>
 						Cancel
 					</Button>
+
 					<Button
 						onClick={() => formRef.submit()}
 						variant='contained'

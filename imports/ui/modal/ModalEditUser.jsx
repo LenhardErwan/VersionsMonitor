@@ -15,6 +15,14 @@ import { toast } from 'react-toastify';
 
 const bridge = new SimpleSchema2Bridge(user);
 
+/**
+ * Form to create or edit the given `User`.
+ *
+ * @param {{isOpen: Boolean, user: Object, closeModal: Function}} props
+ * @param {Boolean} props.isOpen Know if the modal is open.
+ * @param {Object} props.user The `User` we are going to edit.
+ * @param {Function} props.closeModal Callback to close the modal.
+ */
 class ModalEditUser extends React.Component {
 	constructor(props) {
 		super(props);
@@ -45,7 +53,7 @@ class ModalEditUser extends React.Component {
 							updatedUser[key] = newUser[key];
 						}
 					}
-					
+
 					Meteor.call('users.update', oldUser._id, updatedUser, (err, res) => {
 						if (err) {
 							toast.error('Something went wrong, try again later!');
@@ -74,6 +82,7 @@ class ModalEditUser extends React.Component {
 						? 'Edit ' + this.props.user.username
 						: 'Create a user'}
 				</DialogTitle>
+
 				<DialogContent>
 					<AutoForm
 						schema={bridge}
@@ -84,10 +93,12 @@ class ModalEditUser extends React.Component {
 						<ErrorsField />
 					</AutoForm>
 				</DialogContent>
+
 				<DialogActions>
 					<Button onClick={this.props.closeModal} variant='contained'>
 						Cancel
 					</Button>
+
 					<Button
 						onClick={() => formRef.submit()}
 						variant='contained'
