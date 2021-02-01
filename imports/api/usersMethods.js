@@ -93,24 +93,6 @@ Meteor.methods({
 			return true;
 		}
 	},
-	/**
-	 * Get the priority of the higher group of the user
-	 * @param {string} userId id of the user
-	 * @returns {number | null} priority of higher or null if user doesn't have public group assigned
-	 */
-	'user.groups.highestPriority'(userId) {
-		const groups = getGroups(userId);
-
-		// Reduce array to have the lowest priority (highest group) (Ex: admin group should be at 1)
-		return groups.reduce((a, b) => {
-			const _a = a.priority,
-				_b = b.priority;
-			if (_a > 0 && _b > 0) return _a > _b ? b : a;
-			else if (_a > 0 && (_b <= 0 || _b === null)) return a;
-			else if (_b > 0 && (_a <= 0 || _a === null)) return b;
-			else return { priority: null };
-		});
-	},
 	'user.isAdmin'(userId) {
 		const _userId = userId ? userId : this.userId;
 		if (!_userId)
@@ -122,7 +104,7 @@ Meteor.methods({
 			return group.administrator;
 		});
 	},
-	'user.canManage'(userId) {
+	'user.canManage'(userId, group) {
 		const _userId = userId ? userId : this.userId;
 		if (!_userId)
 			throw new Meteor.Error('user.connected', 'You are not connected');
@@ -130,8 +112,15 @@ Meteor.methods({
 
 		const groups = getGroups(_userId);
 
-		return groups.some((group) => {
-			return group.manageGroups;
+		// Reduce array to have the lowest priority (highest group) (Ex: admin group should be at 1)
+		return groups.some((grp) => {
+			return (
+				(group.priority > 0 &&
+					grp.priority > 0 &&
+					grp.priority < group.priority &&
+					grp.manageGroups) ||
+				(group._id === grp._id && group.manageGroups)
+			);
 		});
 	},
 	'user.canCreate.nomulti'(userId) {

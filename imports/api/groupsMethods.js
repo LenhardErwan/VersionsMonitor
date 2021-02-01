@@ -4,7 +4,7 @@ import GroupsCollection from '/imports/db/GroupsCollection';
 
 Meteor.methods({
 	'groups.insert'(group) {
-		//TODO add permissions if user canCreate in it (higher priority)
+		//TODO Create specific permissions ?
 		if (Meteor.call('user.isAdmin', this.userId)) {
 			GroupsCollection.insert(group);
 		} else {
@@ -15,16 +15,10 @@ Meteor.methods({
 		}
 	},
 	'groups.update'(groupId, groupParams) {
-		const user_priority = Meteor.call(
-			'user.groups.highestPriority',
-			this.userId
-		);
 		const group = GroupsCollection.findOne({ _id: groupId });
 		if (group) {
-			if (
-				user_priority < group.priority ||
-				Meteor.call('user.isAdmin', this.userId)
-			) {
+			const canManage = Meteor.call('user.canManage', this.userId, group);
+			if (canManage || Meteor.call('user.isAdmin', this.userId)) {
 				GroupsCollection.update(groupId, {
 					$set: groupParams,
 				});
@@ -42,16 +36,10 @@ Meteor.methods({
 		}
 	},
 	'groups.delete'(groupId) {
-		const user_priority = Meteor.call(
-			'user.groups.highestPriority',
-			this.userId
-		);
 		const group = GroupsCollection.findOne({ _id: groupId });
 		if (group) {
-			if (
-				user_priority < group.priority ||
-				Meteor.call('user.isAdmin', this.userId)
-			) {
+			const canManage = Meteor.call('user.canManage', this.userId, group);
+			if (canManage || Meteor.call('user.isAdmin', this.userId)) {
 				GroupsCollection.remove(groupId);
 			} else {
 				throw new Meteor.Error(
