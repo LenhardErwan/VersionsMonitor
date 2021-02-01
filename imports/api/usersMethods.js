@@ -156,6 +156,20 @@ Meteor.methods({
 			);
 		});
 	},
+	'user.canView'(idMonitor, userId) {
+		const _userId = userId ? userId : this.userId;
+		if (!_userId)
+			throw new Meteor.Error('user.connected', 'You are not connected');
+		if (Meteor.call('user.isAdmin', _userId)) return true;
+
+		const groups = getGroups(_userId);
+
+		return groups.some((group) => {
+			return group.monitorPerms.some((perms) => {
+				return perms.monitor_id === idMonitor && perms.canView;
+			});
+		});
+	},
 	'user.canEdit'(idMonitor, userId) {
 		const _userId = userId ? userId : this.userId;
 		if (!_userId)
