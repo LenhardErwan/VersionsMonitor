@@ -179,6 +179,34 @@ Each method for **groups** and **monitors** verifies that the user invoking it h
 
 ---
 
+### Treeview
+
+Here is the tree structure that the server uses
+
+```shell
+├── imports
+│   ├── api
+│   │   ├── groupsMethods.js
+│   │   ├── groupsPublications.js
+│   │   ├── monitorsMethods.js
+│   │   ├── monitorsPublications.js
+│   │   ├── usersMethods.js
+│   │   └── usersPublications.js
+│   └── db
+│       ├── GroupsCollection.js
+│       ├── MonitorsCollection.js
+│       └── schemas
+│           ├── group.js
+│           ├── header.js
+│           ├── monitor.js
+│           ├── monitorPerms.js
+│           ├── user.js
+│           └── version.js
+└── server
+    ├── app.js
+    └── main.js
+```
+
 ## Data Schema
 
 ### User
