@@ -71,7 +71,7 @@ We then inject into `<App />` other React components by following the Route prov
 
 To navigate between pages in our app, we use [Reach Router](https://reach.tech/router/) which is a simple router for React. We decided to choose this package over React-Router because the documentation is easy to understand and we just need to use the given `<Router>` component. Then we set the path props on some of our own components and we are good to go.
 
-```
+```jsx
 imports/ui/App.jsx
 
 <Router>
@@ -89,22 +89,22 @@ Uniforms is a powerfull react library capable of generating and validating forms
 
 Using the `<AutoForm />` component is super simple, we inject the component in our render method and we provide the schema and the model (The object which contains our default values):
 
-```
+```jsx
 imports/ui/modal/ModalEditMonitor.jsx
 
 <AutoForm
-	schema={bridge}
-	model={this.props.monitor}
-	ref={(ref) => (formRef = ref)}
-	onSubmit={this.onSubmit}>
-	<AutoFields omitFields={['versions', 'error']} />
-	<ErrorsField />
+    schema={bridge}
+    model={this.props.monitor}
+    ref={(ref) => (formRef = ref)}
+    onSubmit={this.onSubmit}>
+    <AutoFields omitFields={['versions', 'error']} />
+    <ErrorsField />
 </AutoForm>
 ```
 
 Then we create an **onSubmit** method and fetch the validated object, eg:
 
-```
+```js
 onSubmit(monitor) {
     console.log('This is my monitor !');
     console.log(monitor);
@@ -117,8 +117,8 @@ First of all, Material-UI was not the initial design system we tryed to use. Sem
 
 So we decided to remove Semantic and go with Material. To setup the dark theme we created a new theme and used the `<ThemeProvider />` component:
 
-```
-imports/ui/App.jsx
+```jsx
+imports / ui / App.jsx;
 
 const darkTheme = createMuiTheme({
 	palette: {
@@ -131,11 +131,7 @@ const darkTheme = createMuiTheme({
 	},
 });
 
-...
-
-<ThemeProvider theme={darkTheme}>
-    ...
-</ThemeProvider>
+<ThemeProvider theme={darkTheme}></ThemeProvider>;
 ```
 
 Of course, because Material is now our main design system, we use it's components in every part of our application, we even installed the `uniforms-material` package to render our forms with Material.
