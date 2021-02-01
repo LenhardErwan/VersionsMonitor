@@ -179,7 +179,89 @@ Each method for **groups** and **monitors** verifies that the user invoking it h
 
 ---
 
-### Treeview
+### Startup
+
+When the application starts we define 1 default user (admin), 2 groups (everyone and admin) and 1 monitor (this application).  
+Default behaviors are also specified. This is the case for the onCreateUser method which is as follows
+
+```js
+  Accounts.onCreateUser((options, user) => {
+    user._id = Random.id();
+
+    GroupsCollection.insert({
+      name: user._id,
+      priority: 0,
+      multi: false,
+      canCreate: true,
+    });
+    user.groups = [user._id, 'everyone'];
+
+    if (options.profile) {
+      user.profile = options.profile;
+    }
+
+    return user;
+  });
+```
+
+As you can see we create a personal group (user group) for each user and automatically add it to the everyone group.  
+the other behavior that we define is this one:
+
+```js
+const app = new App();
+
+const cursor = MonitorsCollection.find();
+cursor.observe({
+  added: function (monitor) {
+    app.check(monitor);
+  },
+  changed: function (monitor) {
+    app.check(monitor);
+  },
+});
+```
+
+It allows each addition or change to the `Monitors` Collection to retrieve the latest version number of the monitor(s) concerned.  
+You can also see that an app variable is created from the class `App`. The interest of this class is to get the versions of all monitors in case of modification or addition as we have seen but also to do it all 12h (for the moment this parameter is not changeable).  
+We have already explained how version recovery works [here](/#how-the-application-retrieves-versions) but here is the code of this function:
+
+```js
+async function getNewestVersion(monitor) {
+  const headers = new Headers();
+  for (const header of monitor.headers) {
+    headers.append(header.name, header.value);
+  }
+
+  const test = new URL(monitor.url); // Test URL
+  if (test.protocol !== 'http:' && test.protocol !== 'https:')
+    throw 'URL is not a valid HTTP URL'; // Test HTTP URL
+
+  const response = await fetch(monitor.url, { headers: headers }); // Fetch page
+  if (!response.ok)
+    throw `Error with given URL! status code: ${response.status}`;
+  const data = await response.text(); // Get text in this page
+  const dom = new JSDOM(data); // Convert Text into DOM page
+  const selected = dom.window.document.querySelector(monitor.selector); // Use selector in DOM
+  if (selected == undefined || selected == null)
+    throw 'Error with given selector, if you are sure about it, think about Headers parameters.';
+  let newest = selected.textContent; // Text in selector
+
+  const regex_white_space = /^\s*([^\n\r\f]*)\s*$/gm; // Delete all white spaces before and after the text, if any
+  newest = regex_white_space.exec(newest)[1]; // Regex match (1 is for between brackets)
+
+  if (monitor.regex) {
+    const regex_obj = new RegExp(monitor.regex);
+    const result = regex_obj.exec(newest); // Refine the result with the regex
+    if (result && result[1]) newest = result[1]; // If regex as a match (1 is for between first brackets)
+  }
+
+  return newest;
+}
+```
+
+---
+
+## Treeview
 
 Here is the tree structure that the server uses
 
@@ -206,6 +288,8 @@ Here is the tree structure that the server uses
     ├── app.js
     └── main.js
 ```
+
+---
 
 ## Data Schema
 
