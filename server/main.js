@@ -57,13 +57,6 @@ Meteor.startup(() => {
 		});
 	}
 
-	if (!Accounts.findUserByUsername('meteorite')) {
-		Accounts.createUser({
-			username: 'meteorite',
-			password: 'password',
-		});
-	}
-
 	if (!Accounts.findUserByUsername('admin')) {
 		const adminId = Accounts.createUser({
 			username: 'admin',
@@ -80,20 +73,9 @@ Meteor.startup(() => {
 			selector: '.release-entry .release-header a',
 		});
 
-		let m2 = MonitorsCollection.insert({
-			name: 'BeerBrowser',
-			url: 'https://github.com/LenhardErwan/BeerBrowser/releases',
-			selector: '.release-entry .release-main-section a',
-		});
-
 		GroupsCollection.update(
 			{ name: 'everyone' },
 			{ $push: { monitorPerms: { monitor_id: m1, canView: true } } }
-		);
-
-		GroupsCollection.update(
-			{ name: 'everyone' },
-			{ $push: { monitorPerms: { monitor_id: m2, canView: true } } }
 		);
 	}
 });

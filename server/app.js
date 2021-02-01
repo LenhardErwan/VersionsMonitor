@@ -35,6 +35,7 @@ async function getNewestVersion(monitor) {
 	return newest;
 }
 
+//TODO Turn this class into Singleton
 class App {
 	constructor() {
 		this.check = this.check.bind(this);
