@@ -27,7 +27,7 @@ This is where React will inject our first component `<App />` by following the *
 
 ```js
 Meteor.startup(() => {
-    render(<App />, document.getElementById('react-target'));
+  render(<App />, document.getElementById('react-target'));
 });
 ```
 
@@ -43,9 +43,9 @@ To navigate between pages in our app, we use **Reach Router** which is a simple 
 imports/ui/App.jsx
 
 <Router>
-    <HomeContainer path='/' ... />
-    <LoginContainer path='/login' ... />
-    <AdminContainer path='/admin' ... />
+  <HomeContainer path='/' ... />
+  <LoginContainer path='/login' ... />
+  <AdminContainer path='/admin' ... />
 </Router>
 ```
 
@@ -63,12 +63,12 @@ Using the `<AutoForm />` component is super simple, we inject the component in o
 imports/ui/modal/ModalEditMonitor.jsx
 
 <AutoForm
-    schema={bridge}
-    model={this.props.monitor}
-    ref={(ref) => (formRef = ref)}
-    onSubmit={this.onSubmit}>
-    <AutoFields omitFields={['versions', 'error']} />
-    <ErrorsField />
+  schema={bridge}
+  model={this.props.monitor}
+  ref={(ref) => (formRef = ref)}
+  onSubmit={this.onSubmit}>
+  <AutoFields omitFields={['versions', 'error']} />
+  <ErrorsField />
 </AutoForm>
 ```
 
@@ -76,8 +76,8 @@ Then we create an **onSubmit** method and fetch the validated object, eg:
 
 ```js
 onSubmit(monitor) {
-    console.log('This is my monitor !');
-    console.log(monitor);
+  console.log('This is my monitor !');
+  console.log(monitor);
 }
 ```
 
@@ -93,14 +93,14 @@ So we decided to remove Semantic and go with Material. To setup the dark theme w
 imports / ui / App.jsx;
 
 const darkTheme = createMuiTheme({
-    palette: {
-        type: 'dark',
-        primary: {
-            light: '#a6d4fa',
-            main: '#90caf9',
-            dark: '#648dae',
-        },
+  palette: {
+    type: 'dark',
+    primary: {
+      light: '#a6d4fa',
+      main: '#90caf9',
+      dark: '#648dae',
     },
+  },
 });
 
 <ThemeProvider theme={darkTheme}></ThemeProvider>;
@@ -125,6 +125,10 @@ This part will explain some decisions we took while developing the front end. So
 To create a simple UI, we chose to use modals, but because each modal is unique we needed to create a container. Without this container there would be multiple modals in different render method and the code would become confusing.
 
 We also had an other idea in mind, like `react-toastify`, we wanted to create a container and then just call a method to display a certain modal in this container. (You can take a look a this [commit](https://github.com/LenhardErwan/VersionsMonitor/commit/3990e8614c6d0135444c6b7be8518567c5a39d49) which was supposed to implement this feature). But time is ticking and implementing this feature took longer than we thought.
+
+### Group permissions - Add monitor permissions
+
+On the administration page, when we want to manage the permissions for a monitor it asks us the ID of this monitor. We are aware that this is not very intuitive for the user. However due to our choice of modules (Uniforms) and lack of time, we could not elegantly implement a Selector that would have allowed a much better user experience.
 
 ### Warning when opening a form
 
