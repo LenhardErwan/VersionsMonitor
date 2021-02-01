@@ -22,6 +22,7 @@ class ModalContainer extends React.Component {
 	}
 
 	render() {
+		/** Check which modal we want to display */
 		if (this.props.name == 'delete_group') {
 			return (
 				<ModalDeleteGroup

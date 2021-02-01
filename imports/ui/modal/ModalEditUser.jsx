@@ -32,6 +32,7 @@ class ModalEditUser extends React.Component {
 
 	onSubmit(newUser) {
 		if (this.props.user._id == null) {
+			/** We are creating a new user */
 			Meteor.call('users.insert', newUser, (err, res) => {
 				if (err) {
 					toast.error('Something went wrong, try again later!');
@@ -42,12 +43,14 @@ class ModalEditUser extends React.Component {
 
 			this.props.closeModal();
 		} else {
+			/** We are editing an existing user */
 			let oldUser = this.props.user;
 
 			if (oldUser !== newUser) {
 				if (oldUser._id === newUser._id) {
 					let updatedUser = {};
 
+					/** Only take attributes we want to update */
 					for (let key of Object.keys(newUser)) {
 						if (oldUser[key] !== newUser[key]) {
 							updatedUser[key] = newUser[key];
@@ -64,9 +67,11 @@ class ModalEditUser extends React.Component {
 
 					this.props.closeModal();
 				} else {
+					/** The id of the new user differs from the old id */
 					toast.error('Something went wrong, try again later!');
 				}
 			} else {
+				/** No changes in the user */
 				toast.error('Nothing to save!');
 			}
 		}

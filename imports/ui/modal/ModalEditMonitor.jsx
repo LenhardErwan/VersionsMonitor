@@ -38,10 +38,10 @@ class ModalEditMonitor extends React.Component {
 		this.handleCloseChip = this.handleCloseChip.bind(this);
 	}
 
-	onSubmit(new_monitor) {
+	onSubmit(newMonitor) {
 		if (this.props.monitor._id == null) {
 			/** We are creating a new monitor */
-			Meteor.call('monitors.insert', new_monitor, (err, res) => {
+			Meteor.call('monitors.insert', newMonitor, (err, res) => {
 				if (err) {
 					console.log(err);
 					if (err.error === 'perms.monitors.insert') {
@@ -50,29 +50,30 @@ class ModalEditMonitor extends React.Component {
 						toast.error('Something went wrong, try again later!');
 					}
 				} else {
-					toast.success(new_monitor.name + ' was successfully created!');
+					toast.success(newMonitor.name + ' was successfully created!');
 				}
 			});
 
 			this.props.closeModal();
 		} else {
 			/** We are editing an existing monitor */
-			let old_monitor = this.props.monitor;
+			let oldMonitor = this.props.monitor;
 
-			if (old_monitor !== new_monitor) {
-				if (old_monitor._id === new_monitor._id) {
-					let updated_monitor = {};
+			if (oldMonitor !== newMonitor) {
+				if (oldMonitor._id === newMonitor._id) {
+					let updatedMonitor = {};
 
-					for (let key of Object.keys(new_monitor)) {
-						if (old_monitor[key] !== new_monitor[key]) {
-							updated_monitor[key] = new_monitor[key];
+					/** Only take attributes we want to update */
+					for (let key of Object.keys(newMonitor)) {
+						if (oldMonitor[key] !== newMonitor[key]) {
+							updatedMonitor[key] = newMonitor[key];
 						}
 					}
 
 					Meteor.call(
 						'monitors.update',
-						old_monitor._id,
-						updated_monitor,
+						oldMonitor._id,
+						updatedMonitor,
 						(err, res) => {
 							if (err) {
 								if (err.error === 'perms.monitors.update') {
@@ -81,7 +82,7 @@ class ModalEditMonitor extends React.Component {
 									toast.error('Something went wrong, try again later!');
 								}
 							} else {
-								toast.success(new_monitor.name + ' was successfully updated!');
+								toast.success(newMonitor.name + ' was successfully updated!');
 							}
 						}
 					);

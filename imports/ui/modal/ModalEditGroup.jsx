@@ -32,6 +32,7 @@ class ModalEditGroup extends React.Component {
 
 	onSubmit(newGroup) {
 		if (this.props.group._id == null) {
+			/** We are creating a new group */
 			Meteor.call('groups.insert', newGroup, (err, res) => {
 				if (err) {
 					if (err.error === 'perms.groups.insert') {
@@ -46,12 +47,14 @@ class ModalEditGroup extends React.Component {
 
 			this.props.closeModal();
 		} else {
+			/** We are editing an existing group */
 			let oldGroup = this.props.group;
 
 			if (oldGroup !== newGroup) {
 				if (oldGroup._id === newGroup._id) {
 					let updatedGroup = {};
 
+					/** Only take attributes we want to update */
 					for (let key of Object.keys(newGroup)) {
 						if (oldGroup[key] !== newGroup[key]) {
 							updatedGroup[key] = newGroup[key];
@@ -77,9 +80,11 @@ class ModalEditGroup extends React.Component {
 
 					this.props.closeModal();
 				} else {
+					/** The id of the new group differs from the old id */
 					toast.error('Something went wrong, try again later!');
 				}
 			} else {
+				/** No changes in the group */
 				toast.error('Nothing to save!');
 			}
 		}
