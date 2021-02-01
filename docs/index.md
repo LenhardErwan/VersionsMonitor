@@ -10,6 +10,13 @@
 
 **VersionsMonitor** is based on **JavaScript** and uses the [**Meteor**](https://www.meteor.com/) framework. So all you need is to install [**NodeJS**](https://nodejs.org) and [**Meteor**](https://www.meteor.com/developers/install) to run the application.
 
+### Default account
+
+The default account credentials are as follows:  
+  
+Login: `admin`  
+Password: `admin`
+
 ---
 
 ## Structure
