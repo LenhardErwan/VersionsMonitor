@@ -28,6 +28,21 @@ const styles = (theme) => ({
 	},
 });
 
+/**
+ * Admin page to manage users and groups.
+ *
+ * @param {{handleOpenModal: Function, user: Object, users: Array, usersLoading: Boolean, groups: Array, userGroups: Array, groupsLoading: Boolean}} props
+ * @param {Function} props.handleOpenModal Callback to open a modal.
+ * @param {Object} props.user The current user given by Meteor, can be:
+ * - `null` If the user is not connected,
+ * - `undefined` If Meteor is still fetching data,
+ * - `Object` If the user is connected.
+ * @param {Array} users List of users given by Meteor.
+ * @param {Boolean} usersLoading Know if Meteor is still fetching users.
+ * @param {Array} groups List of groups given by Meteor.
+ * @param {Array} userGroups List of userGroups given by Meteor.
+ * @param {Boolean} groupsLoading Know if Meteor is still fetching groups or userGroups.
+ */
 class Admin extends React.Component {
 	constructor(props) {
 		super(props);
@@ -107,6 +122,7 @@ class Admin extends React.Component {
 							color='textSecondary'>
 							Manage accounts
 						</Typography>
+
 						<UserList
 							loading={this.props.usersLoading}
 							users={this.props.users}
@@ -136,6 +152,7 @@ class Admin extends React.Component {
 									color='textSecondary'>
 									Groups
 								</Typography>
+
 								<GroupList
 									loading={this.props.groupsLoading}
 									groups={this.props.groups}
@@ -153,6 +170,7 @@ class Admin extends React.Component {
 									color='textSecondary'>
 									Users
 								</Typography>
+
 								<GroupList
 									loading={this.props.groupsLoading}
 									groups={this.props.userGroups}
@@ -215,6 +233,7 @@ const AdminContainer = withTracker(() => {
 	const user = Meteor.user();
 
 	if (user === null) {
+		/** If the user is not connected redirect to '/login' */
 		navigate('/login');
 	}
 
