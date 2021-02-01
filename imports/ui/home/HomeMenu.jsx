@@ -24,6 +24,14 @@ const styles = (theme) => ({
 	},
 });
 
+/**
+ * Menu displayed on the Home page, with a search input and multiple buttons.
+ *
+ * @param {{loading: Boolean, setFilter: Function, handleOpenModal: Function}} props
+ * @param {Boolean} props.loading Know if Home is still filtering monitors.
+ * @param {Function} props.setFilter Callback to set the new filter when the user is typing.
+ * @param {Function} props.handleOpenModal Callback to open a modal.
+ */
 class HomeMenu extends React.Component {
 	constructor(props) {
 		super(props);
@@ -41,6 +49,11 @@ class HomeMenu extends React.Component {
 	}
 
 	componentDidMount() {
+		/**
+		 * Check if the current user is an admin, because Home is unmounted
+		 * when going on other routes, if the user logout and login with another
+		 * account we will check again.
+		 */
 		Meteor.call('user.isAdmin', (err, res) => {
 			if (!err) {
 				this.setState({ user_is_admin: res });
@@ -76,12 +89,14 @@ class HomeMenu extends React.Component {
 					<IconButton>
 						{this.props.loading ? <CircularProgress /> : <SearchIcon />}
 					</IconButton>
+
 					<InputBase
 						placeholder='Search...'
 						onChange={this.handleInputChange}
 						value={this.state.input_filter}
 					/>
 				</Paper>
+
 				<IconButton
 					onClick={() => this.props.handleOpenModal('edit_monitor', {})}
 					data-popover='Create'
@@ -89,6 +104,7 @@ class HomeMenu extends React.Component {
 					onMouseLeave={this.handlePopoverClose}>
 					<AddBoxIcon />
 				</IconButton>
+
 				{this.state.user_is_admin && (
 					<IconButton
 						onClick={async () => await navigate('/admin')}
@@ -98,6 +114,7 @@ class HomeMenu extends React.Component {
 						<BuildIcon />
 					</IconButton>
 				)}
+
 				<IconButton
 					onClick={() => Meteor.logout()}
 					data-popover='Logout'
@@ -105,6 +122,7 @@ class HomeMenu extends React.Component {
 					onMouseLeave={this.handlePopoverClose}>
 					<ExitToAppIcon />
 				</IconButton>
+
 				<Popover
 					className={this.props.classes.popover}
 					classes={{

@@ -6,6 +6,18 @@ import MonitorsCollection from '/imports/db/MonitorsCollection';
 import HomeMenu from '/imports/ui/home/HomeMenu';
 import HomeListMonitor from '/imports/ui/home/HomeListMonitor';
 
+/**
+ * Home page, manage monitors, search and view versions.
+ *
+ * @param {{handleOpenModal: Function, user: Object, monitors: Array, loading: Boolean}} props
+ * @param {Function} props.handleOpenModal Callback to open a modal.
+ * @param {Object} props.user The current user given by Meteor, can be:
+ * - `null` If the user is not connected,
+ * - `undefined` If Meteor is still fetching data,
+ * - `Object` If the user is connected.
+ * @param {Array} props.monitors List of monitors given by Meteor.
+ * @param {Boolean} props.loading Know if Meteor is still fetching monitors.
+ */
 class Home extends React.Component {
 	constructor(props) {
 		super(props);
@@ -52,12 +64,12 @@ class Home extends React.Component {
 	}
 
 	filter(filter) {
-		const mlist = this.props.monitors.filter((monitor) =>
+		const filteredMonitors = this.props.monitors.filter((monitor) =>
 			monitor.name.toLowerCase().includes(filter.toLowerCase())
 		);
 
 		this.setState({
-			monitors: mlist,
+			monitors: filteredMonitors,
 			loading_filter: false,
 		});
 	}
@@ -85,6 +97,7 @@ const HomeContainer = withTracker(() => {
 	const user = Meteor.user();
 
 	if (user === null) {
+		/** If the user is not connected redirect to '/login' */
 		navigate('/login');
 	}
 

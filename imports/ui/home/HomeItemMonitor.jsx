@@ -23,6 +23,15 @@ const styles = (theme) => ({
 	},
 });
 
+/**
+ * An item displayed in the HomeListMonitor.
+ *
+ * @param {{monitor: Object, handleEdit: Function, handleDelete: Function, onView: Function}} props
+ * @param {Object} props.monitor The monitor this item will display.
+ * @param {Function} props.handleEdit Callback to open the `edit_monitor` modal.
+ * @param {Function} props.handleDelete Callback to open the `delete_monitor` modal.
+ * @param {Function} props.onView Callback to open the `view_monitor` modal.
+ */
 class HomeItemMonitor extends React.Component {
 	constructor(props) {
 		super(props);
@@ -36,6 +45,7 @@ class HomeItemMonitor extends React.Component {
 			console.error(this.props.monitor.name, ': ', this.props.monitor.error);
 
 		try {
+			/** Fetch the favicon url */
 			this.state.alternate_icon = `${
 				new URL(this.props.monitor.url).origin
 			}/favicon.ico`;
@@ -97,14 +107,19 @@ class HomeItemMonitor extends React.Component {
 						/>
 					</Avatar>
 				</TableCell>
+
 				<TableCell>{this.props.monitor.name}</TableCell>
+
 				<TableCell>{this.getVersionString()}</TableCell>
+
 				<TableCell>{this.getDateString()}</TableCell>
+
 				<TableCell>
 					<Link href={this.props.monitor.url} target='_blank'>
 						Link
 					</Link>
 				</TableCell>
+
 				<TableCell>
 					<IconButton
 						size='small'
@@ -114,6 +129,7 @@ class HomeItemMonitor extends React.Component {
 						onMouseLeave={this.handlePopoverClose}>
 						<VisibilityIcon />
 					</IconButton>
+
 					<IconButton
 						size='small'
 						onClick={() => this.props.handleEdit(this.props.monitor)}
@@ -122,6 +138,7 @@ class HomeItemMonitor extends React.Component {
 						onMouseLeave={this.handlePopoverClose}>
 						<EditIcon />
 					</IconButton>
+
 					<IconButton
 						size='small'
 						onClick={() => this.props.handleDelete(this.props.monitor)}
@@ -130,6 +147,7 @@ class HomeItemMonitor extends React.Component {
 						onMouseLeave={this.handlePopoverClose}>
 						<DeleteIcon />
 					</IconButton>
+
 					<Popover
 						className={this.props.classes.popover}
 						classes={{
