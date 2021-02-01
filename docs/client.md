@@ -112,7 +112,32 @@ Of course, because Material is now our main design system, we use it's component
 
 Inside the client source directory aka **./imports/ui**, we group files and folders according to their route or feature. This is why we have four different directories, home for the `/` path, login for the `/login` path, admin for the `/admin` and finally modal which contains every dialog displayed by the app.
 
-![Directory structure](img/clientDirectory.png)
+```shell
+ui
+├── admin
+│   ├── AdminItemGroup.jsx
+│   ├── AdminItemUser.jsx
+│   ├── Admin.jsx
+│   ├── AdminListGroup.jsx
+│   └── AdminListUser.jsx
+├── App.jsx
+├── home
+│   ├── HomeItemMonitor.jsx
+│   ├── Home.jsx
+│   ├── HomeListMonitor.jsx
+│   └── HomeMenu.jsx
+├── login
+│   └── Login.jsx
+└── modal
+    ├── ModalContainer.jsx
+    ├── ModalDeleteGroup.jsx
+    ├── ModalDeleteMonitor.jsx
+    ├── ModalDeleteUser.jsx
+    ├── ModalEditGroup.jsx
+    ├── ModalEditMonitor.jsx
+    ├── ModalEditUser.jsx
+    └── ModalViewMonitor.jsx
+```
 
 In each of this directory we then have a 'main' class (Admin, Home, Login, ModalContainer) and the components they will use.
 
