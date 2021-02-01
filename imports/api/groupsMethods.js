@@ -4,7 +4,7 @@ import GroupsCollection from '/imports/db/GroupsCollection';
 
 Meteor.methods({
 	'groups.insert'(group) {
-		//TODO create canCreateRole permisison ? Create if canManage permission ?
+		//TODO add permissions if user canCreate in it (higher priority)
 		if (Meteor.call('user.isAdmin', this.userId)) {
 			GroupsCollection.insert(group);
 		} else {

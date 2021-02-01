@@ -8,6 +8,7 @@ import GroupsCollection from '/imports/db/GroupsCollection';
 
 Meteor.methods({
 	'monitors.insert'(monitor) {
+		//TODO Create directly in public groups
 		if (Meteor.call('user.canCreate.nomulti')) {
 			const id = MonitorsCollection.insert(monitor);
 			GroupsCollection.update(
