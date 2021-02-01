@@ -12,6 +12,14 @@
 
 ---
 
+## Structure
+
+The application is separated in 2 main parts, the FrontEnd side with the Client and the BackEnd side with the Server.
+
+![Application structure](img/structure.png)
+
+---
+
 ## How the application retrieves versions ?
 
 To retrieve the version, the application needs the following parameters:
