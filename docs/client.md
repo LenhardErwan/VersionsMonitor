@@ -141,6 +141,12 @@ ui
 
 In each of this directory we then have a 'main' class (Admin, Home, Login, ModalContainer) and the components they will use.
 
+## Components Classes
+
+This graph diplays the list of React components we created for the UI. Connected components are rendered by the parent component.
+
+![Components Classes](img/clientClasses.png)
+
 ## Dev Choice
 
 This part will explain some decisions we took while developing the front end. Some of them are missing features we would like to implement in the future but didn't have the time to add.
