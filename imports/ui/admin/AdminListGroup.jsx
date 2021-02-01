@@ -1,16 +1,26 @@
 import React from 'react';
 import {
 	CircularProgress,
-	Paper,
 	Table,
 	TableBody,
 	TableCell,
 	TableContainer,
 	TableHead,
 	TableRow,
+	Paper,
 } from '@material-ui/core';
 import AdminItemGroup from '/imports/ui/admin/AdminItemGroup';
 
+/**
+ * List the groups.
+ *
+ * @param {{loading: Boolean, groups: Array, openFormModal: Function, handlePopoverClose: Function, handlePopoverOpen: Function}} props
+ * @param {Boolean} loading Know if meteor is still fetching groups.
+ * @param {Array} groups List of groups given by Meteor.
+ * @param {Function} openFormModal Callback to open a modal.
+ * @param {Function} handlePopoverClose Callback to close a popover.
+ * @param {Function} handlePopoverOpen Callback to open a popover.
+ */
 class AdminListGroup extends React.Component {
 	constructor(props) {
 		super(props);

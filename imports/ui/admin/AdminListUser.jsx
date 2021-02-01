@@ -11,6 +11,16 @@ import {
 } from '@material-ui/core';
 import AdminItemUser from '/imports/ui/admin/AdminItemUser';
 
+/**
+ * List the users.
+ *
+ * @param {{loading: Boolean, users: Array, openFormModal: Function, handlePopoverClose: Function, handlePopoverOpen: Function}} props
+ * @param {Boolean} loading Know if meteor is still fetching users.
+ * @param {Array} users List of users given by Meteor.
+ * @param {Function} openFormModal Callback to open a modal.
+ * @param {Function} handlePopoverClose Callback to close a popover.
+ * @param {Function} handlePopoverOpen Callback to open a popover.
+ */
 class AdminListUser extends React.Component {
 	constructor(props) {
 		super(props);

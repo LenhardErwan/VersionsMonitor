@@ -20,6 +20,15 @@ const styles = (theme) => ({
 	},
 });
 
+/**
+ * Login page, where the user should be redirected if he is not connected.
+ *
+ * @param {{user: Object}} props
+ * @param {Object} props.user The current user given by Meteor, can be:
+ * - `null` If the user is not connected,
+ * - `undefined` If Meteor is still fetching data,
+ * - `Object` If the user is connected
+ */
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
@@ -84,6 +93,7 @@ class Login extends React.Component {
 const LoginContainer = withTracker(() => {
 	const user = Meteor.user();
 
+	/** If the user is connected go to '/' */
 	if (user) {
 		navigate('/');
 	}

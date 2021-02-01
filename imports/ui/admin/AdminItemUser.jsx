@@ -3,6 +3,16 @@ import { IconButton, TableCell, TableRow } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+/**
+ * An item displayed in the AdminListUser.
+ *
+ * @param {{user: Object, handleEdit: Function, handleDelete: Function, handlePopoverClose: Function, handlePopoverOpen: Function}} props
+ * @param {Object} props.user The user this item will display.
+ * @param {Function} props.handleEdit Callback to open the `edit_user` modal.
+ * @param {Function} props.handleDelete Callback to open the `delete_user` modal.
+ * @param {Function} props.handlePopoverClose Callback to close a popover.
+ * @param {Function} props.handlePopoverOpen Callback to open a popover.
+ */
 class AdminItemUser extends React.Component {
 	constructor(props) {
 		super(props);
