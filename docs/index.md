@@ -19,6 +19,18 @@ Password: `admin`
 
 ---
 
+## Start application
+
+To launch the application you must have Meteor installed alongside with NodeJS  
+To start the application, follow these instructions:
+
+```shell
+meteor npm install
+meteor
+```
+
+---
+
 ## Structure
 
 The application is separated in 2 main parts, the FrontEnd side with the Client and the BackEnd side with the Server.
@@ -39,3 +51,9 @@ To retrieve the version, the application needs the following parameters:
 Once these parameters have been given to the application, the function follows the following logic:
 
 ![Get version - State Machine Diagram](img/getNewestVersion.png)
+
+---
+
+## Support this project
+
+[VersionMonitor](https://github.com/LenhardErwan/VersionsMonitor/tree/Meteor)
