@@ -140,7 +140,42 @@ In our application we have many methods that can be divided into 3 main families
 
 If you are an observer you will have noticed that these are the methods for each collection.
 
-TODO - to be continued
+- **Users**
+- **Groups**
+- **Monitors**
+
+If you are an observer you will have noticed that these are the methods for each collection.
+
+For the **Users** methods we have :
+
+- `users.insert(user)` : Create a new user
+- `users.update(userId, user)` : Update a user
+- `users.delete(userId)` : Delete a user
+- `user.groups.add(username, group_names)` : Add a list of groups to a user
+- `user.groups.remove(username, group_name)` : Delete a list of groups to a user
+- `user.isAdmin(userId)` : User has administrator permissions
+- `user.canManage(userId, group)` : User has permissions to manage the group.
+- `user.canCreate.nomulti(userId)` : User has permissions to create the monitor in his personal group.
+- `user.canCreate.multi(userId, group)` : User has permissions to create a monitor in the group
+- `user.canView(idMonitor, userId)` : User has permissions to view the monitor
+- `user.canEdit(idMonitor, userId)` : User has permissions to edit the monitor
+- `user.canDelete(idMonitor, userId)` : User has permissions to delete the monitor
+
+For the **Groups** methods we have :
+
+- `groups.insert(group)` : Create a new group
+- `groups.update(groupId, groupParams)` : Update a group
+- `groups.delete(groupId)` : Delete a group
+- `groups.delete.usergroup(userId)` :  Delete a user group
+
+And For the **Monitors** methods we have :
+
+- `monitors.insert(monitor)` : Create a new monitor
+- `monitors.update(monitorId, monitor)` : Update a monitor
+- `monitors.delete(monitorId)` : Delete a monitor
+- `monitors.preview(preview)` : Get a preview of what the version looks like
+
+Each method for **groups** and **monitors** verifies that the user invoking it has the required permissions.
 
 ---
 
